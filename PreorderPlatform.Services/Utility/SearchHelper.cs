@@ -92,50 +92,6 @@ namespace PreorderPlatform.Service.Utility
             return query;
         }
 
-        public static IQueryable<TEntity> GetOrderWithSearch<TEntity>(this IQueryable<TEntity> query, object searchModel) where TEntity : class
-        {
-            var entityType = typeof(TEntity);
-            foreach (var prop in searchModel.GetType().GetProperties())
-            {
-                var value = prop.GetValue(searchModel, null);
-
-                if (value == null) continue;
-
-                var entityProperty = entityType.GetProperty(prop.Name);
-
-                if (entityProperty == null) continue;
-
-                // Build expression tree
-                var param = Expression.Parameter(entityType, "entity");
-                var entityProp = Expression.Property(param, entityProperty);
-
-                Expression body;
-
-                // Filter by string
-                if (value is string stringValue && stringValue.Length > 0)
-                {
-                    var searchValue = Expression.Constant(value);
-                    body = Expression.Call(entityProp, nameof(string.Contains), null, searchValue);
-                }
-                // Filter by int, Guid, DateTime, byte, and bool
-                else if (value is int || value is Guid || value is DateTime || value is byte || value is bool)
-                {
-                    var searchValue = Expression.Constant(value);
-                    body = Expression.Equal(entityProp, searchValue);
-                }
-                else
-                {
-                    continue;
-                }
-
-                var lambda = Expression.Lambda<Func<TEntity, bool>>(body, param);
-                query = query.Where(lambda);
-            }
-
-            return query;
-        }
-
-
         public static IQueryable<TEntity> FilterOrderByDate<TEntity>(
     this IQueryable<TEntity> query,
     Expression<Func<TEntity, DateTime?>> date,

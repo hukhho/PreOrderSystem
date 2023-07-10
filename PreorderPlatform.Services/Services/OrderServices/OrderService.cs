@@ -113,13 +113,19 @@ namespace PreorderPlatform.Service.Services.OrderServices
                 var endDate = filterModel.EndDateInRange;
                 filterModel.StartDateInRange = null;
                 filterModel.EndDateInRange = null;
+
                 var query = _orderRepository.Table;
-                query = query.GetOrderWithSearch(filterModel);
+
+                query = query.GetWithSearch(filterModel);
+
+
                 query = query.FilterOrderByDate(o => o.CreatedAt, startDate, endDate);
                 query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder)
                     .GetWithPaging(paginationModel.Page, paginationModel.PageSize);
+
                 var orderList = await query.ToListAsync();
                 var res = _mapper.Map<List<OrderResponse>>(orderList);
+
                 return res;
             } catch (Exception e)
             {

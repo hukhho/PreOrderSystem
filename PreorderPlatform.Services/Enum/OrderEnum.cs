@@ -5,11 +5,10 @@
         //Cấu hình các thuộc tính để sort
         public enum OrderSort
         {
-            CreatedDayFrom,
-            CreatedDayTo,
+            CreatedAt,
             Status,
-            ReceiverName,
-            ReceiverPhone,
+            RevicerName,
+            RevicerPhone,
             UserId
         }
     }

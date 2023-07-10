@@ -31,5 +31,28 @@ namespace PreorderPlatform.Entity.Models
         public virtual User? User { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
+
+        public override string ToString()
+        {
+            // Customize the string representation of the Order instance
+            // Return the desired properties or values you want to print
+
+            return $"Order ID: {Id}, " +
+                   $"Created At: {CreatedAt}, " +
+                   $"Total Quantity: {TotalQuantity}, " +
+                   $"Total Price: {TotalPrice}, " +
+                   $"Is Deposited: {IsDeposited}, " +
+                   $"Status: {Status}, " +
+                   $"Receiver Name: {RevicerName}, " +
+                   $"Receiver Phone: {RevicerPhone}, " +
+                   $"Shipping Address: {ShippingAddress}, " +
+                   $"Shipping Province: {ShippingProvince}, " +
+                   $"Shipping Ward: {ShippingWard}, " +
+                   $"Shipping District: {ShippingDistrict}, " +
+                   $"Shipping Code: {ShippingCode}, " +
+                   $"Shipping Price: {ShippingPrice}, " +
+                   $"Shipping Status: {ShippingStatus}, " +
+                   $"User ID: {UserId}";
+        }
     }
 }

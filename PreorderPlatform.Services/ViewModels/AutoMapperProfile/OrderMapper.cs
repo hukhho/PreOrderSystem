@@ -2,6 +2,7 @@
 using PreorderPlatform.Service.ViewModels.Business.Request;
 using PreorderPlatform.Service.ViewModels.Business.Response;
 using PreorderPlatform.Service.ViewModels.Order;
+using PreorderPlatform.Service.ViewModels.Order.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
             configuration.CreateMap<PreorderPlatform.Entity.Models.Order, OrderCreateViewModel>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Order, OrderUpdateViewModel>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Order, OrderViewModel>().ReverseMap();
+            configuration.CreateMap<PreorderPlatform.Entity.Models.Order, OrderResponse>().ReverseMap();
         }
     }
 }

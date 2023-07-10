@@ -11,8 +11,8 @@ namespace PreorderPlatform.Service.ViewModels.Order.Request
         public DateTime? StartDateInRange { get; set; }
         public DateTime? EndDateInRange { get; set; }
         public string? Status { get; set; }
-        public string? ReceiverName { get; set; }
-        public string? ReceiverPhone { get; set; }
+        public string? RevicerName { get; set; }
+        public string? RevicerPhone { get; set; }
         public int? UserId { get; set; }
     }
 }
