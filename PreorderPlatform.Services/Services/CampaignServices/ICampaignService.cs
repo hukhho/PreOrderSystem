@@ -20,6 +20,6 @@ namespace PreorderPlatform.Service.Services.CampaignServices
         Task UpdateCampaignAsync(CampaignUpdateRequest model);
         //Get all campaign/filtered with sort&pagiantion
     
-        Task<IList<CampaignResponse>> GetAsync(PaginationParam<CampaignEnum.CampaignSort> paginationModel, CampaignSearchRequest filterModel);
+        Task<(IList<CampaignResponse> campaigns, int totalItems)> GetAsync(PaginationParam<CampaignEnum.CampaignSort> paginationModel, CampaignSearchRequest filterModel);
     }
 }

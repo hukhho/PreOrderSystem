@@ -16,6 +16,7 @@ using PreorderPlatform.Service;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc;
+using PreorderPlatform.API.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +50,14 @@ builder.Services.AddSwaggerGen(c =>
              new string[] { }
          }
      });
+
+    c.DescribeAllParametersInCamelCase();
+    // Use string representation for enums in Swagger
+    c.UseInlineDefinitionsForEnums();
+    c.SchemaFilter<EnumSchemaFilter>();
+    // Add the custom parameter filter
+    c.OperationFilter<DescriptionOperationFilter>();
+    //c.DescribeAllParametersInCamelCase();
 
     // If you have XML comments enabled, include the path here
     // var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

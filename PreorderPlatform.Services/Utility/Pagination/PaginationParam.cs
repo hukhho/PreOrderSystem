@@ -21,17 +21,16 @@ namespace PreorderPlatform.Service.Utility.Pagination
             set => _page = (value);
         }
 
-        [FromQuery(Name = "page-size")]
+        [FromQuery]
         [DefaultValue(PaginationConstant.DefaultPageSize)]
         public int PageSize { get; set; } = PaginationConstant.DefaultPageSize;
 
-        [Description("Parameter use for sorting result. Value: {propertyName}")]
-        [FromQuery(Name = "sort-key")]
+        [FromQuery]
         public TKey? SortKey { get; set; } = default(TKey?);
 
         [EnumDataType(typeof(PaginationConstant.OrderCriteria))]
         [JsonConverter(typeof(PaginationConstant.OrderCriteria))]
-        [FromQuery(Name = "sort-order")]
+        [FromQuery]
         public PaginationConstant.OrderCriteria SortOrder { get; set; }
     }
 }

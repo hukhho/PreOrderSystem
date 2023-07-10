@@ -118,7 +118,7 @@ namespace PreorderPlatform.Service.Services.CampaignServices
             }
         }
 
-        public async Task<IList<CampaignResponse>> GetAsync(PaginationParam<CampaignEnum.CampaignSort> paginationModel, CampaignSearchRequest filterModel)
+        public async Task<(IList<CampaignResponse> campaigns, int totalItems)> GetAsync(PaginationParam<CampaignEnum.CampaignSort> paginationModel, CampaignSearchRequest filterModel)
         {
             try
             {
@@ -129,6 +129,10 @@ namespace PreorderPlatform.Service.Services.CampaignServices
 
                 query = query.GetWithSearch(filterModel); //search
                 query = query.FilterByDateInRange(dateInRange, e => e.StartAt, e => e.EndAt); // Filter by date range
+
+                // Calculate the total number of items before applying pagination
+                int totalItems = await query.CountAsync();
+
                 query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder) //sort
                             .GetWithPaging(paginationModel.Page, paginationModel.PageSize);  // pagination
 
@@ -137,7 +141,7 @@ namespace PreorderPlatform.Service.Services.CampaignServices
                 // Map the campaignList to a list of CampaignResponse objects
                 var result = _mapper.Map<List<CampaignResponse>>(campaignList);
 
-                return result;
+                return (result, totalItems);
             }
             catch (Exception ex)
             {
@@ -145,7 +149,6 @@ namespace PreorderPlatform.Service.Services.CampaignServices
                 throw new ServiceException("An error occurred while fetching campaigns.", ex);
             }
         }
-
 
     }
 }

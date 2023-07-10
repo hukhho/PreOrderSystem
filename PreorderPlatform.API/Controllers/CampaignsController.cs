@@ -26,23 +26,21 @@ namespace PreorderPlatform.API.Controllers
         [HttpGet]
         //localhost/filterModelRequest
         public async Task<IActionResult> GetAllCampaigns(
-              [FromQuery] PaginationParam<CampaignEnum.CampaignSort> paginationModel,
-              [FromQuery] CampaignSearchRequest searchModel
-          )
+            [FromQuery] PaginationParam<CampaignEnum.CampaignSort> paginationModel,
+            [FromQuery] CampaignSearchRequest searchModel
+        )
         {
             try
             {
                 var start = DateTime.Now;
-                var campaigns = await _campaignService.GetAsync(paginationModel, searchModel);
+                var (campaigns, totalItems) = await _campaignService.GetAsync(paginationModel, searchModel);
                 Console.Write(DateTime.Now.Subtract(start).Milliseconds);
-
-                //int totalPages = await _campaignService.Get(paginationModel);
 
                 return Ok(new ApiResponse<IList<CampaignResponse>>(
                     campaigns,
                     "Campaigns fetched successfully.",
                     true,
-                    new PaginationInfo(campaigns.Count, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(campaigns.Count / (double)paginationModel.PageSize))
+                    new PaginationInfo(totalItems, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(totalItems / (double)paginationModel.PageSize))
                 ));
             }
             catch (Exception ex)
