@@ -8,7 +8,5 @@ namespace PreorderPlatform.Entity.Repositories.CategoryRepositories
         {
 
         }
-
-        // Add any additional methods specific to CategoryRepository here...
     }
 }

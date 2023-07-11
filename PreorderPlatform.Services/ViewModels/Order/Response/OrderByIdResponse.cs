@@ -1,16 +1,16 @@
-﻿using System;
+﻿using PreorderPlatform.Service.ViewModels.OrderItem.Response;
+using PreorderPlatform.Service.ViewModels.Payment.Response;
+using PreorderPlatform.Service.ViewModels.User.Response;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace PreorderPlatform.Entity.Models
+namespace PreorderPlatform.Service.ViewModels.Order.Response
 {
-    public partial class Order
+    public class OrderByIdResponse
     {
-        public Order()
-        {
-            OrderItems = new HashSet<OrderItem>();
-            Payments = new HashSet<Payment>();
-        }
-
         public int Id { get; set; }
         public DateTime? CreatedAt { get; set; }
         public int? TotalQuantity { get; set; }
@@ -26,10 +26,9 @@ namespace PreorderPlatform.Entity.Models
         public string? ShippingCode { get; set; }
         public decimal? ShippingPrice { get; set; }
         public string? ShippingStatus { get; set; }
-        public int? UserId { get; set; }
 
-        public virtual User? User { get; set; }
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
-        public virtual ICollection<Payment> Payments { get; set; }
+        public virtual UserResponse? User { get; set; }
+        public virtual ICollection<OrderItemResponse> OrderItems { get; set; }
+        public virtual ICollection<PaymentResponse> Payments { get; set; }
     }
 }

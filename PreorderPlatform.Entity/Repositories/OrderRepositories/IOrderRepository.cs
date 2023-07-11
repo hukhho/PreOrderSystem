@@ -9,5 +9,6 @@ namespace PreorderPlatform.Entity.Repositories.OrderRepositories
 {
     public interface IOrderRepository : IRepositoryBase<Order>
     {
+        Task<Order> GetOrderByIdAsync(int id);
     }
 }

@@ -20,6 +20,7 @@ namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
             configuration.CreateMap<PreorderPlatform.Entity.Models.Order, OrderUpdateViewModel>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Order, OrderViewModel>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Order, OrderResponse>().ReverseMap();
+            configuration.CreateMap<PreorderPlatform.Entity.Models.Order, OrderByIdResponse>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Order, OrderSearchRequest>().ReverseMap();
 
         }

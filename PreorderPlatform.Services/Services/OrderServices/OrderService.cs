@@ -40,18 +40,18 @@ namespace PreorderPlatform.Service.Services.OrderServices
             }
         }
 
-        public async Task<OrderViewModel> GetOrderByIdAsync(int id)
+        public async Task<OrderByIdResponse> GetOrderByIdAsync(int id)
         {
             try
             {
-                var order = await _orderRepository.GetByIdAsync(id);
+                var order = await _orderRepository.GetOrderByIdAsync(id);
 
                 if (order == null)
                 {
                     throw new NotFoundException($"Order with ID {id} was not found.");
                 }
 
-                return _mapper.Map<OrderViewModel>(order);
+                return _mapper.Map<OrderByIdResponse>(order);
             }
             catch (NotFoundException)
             {

@@ -3,6 +3,7 @@ using PreorderPlatform.Service.ViewModels.Business.Request;
 using PreorderPlatform.Service.ViewModels.Business.Response;
 using PreorderPlatform.Service.ViewModels.Order;
 using PreorderPlatform.Service.ViewModels.OrderItem;
+using PreorderPlatform.Service.ViewModels.OrderItem.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
             configuration.CreateMap<PreorderPlatform.Entity.Models.OrderItem, OrderItemCreateViewModel>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.OrderItem, OrderItemUpdateViewModel>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.OrderItem, OrderItemViewModel>().ReverseMap();
+            configuration.CreateMap<PreorderPlatform.Entity.Models.OrderItem, OrderItemResponse>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.OrderItem, OrderItemSearchRequest>().ReverseMap();
 
         }

@@ -70,7 +70,7 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 var order = await _orderService.GetOrderByIdAsync(id);
-                return Ok(new ApiResponse<OrderViewModel>(order, "Order fetched successfully.", true, null));
+                return Ok(new ApiResponse<OrderByIdResponse>(order, "Order fetched successfully.", true, null));
             }
             catch (NotFoundException ex)
             {

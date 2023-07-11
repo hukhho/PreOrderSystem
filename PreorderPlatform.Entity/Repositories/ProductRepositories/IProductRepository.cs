@@ -10,5 +10,6 @@ namespace PreorderPlatform.Entity.Repositories.ProductRepositories
     public interface IProductRepository : IRepositoryBase<Product>
     {
         Task<IEnumerable<Product>> GetAllProductsWithCategoryAsync();
+        Task<Product> GetProductByIdAsync(int id);
     }
 }

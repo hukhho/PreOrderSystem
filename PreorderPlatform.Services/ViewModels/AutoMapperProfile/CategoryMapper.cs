@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PreorderPlatform.Service.ViewModels.Business.Request;
 using PreorderPlatform.Service.ViewModels.Business.Response;
+using PreorderPlatform.Service.ViewModels.category.Response;
 using PreorderPlatform.Service.ViewModels.Category;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
             configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategoryCreateViewModel>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategoryUpdateViewModel>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategoryViewModel>().ReverseMap();
+            configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategoryResponse>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategorySearchRequest>().ReverseMap();
 
         }

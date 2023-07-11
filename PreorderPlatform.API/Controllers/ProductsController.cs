@@ -57,7 +57,7 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 var product = await _productService.GetProductByIdAsync(id);
-                return Ok(new ApiResponse<ProductResponse>(product, "Product fetched successfully.", true, null));
+                return Ok(new ApiResponse<ProductByIdResponse>(product, "Product fetched successfully.", true, null));
             }
             catch (NotFoundException ex)
             {

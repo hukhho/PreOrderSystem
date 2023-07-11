@@ -54,18 +54,18 @@ namespace PreorderPlatform.Service.Services.ProductServices
             }
         }
 
-        public async Task<ProductResponse> GetProductByIdAsync(int id)
+        public async Task<ProductByIdResponse> GetProductByIdAsync(int id)
         {
             try
             {
-                var product = await _productRepository.GetByIdAsync(id);
+                var product = await _productRepository.GetProductByIdAsync(id);
 
                 if (product == null)
                 {
                     throw new NotFoundException($"Product with ID {id} was not found.");
                 }
 
-                return _mapper.Map<ProductResponse>(product);
+                return _mapper.Map<ProductByIdResponse>(product);
             }
             catch (NotFoundException)
             {

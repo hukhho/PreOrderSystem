@@ -20,6 +20,7 @@ namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
             configuration.CreateMap<PreorderPlatform.Entity.Models.Product, ProductResponse>()
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category != null ? src.Category.Name : null))
                 .ReverseMap();
+            configuration.CreateMap<PreorderPlatform.Entity.Models.Product, ProductByIdResponse>();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Product, ProductSearchRequest>().ReverseMap();
 
         }
