@@ -1,4 +1,5 @@
-﻿using PreorderPlatform.Entity.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PreorderPlatform.Entity.Models;
 
 namespace PreorderPlatform.Entity.Repositories.CampaignRepositories
 {
@@ -16,5 +17,20 @@ namespace PreorderPlatform.Entity.Repositories.CampaignRepositories
 
            // return await GetAllWithIncludeLoadRelatedEntitiesAsync(u => true);
         }
+
+
+        public async Task<Campaign> GetCampaignWithDetailsAsync(int id)
+        {
+            var campaign = await GetWithIncludeAsync(
+             u => u.Id == id,
+             u => u.Include(c => c.Business),
+             u => u.Include(c => c.Owner),
+             u => u.Include(c => c.CampaignDetails),
+             u => u.Include(c => c.Product).ThenInclude(cd => cd.Category));
+
+            return campaign;
+        }
+
+
     }
 }

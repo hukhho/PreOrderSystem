@@ -41,30 +41,30 @@ namespace PreorderPlatform.Service.Services.CampaignServices
         }
 
         //GetAllCampaignsWithOwnerAndBusinessAndCampaignDetailsAsync
-        public async Task<List<CampaignResponse>> GetAllCampaignsWithOwnerAndBusinessAndCampaignDetailsAsync()
+        public async Task<List<CampaignRepository>> GetAllCampaignsWithOwnerAndBusinessAndCampaignDetailsAsync()
         {
             try
             {
                 var campaigns = await _campaignRepository.GetAllCampaignsWithOwnerAndBusinessAndCampaignDetailsAsync();
-                return _mapper.Map<List<CampaignResponse>>(campaigns);
+                return _mapper.Map<List<CampaignRepository>>(campaigns);
             }
             catch (Exception ex)
             {
                 throw new ServiceException("An error occurred while fetching campaigns.", ex);
             }
         }
-        public async Task<CampaignResponse> GetCampaignByIdAsync(int id)
+        public async Task<CampaignDetailResponse> GetCampaignByIdAsync(int id)
         {
             try
             {
-                var campaign = await _campaignRepository.GetByIdAsync(id);
+                var campaign = await _campaignRepository.GetCampaignWithDetailsAsync(id);
 
                 if (campaign == null)
                 {
                     throw new NotFoundException($"Campaign with ID {id} was not found.");
                 }
 
-                return _mapper.Map<CampaignResponse>(campaign);
+                return _mapper.Map<CampaignDetailResponse>(campaign);
             }
             catch (NotFoundException)
             {

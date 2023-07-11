@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace PreorderPlatform.Entity.Repositories
 {
@@ -57,17 +58,29 @@ namespace PreorderPlatform.Entity.Repositories
             return await _dbSet.Where(expression).ToListAsync();
         }
 
-        public async Task<T> GetWithIncludeAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        public async Task<T> GetWithIncludeAsync(Expression<Func<T, bool>> predicate, params Func<IQueryable<T>, IIncludableQueryable<T, object>>[] includeExpressions)
         {
             IQueryable<T> query = _dbSet;
 
-            foreach (var include in includes)
+            foreach (var includeExpression in includeExpressions)
             {
-                query = query.Include(include);
+                query = includeExpression(query);
             }
 
             return await query.FirstOrDefaultAsync(predicate);
         }
+
+        //public async Task<T> GetWithIncludeAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        //{
+        //    IQueryable<T> query = _dbSet;
+
+        //    foreach (var include in includes)
+        //    {
+        //        query = query.Include(include);
+        //    }
+
+        //    return await query.FirstOrDefaultAsync(predicate);
+        //}
 
         public async Task CreateAsync(T entity)
         {

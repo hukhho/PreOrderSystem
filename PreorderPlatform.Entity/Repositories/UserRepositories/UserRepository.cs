@@ -50,7 +50,7 @@ namespace PreorderPlatform.Entity.Repositories.UserRepository
 
         public async Task<User> GetUserWithRoleAndBusinessByIdAsync(int id)
         {
-            return await GetWithIncludeAsync(u => u.Id == id, u => u.Role, u => u.Business);
+            return await GetWithIncludeAsync(u => u.Id == id, u => u.Include(c => c.Role), u => u.Include(c => c.Business));
         }
 
         public async Task<IEnumerable<User>> GetAllUsersWithRoleAndBusinessAsync()

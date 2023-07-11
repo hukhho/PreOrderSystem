@@ -56,7 +56,7 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 var campaign = await _campaignService.GetCampaignByIdAsync(id);
-                return Ok(new ApiResponse<CampaignResponse>(campaign, "Campaign fetched successfully.", true, null));
+                return Ok(new ApiResponse<CampaignDetailResponse>(campaign, "Campaign fetched successfully.", true, null));
             }
             catch (NotFoundException ex)
             {
