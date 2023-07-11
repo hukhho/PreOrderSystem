@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PreorderPlatform.Entity.Models;
 using PreorderPlatform.Entity.Repositories.CategoryRepositories;
+using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.Exceptions;
 using PreorderPlatform.Service.Services.CategoryServices;
+using PreorderPlatform.Service.Utility;
+using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.ViewModels.Category;
 using System;
 using System.Collections.Generic;
@@ -100,5 +104,35 @@ namespace PreorderPlatform.Service.Services.CategoryServices
                 throw new ServiceException($"An error occurred while deleting category with ID {id}.", ex);
             }
         }
+
+
+        public async Task<(IList<CategoryViewModel> categories, int totalItems)> GetAsync(PaginationParam<CategoryEnum.CategorySort> paginationModel, CategorySearchRequest filterModel)
+        {
+            try
+            {
+                var query = _categoryRepository.Table;
+
+                query = query.GetWithSearch(filterModel); //search
+
+                // Calculate the total number of items before applying pagination
+                int totalItems = await query.CountAsync();
+
+                query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder) //sort
+                            .GetWithPaging(paginationModel.Page, paginationModel.PageSize);  // pagination
+
+                var categoryList = await query.ToListAsync(); // Call ToListAsync here
+
+                // Map the categoryList to a list of CategoryViewModel objects
+                var result = _mapper.Map<List<CategoryViewModel>>(categoryList);
+
+                return (result, totalItems);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception " + ex.Message);
+                throw new ServiceException("An error occurred while fetching categories.", ex);
+            }
+        }
+        
     }
 }

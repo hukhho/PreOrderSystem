@@ -6,6 +6,10 @@ using PreorderPlatform.Service.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PreorderPlatform.Service.Utility;
+using Microsoft.EntityFrameworkCore;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.Enum;
 
 namespace PreorderPlatform.Service.Services.OrderItemServices
 {
@@ -97,5 +101,33 @@ namespace PreorderPlatform.Service.Services.OrderItemServices
                 throw new ServiceException($"An error occurred while deleting order item with ID {id}.", ex);
             }
         }
+        public async Task<(IList<OrderItemViewModel> orderItems, int totalItems)> GetAsync(PaginationParam<OrderItemEnum.OrderItemSort> paginationModel, OrderItemSearchRequest filterModel)
+        {
+            try
+            {
+                var query = _orderItemRepository.Table;
+
+                query = query.GetWithSearch(filterModel); //search
+
+                // Calculate the total number of items before applying pagination
+                int totalItems = await query.CountAsync();
+
+                query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder) //sort
+                            .GetWithPaging(paginationModel.Page, paginationModel.PageSize);  // pagination
+
+                var orderItemList = await query.ToListAsync(); // Call ToListAsync here
+
+                // Map the orderItemList to a list of OrderItemViewModel objects
+                var result = _mapper.Map<List<OrderItemViewModel>>(orderItemList);
+
+                return (result, totalItems);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception " + ex.Message);
+                throw new ServiceException("An error occurred while fetching order items.", ex);
+            }
+        }
+        
     }
 }

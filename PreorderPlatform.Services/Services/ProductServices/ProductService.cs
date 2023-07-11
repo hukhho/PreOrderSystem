@@ -9,6 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using PreorderPlatform.Service.ViewModels.Product.Request;
 using PreorderPlatform.Service.ViewModels.Product.Response;
+using PreorderPlatform.Service.Utility;
+using Microsoft.EntityFrameworkCore;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Services.Enum;
 
 namespace PreorderPlatform.Service.Services.ProductServices
 {
@@ -114,5 +118,35 @@ namespace PreorderPlatform.Service.Services.ProductServices
                 throw new ServiceException($"An error occurred while deleting product with ID {id}.", ex);
             }
         }
+
+        public async Task<(IList<ProductResponse> products, int totalItems)> GetAsync(PaginationParam<ProductEnum.ProductSort> paginationModel, ProductSearchRequest filterModel)
+        {
+            try
+            {
+                var query = _productRepository.Table;
+
+                query = query.GetWithSearch(filterModel); //search
+
+                // Calculate the total number of items before applying pagination
+                int totalItems = await query.CountAsync();
+
+                query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder) //sort
+                            .GetWithPaging(paginationModel.Page, paginationModel.PageSize);  // pagination
+
+                var productList = await query.ToListAsync(); // Call ToListAsync here
+
+                // Map the productList to a list of ProductResponse objects
+                var result = _mapper.Map<List<ProductResponse>>(productList);
+
+                return (result, totalItems);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception " + ex.Message);
+                throw new ServiceException("An error occurred while fetching products.", ex);
+            }
+        }
+        
+
     }
 }

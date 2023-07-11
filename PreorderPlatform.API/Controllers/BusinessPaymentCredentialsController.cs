@@ -8,6 +8,8 @@ using PreorderPlatform.Service.ViewModels.ApiResponse;
 using PreorderPlatform.Service.Exceptions;
 using PreorderPlatform.Service.ViewModels.BusinessPaymentCredential;
 using PreorderPlatform.Service.Services.BusinessPaymentCredentialServices;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Services.Enum;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -25,12 +27,23 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllBusinessPaymentCredentials()
+        public async Task<IActionResult> GetAllBusinessPaymentCredentials(
+            [FromQuery] PaginationParam<BusinessPaymentCredentialEnum.BusinessPaymentCredentialSort> paginationModel,
+            [FromQuery] BusinessPaymentCredentialSearchRequest searchModel
+        )
         {
             try
             {
-                var businessPaymentCredentialsList = await _businessPaymentCredentialService.GetBusinessPaymentCredentialsAsync();
-                return Ok(new ApiResponse<List<BusinessPaymentCredentialViewModel>>(businessPaymentCredentialsList, "Business payment credentials fetched successfully.", true, null));
+                var start = DateTime.Now;
+                var (businessPaymentCredentials, totalItems) = await _businessPaymentCredentialService.GetAsync(paginationModel, searchModel);
+                Console.Write(DateTime.Now.Subtract(start).Milliseconds);
+
+                return Ok(new ApiResponse<IList<BusinessPaymentCredentialViewModel>>(
+                    businessPaymentCredentials,
+                    "Business payment credentials fetched successfully.",
+                    true,
+                    new PaginationInfo(totalItems, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(totalItems / (double)paginationModel.PageSize))
+                ));
             }
             catch (Exception ex)
             {

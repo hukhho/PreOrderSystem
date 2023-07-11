@@ -9,6 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using PreorderPlatform.Service.ViewModels.CampaignPrice.Request;
 using PreorderPlatform.Service.ViewModels.CampaignPrice.Response;
+using PreorderPlatform.Service.ViewModels.Campaign.Response;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.Utility;
+using Microsoft.EntityFrameworkCore;
 
 namespace PreorderPlatform.Service.Services.CampaignDetailServices
 {
@@ -114,5 +119,41 @@ namespace PreorderPlatform.Service.Services.CampaignDetailServices
                 throw new ServiceException($"An error occurred while deleting campaign detail with ID {id}.", ex);
             }
         }
+        
+
+        public async Task<(IList<CampaignPriceResponse> campaigns, int totalItems)> GetAsync(PaginationParam<CampaignDetailEnum.CampaignDetailSort> paginationModel, CampaignDetailSearchRequest filterModel)
+        {
+            try
+            {
+
+                var query = _campaignDetailRepository.Table;
+
+                query = query.GetWithSearch(filterModel); //search
+
+                // Calculate the total number of items before applying pagination
+                int totalItems = await query.CountAsync();
+
+                query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder) //sort
+                            .GetWithPaging(paginationModel.Page, paginationModel.PageSize);  // pagination
+
+                var campaignList = await query.ToListAsync(); // Call ToListAsync here
+
+                // Map the campaignList to a list of CampaignPriceResponse objects
+                var result = _mapper.Map<List<CampaignPriceResponse>>(campaignList);
+
+                return (result, totalItems);
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception " + ex.Message);
+                throw new ServiceException("An error occurred while fetching campaign details.", ex);
+            }
+        }
+        
+
     }
+
+
+
 }

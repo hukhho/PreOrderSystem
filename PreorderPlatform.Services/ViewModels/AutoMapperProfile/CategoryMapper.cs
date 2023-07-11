@@ -17,6 +17,8 @@ namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
             configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategoryCreateViewModel>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategoryUpdateViewModel>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategoryViewModel>().ReverseMap();
+            configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategorySearchRequest>().ReverseMap();
+
         }
     }
 }

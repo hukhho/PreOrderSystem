@@ -1,4 +1,6 @@
 ﻿using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.ViewModels.User.Request;
 using PreorderPlatform.Service.ViewModels.User.Response;
 using System;
@@ -18,5 +20,7 @@ namespace PreorderPlatform.Service.Services.UserServices
         Task<List<UserResponse>> GetUsersAsync();
         Task<UserResponse> GetUserWithRoleAndBusinessByIdAsync(int id);
         Task UpdateUserAsync(UserUpdateRequest model);
+        Task<(IList<UserResponse> users, int totalItems)> GetAsync(PaginationParam<UserEnum.UserSort> paginationModel, UserSearchRequest filterModel);
+        
     }
 }

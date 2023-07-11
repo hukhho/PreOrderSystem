@@ -6,6 +6,10 @@ using PreorderPlatform.Service.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PreorderPlatform.Service.Utility;
+using Microsoft.EntityFrameworkCore;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.Enum;
 
 namespace PreorderPlatform.Service.Services.PaymentServices
 {
@@ -97,5 +101,34 @@ namespace PreorderPlatform.Service.Services.PaymentServices
                 throw new ServiceException($"An error occurred while deleting payment with ID {id}.", ex);
             }
         }
+
+        public async Task<(IList<PaymentViewModel> payments, int totalItems)> GetAsync(PaginationParam<PaymentEnum.PaymentSort> paginationModel, PaymentSearchRequest filterModel)
+        {
+            try
+            {
+                var query = _paymentRepository.Table;
+
+                query = query.GetWithSearch(filterModel); //search
+
+                // Calculate the total number of items before applying pagination
+                int totalItems = await query.CountAsync();
+
+                query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder) //sort
+                            .GetWithPaging(paginationModel.Page, paginationModel.PageSize);  // pagination
+
+                var paymentList = await query.ToListAsync(); // Call ToListAsync here
+
+                // Map the paymentList to a list of PaymentViewModel objects
+                var result = _mapper.Map<List<PaymentViewModel>>(paymentList);
+
+                return (result, totalItems);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception " + ex.Message);
+                throw new ServiceException("An error occurred while fetching payments.", ex);
+            }
+        }
+        
     }
 }

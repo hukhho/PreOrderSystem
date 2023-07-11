@@ -5,6 +5,7 @@
         //Cấu hình các thuộc tính để sort
         public enum OrderSort
         {
+            Id,
             CreatedAt,
             Status,
             RevicerName,

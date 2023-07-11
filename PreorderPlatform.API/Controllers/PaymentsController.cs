@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using PreorderPlatform.Service.Services.PaymentServices;
 using PreorderPlatform.Service.ViewModels.Payment;
 using PreorderPlatform.Service.Exceptions;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.ViewModels.ApiResponse;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -21,12 +24,23 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPayments()
+        public async Task<IActionResult> GetPayments(
+            [FromQuery] PaginationParam<PaymentEnum.PaymentSort> paginationModel,
+            [FromQuery] PaymentSearchRequest searchModel
+        )
         {
             try
             {
-                var payments = await _paymentService.GetPaymentsAsync();
-                return Ok(payments);
+                var start = DateTime.Now;
+                var (payments, totalItems) = await _paymentService.GetAsync(paginationModel, searchModel);
+                Console.Write(DateTime.Now.Subtract(start).Milliseconds);
+
+                return Ok(new ApiResponse<IList<PaymentViewModel>>(
+                    payments,
+                    "Payments fetched successfully.",
+                    true,
+                    new PaginationInfo(totalItems, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(totalItems / (double)paginationModel.PageSize))
+                ));
             }
             catch (Exception ex)
             {

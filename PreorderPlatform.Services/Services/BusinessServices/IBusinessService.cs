@@ -1,5 +1,8 @@
-﻿using PreorderPlatform.Service.ViewModels.Business.Request;
+﻿using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.ViewModels.Business.Request;
 using PreorderPlatform.Service.ViewModels.Business.Response;
+using PreorderPlatform.Services.Enum;
+using PreorderPlatform.Services.ViewModels.Business.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +18,6 @@ namespace PreorderPlatform.Service.Services.BusinessServices
         Task<BusinessResponse> GetBusinessByIdAsync(int id);
         Task<List<BusinessResponse>> GetBusinessesAsync();
         Task UpdateBusinessAsync(BusinessUpdateRequest model);
+        Task<(IList<BusinessResponse> businesses, int totalItems)> GetAsync(PaginationParam<BusinessEnum.BusinessSort> paginationModel, BusinessSearchRequest filterModel);
     }
 }

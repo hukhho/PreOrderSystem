@@ -47,15 +47,15 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 var start = DateTime.Now;
-                var orders = await _orderService.GetAsync(paginationModel, searchModel);
+                var (orders, totalItems) = await _orderService.GetAsync(paginationModel, searchModel);
                 Console.Write(DateTime.Now.Subtract(start).Milliseconds);
 
                 return Ok(new ApiResponse<IList<OrderResponse>>(
                     orders,
                     "Orders fetched successfully.",
                     true,
-                    new PaginationInfo(orders.Count, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(orders.Count / (double)paginationModel.PageSize))
-                    ));
+                    new PaginationInfo(totalItems, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(totalItems / (double)paginationModel.PageSize))
+                ));
             }
             catch (Exception ex)
             {
@@ -63,7 +63,7 @@ namespace PreorderPlatform.API.Controllers
                     new ApiResponse<object>(null, $"Error fetching orders: {ex.Message}", false, null));
             }
         }
-
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrderById(int id)
         {

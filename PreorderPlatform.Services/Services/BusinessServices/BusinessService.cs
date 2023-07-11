@@ -9,6 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using PreorderPlatform.Service.ViewModels.Business.Request;
 using PreorderPlatform.Service.ViewModels.Business.Response;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Services.Enum;
+using PreorderPlatform.Services.ViewModels.Business.Request;
+using PreorderPlatform.Service.Utility;
+using Microsoft.EntityFrameworkCore;
 
 namespace PreorderPlatform.Service.Services.BusinessServices
 {
@@ -100,5 +105,37 @@ namespace PreorderPlatform.Service.Services.BusinessServices
                 throw new ServiceException($"An error occurred while deleting business with ID {id}.", ex);
             }
         }
+
+
+        public async Task<(IList<BusinessResponse> businesses, int totalItems)> GetAsync(PaginationParam<BusinessEnum.BusinessSort> paginationModel, BusinessSearchRequest filterModel)
+        {
+            try
+            {
+                var query = _businessRepository.Table;
+
+                query = query.GetWithSearch(filterModel); //search
+                
+
+                // Calculate the total number of items before applying pagination
+                int totalItems = await query.CountAsync();
+
+                query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder) //sort
+                            .GetWithPaging(paginationModel.Page, paginationModel.PageSize);  // pagination
+
+                var businessList = await query.ToListAsync(); // Call ToListAsync here
+
+                // Map the businessList to a list of BusinessResponse objects
+                var result = _mapper.Map<List<BusinessResponse>>(businessList);
+
+                return (result, totalItems);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception " + ex.Message);
+                throw new ServiceException("An error occurred while fetching businesses.", ex);
+            }
+        }
+        
+
     }
 }

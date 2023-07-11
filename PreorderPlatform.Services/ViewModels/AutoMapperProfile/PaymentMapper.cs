@@ -17,6 +17,8 @@ namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
             configuration.CreateMap<PreorderPlatform.Entity.Models.Payment, PaymentCreateViewModel>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Payment, PaymentUpdateViewModel>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Payment, PaymentViewModel>().ReverseMap();
+            configuration.CreateMap<PreorderPlatform.Entity.Models.Payment, PaymentSearchRequest>().ReverseMap();
+
         }
     }
 }

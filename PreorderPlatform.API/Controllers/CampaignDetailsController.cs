@@ -9,6 +9,9 @@ using PreorderPlatform.Service.Exceptions;
 using PreorderPlatform.Service.Services.CampaignDetailServices;
 using PreorderPlatform.Service.ViewModels.CampaignPrice.Request;
 using PreorderPlatform.Service.ViewModels.CampaignPrice.Response;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.ViewModels.Campaign.Response;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -26,12 +29,23 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCampaignDetails()
+        public async Task<IActionResult> GetAllCampaignDetails(
+            [FromQuery] PaginationParam<CampaignDetailEnum.CampaignDetailSort> paginationModel,
+            [FromQuery] CampaignDetailSearchRequest searchModel
+        )
         {
             try
             {
-                var campaignDetailsList = await _campaignDetailService.GetAllCampainDetailsWithProductAsync();
-                return Ok(new ApiResponse<List<CampaignPriceResponse>>(campaignDetailsList, "Campaign details fetched successfully.", true, null));
+                var start = DateTime.Now;
+                var (campaignDetailsList, totalItems) = await _campaignDetailService.GetAsync(paginationModel, searchModel);
+                Console.Write(DateTime.Now.Subtract(start).Milliseconds);
+
+                return Ok(new ApiResponse<IList<CampaignPriceResponse>>(
+                    campaignDetailsList,
+                    "Campaign details fetched successfully.",
+                    true,
+                    new PaginationInfo(totalItems, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(totalItems / (double)paginationModel.PageSize))
+                ));
             }
             catch (Exception ex)
             {

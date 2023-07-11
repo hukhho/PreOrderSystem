@@ -8,6 +8,8 @@ using PreorderPlatform.Service.Services.OrderItemServices;
 using PreorderPlatform.Service.ViewModels.ApiResponse;
 using PreorderPlatform.Service.ViewModels.OrderItem;
 using PreorderPlatform.Service.Exceptions;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.Enum;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -25,12 +27,23 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllOrderItems()
+        public async Task<IActionResult> GetAllOrderItems(
+            [FromQuery] PaginationParam<OrderItemEnum.OrderItemSort> paginationModel,
+            [FromQuery] OrderItemSearchRequest searchModel
+        )
         {
             try
             {
-                var orderItems = await _orderItemService.GetOrderItemsAsync();
-                return Ok(new ApiResponse<List<OrderItemViewModel>>(orderItems, "Order items fetched successfully.", true, null));
+                var start = DateTime.Now;
+                var (orderItems, totalItems) = await _orderItemService.GetAsync(paginationModel, searchModel);
+                Console.Write(DateTime.Now.Subtract(start).Milliseconds);
+
+                return Ok(new ApiResponse<IList<OrderItemViewModel>>(
+                    orderItems,
+                    "Order items fetched successfully.",
+                    true,
+                    new PaginationInfo(totalItems, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(totalItems / (double)paginationModel.PageSize))
+                ));
             }
             catch (Exception ex)
             {

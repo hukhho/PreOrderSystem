@@ -8,6 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PreorderPlatform.Service.Utility;
+using Microsoft.EntityFrameworkCore;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Services.Enum;
 
 namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
 {
@@ -99,5 +103,34 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
                 throw new ServiceException($"An error occurred while deleting business payment credential with ID {id}.", ex);
             }
         }
+
+        public async Task<(IList<BusinessPaymentCredentialViewModel> businessPaymentCredentials, int totalItems)> GetAsync(PaginationParam<BusinessPaymentCredentialEnum.BusinessPaymentCredentialSort> paginationModel, BusinessPaymentCredentialSearchRequest filterModel)
+        {
+            try
+            {
+                var query = _businessPaymentCredentialRepository.Table;
+
+                query = query.GetWithSearch(filterModel); //search
+
+                // Calculate the total number of items before applying pagination
+                int totalItems = await query.CountAsync();
+
+                query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder) //sort
+                            .GetWithPaging(paginationModel.Page, paginationModel.PageSize);  // pagination
+
+                var businessPaymentCredentialList = await query.ToListAsync(); // Call ToListAsync here
+
+                // Map the businessPaymentCredentialList to a list of BusinessPaymentCredentialViewModel objects
+                var result = _mapper.Map<List<BusinessPaymentCredentialViewModel>>(businessPaymentCredentialList);
+
+                return (result, totalItems);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception " + ex.Message);
+                throw new ServiceException("An error occurred while fetching business payment credentials.", ex);
+            }
+        }
+        
     }
 }

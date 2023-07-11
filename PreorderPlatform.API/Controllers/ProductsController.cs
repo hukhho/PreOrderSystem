@@ -9,6 +9,8 @@ using PreorderPlatform.Service.Services.Exceptions;
 using PreorderPlatform.Service.Exceptions;
 using PreorderPlatform.Service.ViewModels.Product.Request;
 using PreorderPlatform.Service.ViewModels.Product.Response;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Services.Enum;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -22,14 +24,25 @@ namespace PreorderPlatform.API.Controllers
         {
             _productService = productService;
         }
-
+        
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts(
+            [FromQuery] PaginationParam<ProductEnum.ProductSort> paginationModel,
+            [FromQuery] ProductSearchRequest searchModel
+        )
         {
             try
             {
-                var products = await _productService.GetAllProductsWithCategoryAsync();
-                return Ok(new ApiResponse<List<ProductResponse>>(products, "Products fetched successfully.", true, null));
+                var start = DateTime.Now;
+                var (products, totalItems) = await _productService.GetAsync(paginationModel, searchModel);
+                Console.Write(DateTime.Now.Subtract(start).Milliseconds);
+
+                return Ok(new ApiResponse<IList<ProductResponse>>(
+                    products,
+                    "Products fetched successfully.",
+                    true,
+                    new PaginationInfo(totalItems, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(totalItems / (double)paginationModel.PageSize))
+                ));
             }
             catch (Exception ex)
             {

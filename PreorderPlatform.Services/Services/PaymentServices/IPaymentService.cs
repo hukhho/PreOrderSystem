@@ -1,4 +1,6 @@
-﻿using PreorderPlatform.Service.ViewModels.Payment;
+﻿using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.ViewModels.Payment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +16,6 @@ namespace PreorderPlatform.Service.Services.PaymentServices
         Task<PaymentViewModel> GetPaymentByIdAsync(int id);
         Task<List<PaymentViewModel>> GetPaymentsAsync();
         Task UpdatePaymentAsync(PaymentUpdateViewModel model);
+        Task<(IList<PaymentViewModel> payments, int totalItems)> GetAsync(PaginationParam<PaymentEnum.PaymentSort> paginationModel, PaymentSearchRequest filterModel); 
     }
 }

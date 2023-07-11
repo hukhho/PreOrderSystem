@@ -105,7 +105,7 @@ namespace PreorderPlatform.Service.Services.OrderServices
             }
         }
 
-        async Task<IList<OrderResponse>> IOrderService.GetAsync(PaginationParam<OrderEnum.OrderSort> paginationModel, OrderSearchRequest filterModel)
+        public async Task<(IList<OrderResponse> orders, int totalItems)> GetAsync(PaginationParam<OrderEnum.OrderSort> paginationModel, OrderSearchRequest filterModel)
         {
             try
             {
@@ -117,17 +117,21 @@ namespace PreorderPlatform.Service.Services.OrderServices
                 var query = _orderRepository.Table;
 
                 query = query.GetWithSearch(filterModel);
-
-
                 query = query.FilterOrderByDate(o => o.CreatedAt, startDate, endDate);
+                // Calculate the total number of items before applying pagination
+                int totalItems = await query.CountAsync();
+
+             
                 query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder)
                     .GetWithPaging(paginationModel.Page, paginationModel.PageSize);
+
 
                 var orderList = await query.ToListAsync();
                 var res = _mapper.Map<List<OrderResponse>>(orderList);
 
-                return res;
-            } catch (Exception e)
+                return (res, totalItems);
+            }
+            catch (Exception e)
             {
                 Console.WriteLine("Exception: " + e.Message);
                 throw new ServiceException("An error occurred while fetching orders.", e);

@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PreorderPlatform.Service.ViewModels.Category;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.Enum;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -22,12 +24,23 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCategories()
+        public async Task<IActionResult> GetAllCategories(
+            [FromQuery] PaginationParam<CategoryEnum.CategorySort> paginationModel,
+            [FromQuery] CategorySearchRequest searchModel
+        )
         {
             try
             {
-                var categories = await _categoryService.GetCategoriesAsync();
-                return Ok(new ApiResponse<List<CategoryViewModel>>(categories, "Categories fetched successfully.", true, null));
+                var start = DateTime.Now;
+                var (categories, totalItems) = await _categoryService.GetAsync(paginationModel, searchModel);
+                Console.Write(DateTime.Now.Subtract(start).Milliseconds);
+
+                return Ok(new ApiResponse<IList<CategoryViewModel>>(
+                    categories,
+                    "Categories fetched successfully.",
+                    true,
+                    new PaginationInfo(totalItems, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(totalItems / (double)paginationModel.PageSize))
+                ));
             }
             catch (Exception ex)
             {

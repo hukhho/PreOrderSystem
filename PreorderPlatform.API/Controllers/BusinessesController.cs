@@ -9,6 +9,9 @@ using PreorderPlatform.Service.ViewModels.ApiResponse;
 using PreorderPlatform.Service.Exceptions;
 using PreorderPlatform.Service.ViewModels.Business.Request;
 using PreorderPlatform.Service.ViewModels.Business.Response;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Services.Enum;
+using PreorderPlatform.Services.ViewModels.Business.Request;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -26,12 +29,23 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllBusinesses()
+        public async Task<IActionResult> GetAllBusinesses(
+            [FromQuery] PaginationParam<BusinessEnum.BusinessSort> paginationModel,
+            [FromQuery] BusinessSearchRequest searchModel
+        )
         {
             try
             {
-                var businesses = await _businessService.GetBusinessesAsync();
-                return Ok(new ApiResponse<List<BusinessResponse>>(businesses, "Businesses fetched successfully.", true, null));
+                var start = DateTime.Now;
+                var (businesses, totalItems) = await _businessService.GetAsync(paginationModel, searchModel);
+                Console.Write(DateTime.Now.Subtract(start).Milliseconds);
+
+                return Ok(new ApiResponse<IList<BusinessResponse>>(
+                    businesses,
+                    "Businesses fetched successfully.",
+                    true,
+                    new PaginationInfo(totalItems, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(totalItems / (double)paginationModel.PageSize))
+                ));
             }
             catch (Exception ex)
             {

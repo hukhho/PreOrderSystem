@@ -17,6 +17,8 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using PreorderPlatform.Service.ViewModels.User.Request;
 using PreorderPlatform.Service.ViewModels.User.Response;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.Enum;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -34,12 +36,23 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllUsers(
+            [FromQuery] PaginationParam<UserEnum.UserSort> paginationModel,
+            [FromQuery] UserSearchRequest searchModel
+        )
         {
             try
             {
-                var users = await _userService.GetAllUsersWithRoleAndBusinessAsync();
-                return Ok(new ApiResponse<List<UserResponse>>(users, "Users fetched successfully.", true, null));
+                var start = DateTime.Now;
+                var (users, totalItems) = await _userService.GetAsync(paginationModel, searchModel);
+                Console.Write(DateTime.Now.Subtract(start).Milliseconds);
+
+                return Ok(new ApiResponse<IList<UserResponse>>(
+                    users,
+                    "Users fetched successfully.",
+                    true,
+                    new PaginationInfo(totalItems, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(totalItems / (double)paginationModel.PageSize))
+                ));
             }
             catch (Exception ex)
             {

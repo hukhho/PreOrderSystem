@@ -10,6 +10,10 @@ using System.Text;
 using System.Threading.Tasks;
 using PreorderPlatform.Service.ViewModels.User.Request;
 using PreorderPlatform.Service.ViewModels.User.Response;
+using PreorderPlatform.Service.Utility;
+using Microsoft.EntityFrameworkCore;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.Enum;
 
 namespace PreorderPlatform.Service.Services.UserServices
 {
@@ -141,5 +145,34 @@ namespace PreorderPlatform.Service.Services.UserServices
                 throw new ServiceException($"An error occurred while deleting user with ID {id}.", ex);
             }
         }
+
+        public async Task<(IList<UserResponse> users, int totalItems)> GetAsync(PaginationParam<UserEnum.UserSort> paginationModel, UserSearchRequest filterModel)
+        {
+            try
+            {
+                var query = _userRepository.Table;
+
+                query = query.GetWithSearch(filterModel); //search
+
+                // Calculate the total number of items before applying pagination
+                int totalItems = await query.CountAsync();
+
+                query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder) //sort
+                            .GetWithPaging(paginationModel.Page, paginationModel.PageSize);  // pagination
+
+                var userList = await query.ToListAsync(); // Call ToListAsync here
+
+                // Map the userList to a list of UserResponse objects
+                var result = _mapper.Map<List<UserResponse>>(userList);
+
+                return (result, totalItems);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception " + ex.Message);
+                throw new ServiceException("An error occurred while fetching users.", ex);
+            }
+        }
+        
     }
 }

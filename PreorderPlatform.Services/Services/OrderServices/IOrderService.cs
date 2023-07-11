@@ -21,6 +21,12 @@ namespace PreorderPlatform.Service.Services.OrderServices
         Task<List<OrderViewModel>> GetOrdersAsync();
         Task UpdateOrderAsync(OrderUpdateViewModel model);
 
-        Task<IList<OrderResponse>> GetAsync(PaginationParam<OrderEnum.OrderSort> paginationModel, OrderSearchRequest filterModel);
+        /// <summary>
+        /// Get a list of orders based on pagination and filter criteria.
+        /// </summary>
+        /// <param name="paginationModel">The pagination parameters.</param>
+        /// <param name="filterModel">The filter criteria.</param>
+        /// <returns>A tuple containing the list of orders and the total number of items.</returns>
+        Task<(IList<OrderResponse> orders, int totalItems)> GetAsync(PaginationParam<OrderEnum.OrderSort> paginationModel, OrderSearchRequest filterModel);
     }
 }
