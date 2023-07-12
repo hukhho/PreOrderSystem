@@ -41,18 +41,18 @@ namespace PreorderPlatform.Service.Services.BusinessServices
             }
         }
 
-        public async Task<BusinessResponse> GetBusinessByIdAsync(int id)
+        public async Task<BusinessByIdResponse> GetBusinessByIdAsync(int id)
         {
             try
             {
-                var business = await _businessRepository.GetByIdAsync(id);
+                var business = await _businessRepository.GetBusinessByIdAsync(id);
 
                 if (business == null)
                 {
                     throw new NotFoundException($"Business with ID {id} was not found.");
                 }
 
-                return _mapper.Map<BusinessResponse>(business);
+                return _mapper.Map<BusinessByIdResponse>(business);
             }
             catch (NotFoundException)
             {

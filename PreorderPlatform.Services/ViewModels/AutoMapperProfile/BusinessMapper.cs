@@ -17,6 +17,7 @@ namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
             configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessCreateRequest>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessUpdateRequest>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessResponse>().ReverseMap();
+            configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessByIdResponse>().ReverseMap();
         }
     }
 }

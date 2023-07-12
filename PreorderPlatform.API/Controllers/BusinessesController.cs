@@ -60,7 +60,7 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 var business = await _businessService.GetBusinessByIdAsync(id);
-                return Ok(new ApiResponse<BusinessResponse>(business, "Business fetched successfully.", true, null));
+                return Ok(new ApiResponse<BusinessByIdResponse>(business, "Business fetched successfully.", true, null));
             }
             catch (NotFoundException ex)
             {

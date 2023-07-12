@@ -24,7 +24,7 @@ namespace PreorderPlatform.Entity.Repositories.CampaignRepositories
             var campaign = await GetWithIncludeAsync(
              u => u.Id == id,
              u => u.Include(c => c.Business),
-             u => u.Include(c => c.Owner),
+             u => u.Include(c => c.Owner).ThenInclude(r => r.Role),
              u => u.Include(c => c.CampaignDetails),
              u => u.Include(c => c.Product).ThenInclude(cd => cd.Category));
 
