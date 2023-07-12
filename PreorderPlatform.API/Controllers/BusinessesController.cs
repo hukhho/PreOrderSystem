@@ -12,6 +12,7 @@ using PreorderPlatform.Service.ViewModels.Business.Response;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Services.Enum;
 using PreorderPlatform.Services.ViewModels.Business.Request;
+using System.Security.Claims;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -57,10 +58,23 @@ namespace PreorderPlatform.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBusinessById(int id)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return Unauthorized(new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
+            }
             try
             {
-                var business = await _businessService.GetBusinessByIdAsync(id);
+                var business = await _businessService.GetBusinessByIdAsync(id, userId);
                 return Ok(new ApiResponse<BusinessByIdResponse>(business, "Business fetched successfully.", true, null));
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new ApiResponse<object>(null, ex.Message, false, null));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new ApiResponse<object>(null, ex.Message, false, null));
             }
             catch (NotFoundException ex)
             {

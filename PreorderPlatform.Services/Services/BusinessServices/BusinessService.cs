@@ -41,7 +41,7 @@ namespace PreorderPlatform.Service.Services.BusinessServices
             }
         }
 
-        public async Task<BusinessByIdResponse> GetBusinessByIdAsync(int id)
+        public async Task<BusinessByIdResponse> GetBusinessByIdAsync(int id, string? userId)
         {
             try
             {
@@ -51,12 +51,21 @@ namespace PreorderPlatform.Service.Services.BusinessServices
                 {
                     throw new NotFoundException($"Business with ID {id} was not found.");
                 }
-
+                if (business.Owner.Id != int.Parse(userId))
+                {
+                    throw new ArgumentException($"You don't have permission to access this resource.");
+                }
                 return _mapper.Map<BusinessByIdResponse>(business);
+
             }
             catch (NotFoundException)
             {
                 // Rethrow NotFoundException to be handled by the caller
+                throw;
+            }
+            catch (ArgumentException ex)
+            {
+                // Rethrow ArgumentException to be handled by the caller
                 throw;
             }
             catch (Exception ex)
