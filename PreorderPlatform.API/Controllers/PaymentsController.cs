@@ -9,6 +9,9 @@ using PreorderPlatform.Service.Exceptions;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.ViewModels.ApiResponse;
+using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Service.ViewModels.Order.Response;
+using PreorderPlatform.Service.ViewModels.Payment.Response;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -55,16 +58,16 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 var payment = await _paymentService.GetPaymentByIdAsync(id);
-                return Ok(payment);
+                return Ok(new ApiResponse<PaymentByIdResponse>(payment, "Payment fetched successfully.", true, null));
             }
             catch (NotFoundException ex)
             {
-                return NotFound(new { message = ex.Message });
+                return NotFound(new ApiResponse<string>(null, ex.Message, false, null));
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { message = $"Error fetching payment: {ex.Message}" });
+                    new ApiResponse<object>(null, $"Error fetching payment: {ex.Message}", false, null));
             }
         }
 

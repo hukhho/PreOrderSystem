@@ -10,6 +10,7 @@ using PreorderPlatform.Service.ViewModels.BusinessPaymentCredential;
 using PreorderPlatform.Service.Services.BusinessPaymentCredentialServices;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Services.Enum;
+using PreorderPlatform.Service.ViewModels.BusinessPaymentCredential.Response;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -58,7 +59,7 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 var businessPaymentCredentials = await _businessPaymentCredentialService.GetBusinessPaymentCredentialByIdAsync(id);
-                return Ok(new ApiResponse<BusinessPaymentCredentialViewModel>(businessPaymentCredentials, "Business payment credentials fetched successfully.", true, null));
+                return Ok(new ApiResponse<BusinessPaymentByIdResponse>(businessPaymentCredentials, "Business payment credentials fetched successfully.", true, null));
             }
             catch (NotFoundException ex)
             {

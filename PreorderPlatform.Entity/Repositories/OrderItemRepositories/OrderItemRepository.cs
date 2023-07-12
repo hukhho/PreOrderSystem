@@ -1,4 +1,5 @@
-﻿using PreorderPlatform.Entity.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using PreorderPlatform.Entity.Models;
 
 namespace PreorderPlatform.Entity.Repositories.OrderItemRepositories
 {
@@ -10,5 +11,14 @@ namespace PreorderPlatform.Entity.Repositories.OrderItemRepositories
         }
 
         // Add any additional methods specific to OrderItemRepository here...
+        public async Task<OrderItem> GetOrderItemByIdAsync(int id)
+        {
+            var orderItems = await GetWithIncludeAsync(
+                oi => oi.Id == id,
+                oi => oi.Include(cd => cd.CampaignDetail),
+                oi => oi.Include(o => o.Order)
+                );
+            return orderItems;
+        }
     }
 }

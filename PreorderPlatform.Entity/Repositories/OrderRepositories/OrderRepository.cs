@@ -14,7 +14,7 @@ namespace PreorderPlatform.Entity.Repositories.OrderRepositories
         {
             var order = await GetWithIncludeAsync(
                 o => o.Id == id,
-                o => o.Include(u => u.User),
+                o => o.Include(u => u.User).ThenInclude(r => r.Role),
                 o => o.Include(u => u.OrderItems),
                 o => o.Include(u => u.Payments)
                 );

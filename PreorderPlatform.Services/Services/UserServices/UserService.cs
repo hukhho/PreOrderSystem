@@ -56,18 +56,18 @@ namespace PreorderPlatform.Service.Services.UserServices
         }
 
 
-        public async Task<UserResponse> GetUserByIdAsync(int id)
+        public async Task<UserByIdResponse> GetUserByIdAsync(int id)
         {
             try
             {
-                var user = await _userRepository.GetByIdAsync(id);
+                var user = await _userRepository.GetUserByIdAsync(id);
 
                 if (user == null)
                 {
                     throw new NotFoundException($"User with ID {id} was not found.");
                 }
 
-                return _mapper.Map<UserResponse>(user);
+                return _mapper.Map<UserByIdResponse>(user);
             }
             catch (NotFoundException)
             {

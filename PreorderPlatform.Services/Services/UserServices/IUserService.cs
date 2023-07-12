@@ -16,7 +16,7 @@ namespace PreorderPlatform.Service.Services.UserServices
         Task<UserResponse> CreateUserAsync(UserCreateRequest model);
         Task DeleteUserAsync(int id);
         Task<List<UserResponse>> GetAllUsersWithRoleAndBusinessAsync();
-        Task<UserResponse> GetUserByIdAsync(int id);
+        Task<UserByIdResponse> GetUserByIdAsync(int id);
         Task<List<UserResponse>> GetUsersAsync();
         Task<UserResponse> GetUserWithRoleAndBusinessByIdAsync(int id);
         Task UpdateUserAsync(UserUpdateRequest model);

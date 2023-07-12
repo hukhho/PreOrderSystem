@@ -18,6 +18,7 @@ namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
             configuration.CreateMap<PreorderPlatform.Entity.Models.CampaignDetail, CampaignPriceCreateRequest>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.CampaignDetail, CampaignPriceUpdateRequest>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.CampaignDetail, CampaignPriceResponse>().ReverseMap();
+            configuration.CreateMap<PreorderPlatform.Entity.Models.CampaignDetail, CampaignDetailByIdResponse>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.CampaignDetail, CampaignDetailSearchRequest>().ReverseMap();
 
         }

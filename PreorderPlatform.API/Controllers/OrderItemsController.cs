@@ -10,6 +10,7 @@ using PreorderPlatform.Service.ViewModels.OrderItem;
 using PreorderPlatform.Service.Exceptions;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.ViewModels.OrderItem.Response;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -58,7 +59,7 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 var orderItem = await _orderItemService.GetOrderItemByIdAsync(id);
-                return Ok(new ApiResponse<OrderItemViewModel>(orderItem, "Order item fetched successfully.", true, null));
+                return Ok(new ApiResponse<OrderItemByIdResponse>(orderItem, "Order item fetched successfully.", true, null));
             }
             catch (NotFoundException ex)
             {

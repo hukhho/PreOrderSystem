@@ -12,5 +12,6 @@ namespace PreorderPlatform.Entity.Repositories.UserRepositories
         Task<IEnumerable<User>> GetAllUsersWithRoleAndBusinessAsync();
         Task<User> GetUserWithRoleAndBusinessByIdAsync(int id);
         Task<User> ValidateUserCredentials(string email, string password);
+        Task<User> GetUserByIdAsync(int id);
     }
 }

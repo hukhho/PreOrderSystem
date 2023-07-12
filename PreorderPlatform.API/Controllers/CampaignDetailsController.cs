@@ -60,7 +60,7 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 var campaignDetails = await _campaignDetailService.GetCampaignDetailByIdAsync(id);
-                return Ok(new ApiResponse<CampaignPriceResponse>(campaignDetails, "Campaign detail fetched successfully.", true, null));
+                return Ok(new ApiResponse<CampaignDetailByIdResponse>(campaignDetails, "Campaign detail fetched successfully.", true, null));
             }
             catch (NotFoundException ex)
             {

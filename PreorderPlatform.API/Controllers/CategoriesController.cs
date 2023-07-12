@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using PreorderPlatform.Service.ViewModels.Category;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.ViewModels.category.Response;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -55,7 +56,7 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 var category = await _categoryService.GetCategoryByIdAsync(id);
-                return Ok(new ApiResponse<CategoryViewModel>(category, "Category fetched successfully.", true, null));
+                return Ok(new ApiResponse<CategoryByIdResponse>(category, "Category fetched successfully.", true, null));
             }
             catch (NotFoundException ex)
             {

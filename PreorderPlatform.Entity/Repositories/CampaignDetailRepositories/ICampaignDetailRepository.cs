@@ -10,5 +10,6 @@ namespace PreorderPlatform.Entity.Repositories.CampaignDetailRepositories
     public interface ICampaignDetailRepository : IRepositoryBase<CampaignDetail>
     {
         Task<IEnumerable<CampaignDetail>> GetAllCampainDetailsAsync();
+        Task<CampaignDetail> GetCampaignDetailByIdAsync(int id);
     }
 }

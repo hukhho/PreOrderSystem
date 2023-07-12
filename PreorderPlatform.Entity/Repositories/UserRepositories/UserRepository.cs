@@ -58,5 +58,17 @@ namespace PreorderPlatform.Entity.Repositories.UserRepository
             return await GetAllWithIncludeAsync(u => true, u => u.Role, u => u.Business);
         }
 
+        public async Task<User> GetUserByIdAsync(int id)
+        {
+            var users = await GetWithIncludeAsync(
+                u => u.Id == id,
+                u => u.Include(c => c.Role),
+                u => u.Include(c => c.Campaigns),
+                u => u.Include(c => c.Orders),
+                u => u.Include(c => c.Payments)
+                );
+            return users;
+        }
+
     }
 }

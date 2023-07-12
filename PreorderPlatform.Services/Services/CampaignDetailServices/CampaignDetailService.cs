@@ -55,18 +55,18 @@ namespace PreorderPlatform.Service.Services.CampaignDetailServices
             }
         }
 
-        public async Task<CampaignPriceResponse> GetCampaignDetailByIdAsync(int id)
+        public async Task<CampaignDetailByIdResponse> GetCampaignDetailByIdAsync(int id)
         {
             try
             {
-                var campaignDetail = await _campaignDetailRepository.GetByIdAsync(id);
+                var campaignDetail = await _campaignDetailRepository.GetCampaignDetailByIdAsync(id);
 
                 if (campaignDetail == null)
                 {
                     throw new NotFoundException($"Campaign detail with ID {id} was not found.");
                 }
 
-                return _mapper.Map<CampaignPriceResponse>(campaignDetail);
+                return _mapper.Map<CampaignDetailByIdResponse>(campaignDetail);
             }
             catch (NotFoundException)
             {

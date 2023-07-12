@@ -16,7 +16,7 @@ namespace PreorderPlatform.Service.Services.CampaignDetailServices
         Task<CampaignPriceResponse> CreateCampaignDetailAsync(CampaignPriceCreateRequest model);
         Task DeleteCampaignDetailAsync(int id);
         Task<List<CampaignPriceResponse>> GetAllCampainDetailsWithProductAsync();
-        Task<CampaignPriceResponse> GetCampaignDetailByIdAsync(int id);
+        Task<CampaignDetailByIdResponse> GetCampaignDetailByIdAsync(int id);
         Task<List<CampaignPriceResponse>> GetCampaignDetailsAsync();
         Task UpdateCampaignDetailAsync(CampaignPriceUpdateRequest model);
         Task<(IList<CampaignPriceResponse> campaigns, int totalItems)> GetAsync(PaginationParam<CampaignDetailEnum.CampaignDetailSort> paginationModel, CampaignDetailSearchRequest filterModel);

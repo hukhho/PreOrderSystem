@@ -7,6 +7,7 @@ using PreorderPlatform.Service.Exceptions;
 using PreorderPlatform.Service.Services.CategoryServices;
 using PreorderPlatform.Service.Utility;
 using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.ViewModels.category.Response;
 using PreorderPlatform.Service.ViewModels.Category;
 using System;
 using System.Collections.Generic;
@@ -40,18 +41,18 @@ namespace PreorderPlatform.Service.Services.CategoryServices
             }
         }
 
-        public async Task<CategoryViewModel> GetCategoryByIdAsync(int id)
+        public async Task<CategoryByIdResponse> GetCategoryByIdAsync(int id)
         {
             try
             {
-                var category = await _categoryRepository.GetByIdAsync(id);
+                var category = await _categoryRepository.GetCategoryByIdAsync(id);
 
                 if (category == null)
                 {
                     throw new NotFoundException($"Category with ID {id} was not found.");
                 }
 
-                return _mapper.Map<CategoryViewModel>(category);
+                return _mapper.Map<CategoryByIdResponse>(category);
             }
             catch (NotFoundException)
             {

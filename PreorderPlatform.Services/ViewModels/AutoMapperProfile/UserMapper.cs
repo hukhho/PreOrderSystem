@@ -12,6 +12,7 @@ namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
                          .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role != null ? src.Role.Name : null))
                          .ForMember(dest => dest.BusinessName, opt => opt.MapFrom(src => src.Business != null ? src.Business.Name : null))
                          .ReverseMap();
+            configuration.CreateMap<PreorderPlatform.Entity.Models.User, UserByIdResponse>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.User, UserUpdateRequest>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.User, UserCreateRequest>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.User, UserSearchRequest>().ReverseMap();

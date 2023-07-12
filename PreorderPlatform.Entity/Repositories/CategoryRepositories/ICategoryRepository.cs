@@ -9,5 +9,6 @@ namespace PreorderPlatform.Entity.Repositories.CategoryRepositories
 {
     public interface ICategoryRepository : IRepositoryBase<Category>
     {
+        Task<Category> GetCategoryByIdAsync(int id);
     }
 }

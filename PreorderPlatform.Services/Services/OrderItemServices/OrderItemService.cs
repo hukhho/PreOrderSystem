@@ -10,6 +10,7 @@ using PreorderPlatform.Service.Utility;
 using Microsoft.EntityFrameworkCore;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.ViewModels.OrderItem.Response;
 
 namespace PreorderPlatform.Service.Services.OrderItemServices
 {
@@ -37,18 +38,18 @@ namespace PreorderPlatform.Service.Services.OrderItemServices
             }
         }
 
-        public async Task<OrderItemViewModel> GetOrderItemByIdAsync(int id)
+        public async Task<OrderItemByIdResponse> GetOrderItemByIdAsync(int id)
         {
             try
             {
-                var orderItem = await _orderItemRepository.GetByIdAsync(id);
+                var orderItem = await _orderItemRepository.GetOrderItemByIdAsync(id);
 
                 if (orderItem == null)
                 {
                     throw new NotFoundException($"Order item with ID {id} was not found.");
                 }
 
-                return _mapper.Map<OrderItemViewModel>(orderItem);
+                return _mapper.Map<OrderItemByIdResponse>(orderItem);
             }
             catch (NotFoundException)
             {

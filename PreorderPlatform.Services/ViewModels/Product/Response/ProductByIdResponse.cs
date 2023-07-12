@@ -17,7 +17,6 @@ namespace PreorderPlatform.Service.ViewModels.Product.Response
         public string? Description { get; set; }
         public decimal? Price { get; set; }
         public bool? Status { get; set; }
-        public int? BusinessId { get; set; }
 
         public virtual BusinessResponse? Business { get; set; }
         public virtual CategoryResponse? Category { get; set; }

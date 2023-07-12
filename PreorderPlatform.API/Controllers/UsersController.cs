@@ -67,7 +67,7 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 var user = await _userService.GetUserByIdAsync(id);
-                return Ok(new ApiResponse<UserResponse>(user, "User fetched successfully.", true, null));
+                return Ok(new ApiResponse<UserByIdResponse>(user, "User fetched successfully.", true, null));
             }
             catch (NotFoundException ex)
             {

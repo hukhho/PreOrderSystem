@@ -9,5 +9,6 @@ namespace PreorderPlatform.Entity.Repositories.PaymentRepositories
 {
     public interface IPaymentRepository : IRepositoryBase<Payment>
     {
+        Task<Payment> GetPaymentByIdAsync(int id);
     }
 }

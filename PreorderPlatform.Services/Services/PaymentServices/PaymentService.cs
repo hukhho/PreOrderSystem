@@ -10,6 +10,7 @@ using PreorderPlatform.Service.Utility;
 using Microsoft.EntityFrameworkCore;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.ViewModels.Payment.Response;
 
 namespace PreorderPlatform.Service.Services.PaymentServices
 {
@@ -37,18 +38,18 @@ namespace PreorderPlatform.Service.Services.PaymentServices
             }
         }
 
-        public async Task<PaymentViewModel> GetPaymentByIdAsync(int id)
+        public async Task<PaymentByIdResponse> GetPaymentByIdAsync(int id)
         {
             try
             {
-                var payment = await _paymentRepository.GetByIdAsync(id);
+                var payment = await _paymentRepository.GetPaymentByIdAsync(id);
 
                 if (payment == null)
                 {
                     throw new NotFoundException($"Payment with ID {id} was not found.");
                 }
 
-                return _mapper.Map<PaymentViewModel>(payment);
+                return _mapper.Map<PaymentByIdResponse>(payment);
             }
             catch (NotFoundException)
             {

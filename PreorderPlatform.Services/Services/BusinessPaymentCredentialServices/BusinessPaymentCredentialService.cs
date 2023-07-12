@@ -12,6 +12,7 @@ using PreorderPlatform.Service.Utility;
 using Microsoft.EntityFrameworkCore;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Services.Enum;
+using PreorderPlatform.Service.ViewModels.BusinessPaymentCredential.Response;
 
 namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
 {
@@ -39,18 +40,18 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
             }
         }
 
-        public async Task<BusinessPaymentCredentialViewModel> GetBusinessPaymentCredentialByIdAsync(int id)
+        public async Task<BusinessPaymentByIdResponse> GetBusinessPaymentCredentialByIdAsync(int id)
         {
             try
             {
-                var businessPaymentCredential = await _businessPaymentCredentialRepository.GetByIdAsync(id);
+                var businessPaymentCredential = await _businessPaymentCredentialRepository.GetBusinessPaymentByIdAsync(id);
 
                 if (businessPaymentCredential == null)
                 {
                     throw new NotFoundException($"Business payment credential with ID {id} was not found.");
                 }
 
-                return _mapper.Map<BusinessPaymentCredentialViewModel>(businessPaymentCredential);
+                return _mapper.Map<BusinessPaymentByIdResponse>(businessPaymentCredential);
             }
             catch (NotFoundException)
             {
