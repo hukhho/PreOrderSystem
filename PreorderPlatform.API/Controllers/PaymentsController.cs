@@ -12,7 +12,7 @@ using PreorderPlatform.Service.ViewModels.ApiResponse;
 
 namespace PreorderPlatform.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/payments")]
     [ApiController]
     public class PaymentsController : ControllerBase
     {

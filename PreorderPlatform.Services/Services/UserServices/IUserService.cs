@@ -21,6 +21,7 @@ namespace PreorderPlatform.Service.Services.UserServices
         Task<UserResponse> GetUserWithRoleAndBusinessByIdAsync(int id);
         Task UpdateUserAsync(UserUpdateRequest model);
         Task<(IList<UserResponse> users, int totalItems)> GetAsync(PaginationParam<UserEnum.UserSort> paginationModel, UserSearchRequest filterModel);
-        
+        Task<bool> IsEmailUniqueAsync(string email);
+        Task<bool> IsPhoneUniqueAsync(string phone);
     }
 }

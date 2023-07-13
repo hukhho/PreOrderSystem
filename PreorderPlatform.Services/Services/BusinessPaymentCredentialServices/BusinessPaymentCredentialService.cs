@@ -12,19 +12,25 @@ using PreorderPlatform.Service.Utility;
 using Microsoft.EntityFrameworkCore;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Services.Enum;
+using Microsoft.AspNetCore.Http;
+using PreorderPlatform.Service.ViewModels.ApiResponse;
+using PreorderPlatform.Entity.Repositories.BusinessRepositories;
 
 namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
 {
     public class BusinessPaymentCredentialService : IBusinessPaymentCredentialService
     {
         private readonly IBusinessPaymentCredentialRepository _businessPaymentCredentialRepository;
+        private readonly IBusinessRepository _businessRepository;
         private readonly IMapper _mapper;
 
-        public BusinessPaymentCredentialService(IBusinessPaymentCredentialRepository businessPaymentCredentialRepository, IMapper mapper)
+        public BusinessPaymentCredentialService(IBusinessPaymentCredentialRepository businessPaymentCredentialRepository, IBusinessRepository businessRepository, IMapper mapper)
         {
             _businessPaymentCredentialRepository = businessPaymentCredentialRepository;
+            _businessRepository = businessRepository;
             _mapper = mapper;
         }
+
 
         public async Task<List<BusinessPaymentCredentialViewModel>> GetBusinessPaymentCredentialsAsync()
         {
@@ -39,7 +45,7 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
             }
         }
 
-        public async Task<BusinessPaymentCredentialViewModel> GetBusinessPaymentCredentialByIdAsync(int id)
+        public async Task<BusinessPaymentCredentialViewModel> GetBusinessPaymentCredentialByIdAsync(int id, string? userId)
         {
             try
             {
@@ -50,11 +56,20 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
                     throw new NotFoundException($"Business payment credential with ID {id} was not found.");
                 }
 
+                if (businessPaymentCredential?.Business?.OwnerId != int.Parse(userId))
+                {
+                    throw new ArgumentException($"You don't have permission to access this resource.");
+                }
+
                 return _mapper.Map<BusinessPaymentCredentialViewModel>(businessPaymentCredential);
             }
             catch (NotFoundException)
             {
                 // Rethrow NotFoundException to be handled by the caller
+                throw;
+            }
+            catch (ArgumentException ex)
+            {
                 throw;
             }
             catch (Exception ex)
@@ -70,6 +85,16 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
                 var businessPaymentCredential = _mapper.Map<BusinessPaymentCredential>(model);
                 await _businessPaymentCredentialRepository.CreateAsync(businessPaymentCredential);
                 return _mapper.Map<BusinessPaymentCredentialViewModel>(businessPaymentCredential);
+            }
+            catch (NotFoundException)
+            {
+                // Rethrow NotFoundException to be handled by the caller
+                throw;
+            }
+            catch (ArgumentException ex)
+            {
+                // Rethrow ArgumentException to be handled by the caller
+                throw;
             }
             catch (Exception ex)
             {
@@ -131,6 +156,35 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
                 throw new ServiceException("An error occurred while fetching business payment credentials.", ex);
             }
         }
-        
+
+
+        public async Task<Business> GetBusinessByOwnerIdAsync(int userId)
+        {
+            try
+            {
+                var business = await _businessRepository.GetByOwnerIdAsync(userId);
+
+                if (business == null)
+                {
+                    throw new NotFoundException($"No business found for user with ID {userId}.");
+                }
+
+                return business;
+            }
+            catch (NotFoundException)
+            {
+                // Rethrow NotFoundException to be handled by the caller
+                throw;
+            }
+            catch (ArgumentException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException($"An error occurred while fetching the business for user with ID {userId}.", ex);
+            }
+        }
+
     }
 }

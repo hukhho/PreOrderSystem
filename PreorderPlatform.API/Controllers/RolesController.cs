@@ -12,7 +12,7 @@ using PreorderPlatform.Entity.Models;
 
 namespace PreorderPlatform.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class RolesController : ControllerBase
     {

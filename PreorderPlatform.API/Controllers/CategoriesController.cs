@@ -12,7 +12,7 @@ using PreorderPlatform.Service.Enum;
 
 namespace PreorderPlatform.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/categories")]
     [ApiController]
     public class CategoriesController : ControllerBase
     {

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using PreorderPlatform.Service.Services.AuthService;
-using PreorderPlatform.Service.ViewModels.AutoMapperProfile;
 using PreorderPlatform.Service.Services.UserServices;
 using PreorderPlatform.Entity.Repositories.UserRepositories;
 using PreorderPlatform.Entity;
@@ -17,12 +16,16 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc;
 using PreorderPlatform.API.Filters;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using PreorderPlatform.API.Ultils;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()    
+                .AddNewtonsoftJson();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -96,7 +99,10 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
-
+builder.Services.AddControllers(options =>
+{
+    options.InputFormatters.Insert(0, MyJPIF.GetJsonPatchInputFormatter());
+});
 
 var app = builder.Build();
 

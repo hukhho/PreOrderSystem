@@ -16,17 +16,34 @@ namespace PreorderPlatform.Entity.Repositories.BusinessRepositories
         {
             var businesses = await GetWithIncludeAsync(
                 b => b.Id == id,
+                b => b.Include(o => o.Owner),
                 b => b.Include(bp => bp.BusinessPaymentCredentials),
                 b => b.Include(c => c.Campaigns),
                 b => b.Include(p => p.Products).ThenInclude(c => c.Category),
                 b => b.Include(u => u.Users).ThenInclude(r => r.Role)
                 );
 
-            if (businesses != null)
-            {
-                businesses.Users = businesses.Users.Where(user => user.RoleId != 2).ToList();
-            }
+            //if (businesses != null)
+            //{
+            //    businesses.Users = businesses.Users.Where(user => user.RoleId != 2).ToList();
+            //}
             return businesses;
         }
+
+
+        public async Task<Business> GetByOwnerIdAsync(int userId)
+        {
+            var business = await GetWithIncludeAsync(
+                b => b.OwnerId == userId,
+                b => b.Include(o => o.Owner),
+                b => b.Include(bp => bp.BusinessPaymentCredentials),
+                b => b.Include(c => c.Campaigns),
+                b => b.Include(p => p.Products).ThenInclude(c => c.Category),
+                b => b.Include(u => u.Users).ThenInclude(r => r.Role)
+            );
+
+            return business;
+        }
+
     }
 }

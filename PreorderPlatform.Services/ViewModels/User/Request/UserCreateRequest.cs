@@ -1,5 +1,7 @@
-﻿using System;
+﻿using PreorderPlatform.Services.Utility;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace PreorderPlatform.Service.ViewModels.User.Request
 {
@@ -15,20 +17,24 @@ namespace PreorderPlatform.Service.ViewModels.User.Request
 
         [Required(ErrorMessage = "Phone number is required.")]
         [Phone(ErrorMessage = "Invalid phone number.")]
+        [UniquePhone]
         public string? Phone { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email address.")]
+        [UniqueEmail]
         public string? Email { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
         [StringLength(100, ErrorMessage = "Password must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$", ErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.")]
         public string? Password { get; set; }
 
         [Required(ErrorMessage = "Role ID is required.")]
+        [AllowedRoleIds(2, 3, 4, ErrorMessage = "Invalid Role ID. Allowed values are 2, 3, or 4.")]
         public int? RoleId { get; set; }
 
-        [Required(ErrorMessage = "Status is required.")]
+        [JsonIgnore]
         public bool? Status { get; set; }
     }
 }

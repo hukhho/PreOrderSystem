@@ -10,5 +10,6 @@ namespace PreorderPlatform.Entity.Repositories.BusinessRepositories
     public interface IBusinessRepository : IRepositoryBase<Business>
     {
         Task<Business> GetBusinessByIdAsync(int id);
+        Task<Business> GetByOwnerIdAsync(int userId);
     }
 }

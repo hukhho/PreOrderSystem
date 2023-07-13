@@ -18,6 +18,7 @@ namespace PreorderPlatform.Service.ViewModels.BusinessPaymentCredential
         public string? MomoAccessToken { get; set; }
         public string? MomoSecretToken { get; set; }
         public bool? IsMomoActive { get; set; }
+        public bool? IsMain { get; set; }
         public DateTime? CreateAt { get; set; }
         public bool? Status { get; set; }
     }

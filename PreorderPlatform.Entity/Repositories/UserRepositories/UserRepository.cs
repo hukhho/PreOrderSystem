@@ -47,7 +47,6 @@ namespace PreorderPlatform.Entity.Repositories.UserRepository
             return BCrypt.Net.BCrypt.Verify(password, passwordHash);
         }
 
-
         public async Task<User> GetUserWithRoleAndBusinessByIdAsync(int id)
         {
             return await GetWithIncludeAsync(u => u.Id == id, u => u.Include(c => c.Role), u => u.Include(c => c.Business));
@@ -56,6 +55,19 @@ namespace PreorderPlatform.Entity.Repositories.UserRepository
         public async Task<IEnumerable<User>> GetAllUsersWithRoleAndBusinessAsync()
         {
             return await GetAllWithIncludeAsync(u => true, u => u.Role, u => u.Business);
+        }
+
+        public async Task<bool> IsEmailUnique(string email)
+        {
+            // Check if the email is unique in the database
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+            return user == null;
+        }
+        public async Task<bool> IsPhoneUnique(string phone)
+        {
+            // Check if the phone number is unique in the database
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Phone == phone);
+            return user == null;
         }
 
     }

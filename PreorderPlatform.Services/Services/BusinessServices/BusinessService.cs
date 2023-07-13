@@ -14,17 +14,20 @@ using PreorderPlatform.Services.Enum;
 using PreorderPlatform.Services.ViewModels.Business.Request;
 using PreorderPlatform.Service.Utility;
 using Microsoft.EntityFrameworkCore;
+using PreorderPlatform.Entity.Repositories.UserRepositories;
 
 namespace PreorderPlatform.Service.Services.BusinessServices
 {
     public class BusinessService : IBusinessService
     {
         private readonly IBusinessRepository _businessRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public BusinessService(IBusinessRepository businessRepository, IMapper mapper)
+        public BusinessService(IBusinessRepository businessRepository, IUserRepository userRepository, IMapper mapper)
         {
             _businessRepository = businessRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -51,7 +54,7 @@ namespace PreorderPlatform.Service.Services.BusinessServices
                 {
                     throw new NotFoundException($"Business with ID {id} was not found.");
                 }
-                if (business.Owner.Id != int.Parse(userId))
+                if (business?.Owner?.Id != int.Parse(userId))
                 {
                     throw new ArgumentException($"You don't have permission to access this resource.");
                 }
@@ -70,6 +73,8 @@ namespace PreorderPlatform.Service.Services.BusinessServices
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error {ex}");
+
                 throw new ServiceException($"An error occurred while fetching business with ID {id}.", ex);
             }
         }
@@ -78,12 +83,40 @@ namespace PreorderPlatform.Service.Services.BusinessServices
         {
             try
             {
+
+                // Retrieve the user by userId
+                var user = await _userRepository.GetByIdAsync(model.OwnerId);
+
+                if (user == null)
+                {
+                    throw new ServiceException("User not found.");
+                }
+
+                // Check if the user already has a business associated
+                if (user.BusinessId.HasValue)
+                {
+                    throw new ServiceException("User can only create one business.");
+                }
+
                 var business = _mapper.Map<Business>(model);
                 await _businessRepository.CreateAsync(business);
+
+                // Update user's BusinessId
+                user.BusinessId = business.Id;
+
+                // Save the updated user
+                await _userRepository.UpdateAsync(user);
+
                 return _mapper.Map<BusinessResponse>(business);
+            }
+            catch (ServiceException)
+            {
+                // Rethrow ServiceException to be handled by the caller
+                throw;
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error {ex}");
                 throw new ServiceException("An error occurred while creating the business.", ex);
             }
         }
@@ -98,6 +131,7 @@ namespace PreorderPlatform.Service.Services.BusinessServices
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error {ex}");
                 throw new ServiceException($"An error occurred while updating business with ID {model.Id}.", ex);
             }
         }

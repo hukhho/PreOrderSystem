@@ -1,4 +1,5 @@
-﻿using PreorderPlatform.Service.Utility.Pagination;
+﻿using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.ViewModels.BusinessPaymentCredential;
 using PreorderPlatform.Services.Enum;
 using System;
@@ -13,9 +14,10 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
     {
         Task<BusinessPaymentCredentialViewModel> CreateBusinessPaymentCredentialAsync(BusinessPaymentCredentialCreateViewModel model);
         Task DeleteBusinessPaymentCredentialAsync(int id);
-        Task<BusinessPaymentCredentialViewModel> GetBusinessPaymentCredentialByIdAsync(int id);
+        Task<BusinessPaymentCredentialViewModel> GetBusinessPaymentCredentialByIdAsync(int id, string? userId);
         Task<List<BusinessPaymentCredentialViewModel>> GetBusinessPaymentCredentialsAsync();
         Task UpdateBusinessPaymentCredentialAsync(BusinessPaymentCredentialUpdateViewModel model);
         Task<(IList<BusinessPaymentCredentialViewModel> businessPaymentCredentials, int totalItems)> GetAsync(PaginationParam<BusinessPaymentCredentialEnum.BusinessPaymentCredentialSort> paginationModel, BusinessPaymentCredentialSearchRequest filterModel);
+        Task<Business> GetBusinessByOwnerIdAsync(int userId);
     }
 }

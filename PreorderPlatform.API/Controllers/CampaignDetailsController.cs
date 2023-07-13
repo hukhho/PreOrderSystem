@@ -15,7 +15,7 @@ using PreorderPlatform.Service.ViewModels.Campaign.Response;
 
 namespace PreorderPlatform.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/campaign/campaign-details")]
     [ApiController]
     public class CampaignDetailsController : ControllerBase
     {

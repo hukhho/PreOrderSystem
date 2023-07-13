@@ -22,7 +22,7 @@ using PreorderPlatform.Service.Enum;
 
 namespace PreorderPlatform.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -106,7 +106,8 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 model.Password = BCrypt.Net.BCrypt.HashPassword(model.Password);
-                
+                model.Status = true;
+
                 var user = await _userService.CreateUserAsync(model);
                 
                 return CreatedAtAction(nameof(GetUserById),

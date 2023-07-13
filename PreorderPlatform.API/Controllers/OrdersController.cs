@@ -14,7 +14,7 @@ using PreorderPlatform.Service.ViewModels.Order.Response;
 
 namespace PreorderPlatform.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/orders")]
     [ApiController]
     public class OrdersController : ControllerBase
     {

@@ -18,6 +18,15 @@ namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
             configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessUpdateRequest>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessResponse>().ReverseMap();
             configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessByIdResponse>().ReverseMap();
+            configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessPatchRequest>().ReverseMap();
+          
+            configuration.CreateMap<BusinessPatchRequest, BusinessUpdateRequest>();
+
+            configuration.CreateMap<BusinessByIdResponse, BusinessUpdateRequest>();
+            configuration.CreateMap<BusinessUpdateRequest, BusinessByIdResponse>();
+
+            configuration.CreateMap<BusinessByIdResponse, BusinessPatchRequest>();
+            configuration.CreateMap<BusinessPatchRequest, BusinessByIdResponse>();
         }
     }
 }

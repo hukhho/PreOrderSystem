@@ -173,6 +173,34 @@ namespace PreorderPlatform.Service.Services.UserServices
                 throw new ServiceException("An error occurred while fetching users.", ex);
             }
         }
-        
+
+
+        public async Task<bool> IsEmailUniqueAsync(string email)
+        {
+            try
+            {
+                var result = await _userRepository.IsEmailUnique(email);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException($"An error occurred while checking uniqueness of email {email}.", ex);
+            }
+        }
+
+        public async Task<bool> IsPhoneUniqueAsync(string phone)
+        {
+            try
+            {
+                var result = await _userRepository.IsPhoneUnique(phone);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException($"An error occurred while checking the uniqueness of phone number {phone}.", ex);
+            }
+        }
     }
 }
