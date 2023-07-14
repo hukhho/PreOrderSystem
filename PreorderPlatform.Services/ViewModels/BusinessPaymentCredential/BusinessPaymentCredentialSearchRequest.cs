@@ -14,7 +14,6 @@ namespace PreorderPlatform.Service.ViewModels.BusinessPaymentCredential
         public string? BankName { get; set; }
         public string? BankRecipientName { get; set; }
         public bool? IsMomoActive { get; set; }
-        public DateTime? CreateAt { get; set; }
         public bool? Status { get; set; }
     }
 }

@@ -45,6 +45,8 @@ namespace PreorderPlatform.API.Controllers
             return Ok("This endpoint is accessible only to users with the Admin role.");
         }
 
+      
+
         [HttpGet("bussiness-owner-only")]
         [CustomAuthorize(Roles = "BUSSINESS_OWNER")]
         public IActionResult UserOnly()

@@ -1,4 +1,5 @@
-﻿using PreorderPlatform.Service.Enum;
+﻿using Newtonsoft.Json.Linq;
+using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.ViewModels.Payment;
 using System;
@@ -16,6 +17,8 @@ namespace PreorderPlatform.Service.Services.PaymentServices
         Task<PaymentViewModel> GetPaymentByIdAsync(int id);
         Task<List<PaymentViewModel>> GetPaymentsAsync();
         Task UpdatePaymentAsync(PaymentUpdateViewModel model);
-        Task<(IList<PaymentViewModel> payments, int totalItems)> GetAsync(PaginationParam<PaymentEnum.PaymentSort> paginationModel, PaymentSearchRequest filterModel); 
+        Task<(IList<PaymentViewModel> payments, int totalItems)> GetAsync(PaginationParam<PaymentEnum.PaymentSort> paginationModel, PaymentSearchRequest filterModel);
+        Task<JObject> TestMomo();
+        Task<string> TestVNPay();
     }
 }

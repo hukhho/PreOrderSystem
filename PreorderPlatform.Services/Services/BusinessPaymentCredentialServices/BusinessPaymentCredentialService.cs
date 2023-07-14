@@ -49,7 +49,7 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
         {
             try
             {
-                var businessPaymentCredential = await _businessPaymentCredentialRepository.GetByIdAsync(id);
+                var businessPaymentCredential = await _businessPaymentCredentialRepository.GetBusinessPaymentCredentialByIdAsync(id);
 
                 if (businessPaymentCredential == null)
                 {
@@ -58,7 +58,7 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
 
                 if (businessPaymentCredential?.Business?.OwnerId != int.Parse(userId))
                 {
-                    throw new ArgumentException($"You don't have permission to access this resource.");
+                    throw new ArgumentException($"You don't have permission to access this resource. businessPaymentCredential?.Business?.OwnerId is {businessPaymentCredential?.Business?.OwnerId} and userId is {userId}");
                 }
 
                 return _mapper.Map<BusinessPaymentCredentialViewModel>(businessPaymentCredential);

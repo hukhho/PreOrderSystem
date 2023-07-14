@@ -124,6 +124,10 @@ namespace PreorderPlatform.API.Controllers
 
 
             var business = await _businessPaymentCredentialService.GetBusinessByOwnerIdAsync(userIdInt);
+            if (business == null)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
+            }
             int businessId = business.Id;
 
             var businessPaymentCredentialList = await _businessPaymentCredentialService.GetBusinessPaymentCredentialsAsync();
@@ -132,8 +136,12 @@ namespace PreorderPlatform.API.Controllers
                      .Where(c => c.BusinessId == businessId)
                      .ToList();
 
-            var hasMain =  filteredList.Any(c => c.IsMain == true);
+            bool hasMain = filteredList.Any(c => c.IsMain == true);
 
+            model.BusinessId = businessId;
+            model.IsMain = !hasMain;
+            model.CreateAt = DateTime.Now;
+            model.Status = true;
 
             try
             {
@@ -150,12 +158,54 @@ namespace PreorderPlatform.API.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateBusinessPaymentCredentials(BusinessPaymentCredentialUpdateViewModel model)
+        [HttpPut("{id}")]
+        [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]
+        public async Task<IActionResult> UpdateBusinessPaymentCredentials(int id, BusinessPaymentCredentialUpdateViewModel model)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return Unauthorized(new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
+            }
+            var roleName = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            if (roleName == null)
+            {
+                return Unauthorized(new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
+            }
             try
             {
-                await _businessPaymentCredentialService.UpdateBusinessPaymentCredentialAsync(model);
+                int userIdInt;
+                if (!int.TryParse(userId, out userIdInt))
+                {
+                    return BadRequest(new ApiResponse<object>(null, "Invalid user ID format.", false, null));
+                }
+                var business = await _businessPaymentCredentialService.GetBusinessByOwnerIdAsync(userIdInt);
+                int businessId = business.Id;
+
+                if (roleName != "ADMIN")
+                {
+                    var businessPaymentCredentialByIdResponse = await _businessPaymentCredentialService.GetBusinessPaymentCredentialByIdAsync(id, userId);
+                    
+                    if (businessPaymentCredentialByIdResponse == null)
+                    {
+                        return NotFound(new ApiResponse<object>(null, $"business Payment Credential with ID {id} not found.", false, null));
+                    }
+
+                    model.BusinessId = businessId;
+                    model.Id = id;
+
+                    await _businessPaymentCredentialService.UpdateBusinessPaymentCredentialAsync(model);
+                } else
+                {
+
+                    model.BusinessId = businessId;
+                    model.Id = id;
+
+                    await _businessPaymentCredentialService.UpdateBusinessPaymentCredentialAsync(model);
+                }
+
+                
                 return Ok(new ApiResponse<object>(null, "Business payment credentials updated successfully.", true, null));
             }
             catch (NotFoundException ex)

@@ -23,6 +23,62 @@ namespace PreorderPlatform.API.Controllers
             _paymentService = paymentService;
         }
 
+
+
+        [HttpGet("/test-momo")]
+        public async Task<IActionResult> TestMomo(
+         
+        )
+        {
+            try
+            {
+                var start = DateTime.Now;
+                var momoResponseJson = await _paymentService.TestMomo();
+
+                Console.Write(DateTime.Now.Subtract(start).Milliseconds);
+
+                return Ok(new ApiResponse<Object>(
+                    momoResponseJson,
+                    "Momo test.",
+                    true,
+                    null
+                ));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { message = $"Error fetching payments: {ex.Message}" });
+            }
+        }
+
+
+        [HttpGet("/test-vnpay")]
+        public async Task<IActionResult> TestVnPay(
+
+       )
+        {
+            try
+            {
+                var start = DateTime.Now;
+                var vnPayUrlLink = await _paymentService.TestVNPay();
+
+                Console.Write(DateTime.Now.Subtract(start).Milliseconds);
+
+                return Ok(new ApiResponse<object>(
+                    new Dictionary<string, object> { { "vnpayRedirectURL", vnPayUrlLink } },
+                    "VnPay test.",
+                    true,
+                    null
+                ));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { message = $"Error fetching payments: {ex.Message}" });
+            }
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> GetPayments(
             [FromQuery] PaginationParam<PaymentEnum.PaymentSort> paginationModel,
@@ -125,5 +181,9 @@ namespace PreorderPlatform.API.Controllers
                     new { message = $"Error deleting payment: {ex.Message}" });
             }
         }
+
+
+
+
     }
 }

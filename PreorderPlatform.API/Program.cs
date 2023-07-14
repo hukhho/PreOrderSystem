@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Mvc;
 using PreorderPlatform.API.Filters;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using PreorderPlatform.API.Ultils;
+using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,6 +97,14 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ADMIN", policy => policy.RequireRole(UserRole.ADMIN.ToString()));
+    options.AddPolicy("BUSINESS_OWNER", policy => policy.RequireRole(UserRole.BUSINESS_OWNER.ToString()));
+    options.AddPolicy("BUSINESS_STAFF", policy => policy.RequireRole(UserRole.BUSINESS_STAFF.ToString()));
+    options.AddPolicy("CUSTOMER", policy => policy.RequireRole(UserRole.CUSTOMER.ToString()));
+});
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
@@ -112,6 +122,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>(); // Add this line
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication(); // Add this line

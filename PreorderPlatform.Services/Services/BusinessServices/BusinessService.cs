@@ -30,6 +30,7 @@ namespace PreorderPlatform.Service.Services.BusinessServices
             _userRepository = userRepository;
             _mapper = mapper;
         }
+       
 
         public async Task<List<BusinessResponse>> GetBusinessesAsync()
         {

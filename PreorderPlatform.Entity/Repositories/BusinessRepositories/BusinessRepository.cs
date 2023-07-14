@@ -6,9 +6,11 @@ namespace PreorderPlatform.Entity.Repositories.BusinessRepositories
 {
     public class BusinessRepository : RepositoryBase<Business>, IBusinessRepository
     {
+        private readonly PreOrderSystemContext _context;
+
         public BusinessRepository(PreOrderSystemContext context) : base(context)
         {
-
+            _context = context;
         }
 
         // Add any additional methods specific to BusinessRepository here...
@@ -29,7 +31,14 @@ namespace PreorderPlatform.Entity.Repositories.BusinessRepositories
             //}
             return businesses;
         }
+        public async Task<bool> IsUserOwnerOfBusiness(int userId, int businessId)
+        {
+            var business = await _context.Businesses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(b => b.Id == businessId && b.OwnerId == userId);
 
+            return business != null;
+        }
 
         public async Task<Business> GetByOwnerIdAsync(int userId)
         {

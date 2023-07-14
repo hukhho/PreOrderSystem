@@ -17,4 +17,14 @@
     <ProjectReference Include="..\PreorderPlatform.Entity\PreorderPlatform.Entity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="libs\" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Momo">
+			<HintPath>libs\Momo.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
 </Project>

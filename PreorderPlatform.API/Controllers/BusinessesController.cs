@@ -16,6 +16,7 @@ using System.Security.Claims;
 using PreorderPlatform.Service.Utility.CustomAuthorizeAttribute;
 using Microsoft.AspNetCore.JsonPatch;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -78,6 +79,16 @@ namespace PreorderPlatform.API.Controllers
                     new ApiResponse<object>(null, $"Error fetching businesses: {ex.Message}", false, null));
             }
         }
+
+
+        [HttpGet("/test-nha/{id}")]
+        [Authorize(Policy = "MustBeBusinessOwner")]
+        public async Task<IActionResult> TestNha(int id)
+        {
+            return Ok(new ApiResponse<object>(null, $"Business fetch id {id} successfully.", true, null));
+        }
+
+
 
         [HttpGet("{id}")]
         [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]

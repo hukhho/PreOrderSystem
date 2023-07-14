@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option csharp_namespace = "MomoGrpcService";
+
+package momo;
+
+// The payment service definition.
+service PaymentService {
+  rpc ProcessPayment(PaymentRequest) returns (PaymentResponse);
+}
+
+// The payment request message containing transaction details.
+message PaymentRequest {
+  string sender = 1;
+  string recipient = 2;
+  double amount = 3;
+}
+
+// The payment response message containing the result of the transaction.
+message PaymentResponse {
+  bool success = 1;
+  string message = 2;
+}

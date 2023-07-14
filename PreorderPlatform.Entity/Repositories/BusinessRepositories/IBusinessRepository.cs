@@ -11,5 +11,6 @@ namespace PreorderPlatform.Entity.Repositories.BusinessRepositories
     {
         Task<Business> GetBusinessByIdAsync(int id);
         Task<Business> GetByOwnerIdAsync(int userId);
+        Task<bool> IsUserOwnerOfBusiness(int userId, int businessId);
     }
 }

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PreorderPlatform.Entity;
 using PreorderPlatform.Entity.Repositories;
 using PreorderPlatform.Service.Services;
+using PreorderPlatform.Service.Services.AuthorizationService.Business;
 using PreorderPlatform.Service.Services.AuthService;
 using PreorderPlatform.Service.Services.BusinessPaymentCredentialServices;
 using PreorderPlatform.Service.Services.BusinessServices;
@@ -29,7 +31,28 @@ namespace PreorderPlatform.Service
             services.RegisterService();
             services.ConfigureDBContext(configuration);
             services.ConfigAutoMapper();
+            services.RegisterPolicies();
+            services.AddHttpContextAccessor();
+
+
         }
+
+
+        public static void RegisterPolicies(this IServiceCollection services)
+        {
+            //services.AddSingleton<IServiceProvider>(services);
+            services.AddSingleton<IAuthorizationHandler, MustBeBusinessOwnerHandler>();
+            services.AddSingleton<IAuthorizationRequirement, MustBeBusinessOwnerRequirement>();
+            services.AddAuthorization(options =>
+            {
+                // Add policies here. Here's an example:
+                options.AddPolicy("MustBeBusinessOwner", policy =>
+                         policy.Requirements.Add(new MustBeBusinessOwnerRequirement()));
+
+
+            });
+        }
+
 
         public static void RegisterService(this IServiceCollection services)
         {
