@@ -81,17 +81,18 @@ namespace PreorderPlatform.API.Controllers
         }
 
 
-        [HttpGet("/test-nha/{id}")]
-        [Authorize(Policy = "MustBeBusinessOwner")]
-        public async Task<IActionResult> TestNha(int id)
-        {
-            return Ok(new ApiResponse<object>(null, $"Business fetch id {id} successfully.", true, null));
-        }
+        //[HttpGet("/test-nha/{id}")]
+        //[Authorize(Policy = "MustBeBusinessOwner")]
+        //public async Task<IActionResult> TestNha(int id)
+        //{
+        //    return Ok(new ApiResponse<object>(null, $"Business fetch id {id} successfully.", true, null));
+        //}
 
 
 
         [HttpGet("{id}")]
         [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]
+        [Authorize(Policy = "MustBeBusinessOwner")]
         public async Task<IActionResult> GetBusinessById(int id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -101,16 +102,8 @@ namespace PreorderPlatform.API.Controllers
             }
             try
             {
-                var business = await _businessService.GetBusinessByIdAsync(id, userId);
+                var business = await _businessService.GetBusinessByIdAsync(id);
                 return Ok(new ApiResponse<BusinessByIdResponse>(business, "Business fetched successfully.", true, null));
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, new ApiResponse<object>(null, ex.Message, false, null));
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                return Unauthorized(new ApiResponse<object>(null, ex.Message, false, null));
             }
             catch (NotFoundException ex)
             {
@@ -168,7 +161,7 @@ namespace PreorderPlatform.API.Controllers
 
             try
             {
-                var businessByIdResponse = await _businessService.GetBusinessByIdAsync(id, userId);
+                var businessByIdResponse = await _businessService.GetBusinessByIdAsync(id);
 
                 if (businessByIdResponse == null)
                 {
@@ -239,7 +232,7 @@ namespace PreorderPlatform.API.Controllers
 
             try
             {
-                var businessByIdResponse = await _businessService.GetBusinessByIdAsync(id, userId);
+                var businessByIdResponse = await _businessService.GetBusinessByIdAsync(id);
 
                 if (businessByIdResponse == null)
                 {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PreorderPlatform.Service.Services.AuthorizationService.Business
+namespace PreorderPlatform.Service.Services.AuthorizationService.Campaign
 {
-    public class MustBeBusinessOwnerRequirement : IAuthorizationRequirement { }
+    public class MustCampaignOwnerRequirement : IAuthorizationRequirement { }
 }

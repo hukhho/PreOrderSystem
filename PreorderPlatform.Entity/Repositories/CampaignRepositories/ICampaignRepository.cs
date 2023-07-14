@@ -11,5 +11,6 @@ namespace PreorderPlatform.Entity.Repositories.CampaignRepositories
     {
         Task<IEnumerable<Campaign>> GetAllCampaignsWithOwnerAndBusinessAndCampaignDetailsAsync();
         Task<Campaign> GetCampaignWithDetailsAsync(int id);
+        Task<bool> IsOwnerOrStaff(int userId, int campaignId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.Exceptions;
@@ -51,6 +52,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "MustBeCampaignOwner")] //test tính năng nma nào nộp nhớ xóa
         public async Task<IActionResult> GetCampaignById(int id)
         {
             try
@@ -70,6 +72,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "MustBeCampaignOwner")]
         public async Task<IActionResult> CreateCampaign(CampaignCreateRequest model)
         {
             try

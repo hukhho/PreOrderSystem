@@ -6,6 +6,7 @@ using PreorderPlatform.Entity;
 using PreorderPlatform.Entity.Repositories;
 using PreorderPlatform.Service.Services;
 using PreorderPlatform.Service.Services.AuthorizationService.Business;
+using PreorderPlatform.Service.Services.AuthorizationService.Campaign;
 using PreorderPlatform.Service.Services.AuthService;
 using PreorderPlatform.Service.Services.BusinessPaymentCredentialServices;
 using PreorderPlatform.Service.Services.BusinessServices;
@@ -41,14 +42,17 @@ namespace PreorderPlatform.Service
         public static void RegisterPolicies(this IServiceCollection services)
         {
             //services.AddSingleton<IServiceProvider>(services);
+            services.AddSingleton<IAuthorizationRequirement, MustBusinessOwnerRequirement>();
             services.AddSingleton<IAuthorizationHandler, MustBeBusinessOwnerHandler>();
-            services.AddSingleton<IAuthorizationRequirement, MustBeBusinessOwnerRequirement>();
+            services.AddSingleton<IAuthorizationRequirement, MustCampaignOwnerRequirement>();
+            services.AddSingleton<IAuthorizationHandler, MustBeCampaignOwnerHandler>();
             services.AddAuthorization(options =>
             {
                 // Add policies here. Here's an example:
                 options.AddPolicy("MustBeBusinessOwner", policy =>
-                         policy.Requirements.Add(new MustBeBusinessOwnerRequirement()));
-
+                         policy.Requirements.Add(new MustBusinessOwnerRequirement()));
+                options.AddPolicy("MustBeCampaignOwner", policy =>
+                         policy.Requirements.Add(new MustCampaignOwnerRequirement()));
 
             });
         }

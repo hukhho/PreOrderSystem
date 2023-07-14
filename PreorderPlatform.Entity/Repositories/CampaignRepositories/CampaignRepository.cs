@@ -5,9 +5,11 @@ namespace PreorderPlatform.Entity.Repositories.CampaignRepositories
 {
     public class CampaignRepository : RepositoryBase<Campaign>, ICampaignRepository
     {
+        private readonly PreOrderSystemContext _context;
+
         public CampaignRepository(PreOrderSystemContext context) : base(context)
         {
-
+            _context = context;
         }
 
         // Add any additional methods specific to CampaignRepository here...
@@ -31,6 +33,24 @@ namespace PreorderPlatform.Entity.Repositories.CampaignRepositories
             return campaign;
         }
 
+        public async Task<bool> IsOwnerOrStaff(int userId, int campaignId)
+        {
+            bool res = false;
+            var searchCampaign = _context.Campaigns.Find(campaignId);
+            if (searchCampaign != null)
+            {
+                var businessId = searchCampaign.BusinessId;
+                var listUser = await _context.Users.Where(c => c.BusinessId == businessId).ToListAsync();
+                foreach (var user in listUser)
+                {
+                    if ((user.RoleId == 2 || user.RoleId == 3) && user.Id == userId)
+                    {
+                        res = true;
+                    }
+                }
+            }
 
+            return res;
+        }
     }
 }
