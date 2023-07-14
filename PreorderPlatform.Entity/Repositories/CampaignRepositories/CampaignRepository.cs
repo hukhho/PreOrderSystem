@@ -35,22 +35,17 @@ namespace PreorderPlatform.Entity.Repositories.CampaignRepositories
 
         public async Task<bool> IsOwnerOrStaff(int userId, int campaignId)
         {
-            bool res = false;
-            var searchCampaign = _context.Campaigns.Find(campaignId);
-            if (searchCampaign != null)
+            var campaign = await _context.Campaigns.FindAsync(campaignId);
+
+            if (campaign == null)
             {
-                var businessId = searchCampaign.BusinessId;
-                var listUser = await _context.Users.Where(c => c.BusinessId == businessId).ToListAsync();
-                foreach (var user in listUser)
-                {
-                    if ((user.RoleId == 2 || user.RoleId == 3) && user.Id == userId)
-                    {
-                        res = true;
-                    }
-                }
+                return false;
             }
 
-            return res;
+            var user = await _context.Users
+                .SingleOrDefaultAsync(u => u.BusinessId == campaign.BusinessId && u.Id == userId);
+
+            return user != null;
         }
     }
 }

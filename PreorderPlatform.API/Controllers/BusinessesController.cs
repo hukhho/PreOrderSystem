@@ -91,7 +91,7 @@ namespace PreorderPlatform.API.Controllers
 
 
         [HttpGet("{id}")]
-        [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]
+        [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")] //test tính năng nma nào nộp nhớ xóa
         [Authorize(Policy = "MustBeBusinessOwner")]
         public async Task<IActionResult> GetBusinessById(int id)
         {

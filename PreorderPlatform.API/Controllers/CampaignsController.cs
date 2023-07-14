@@ -52,7 +52,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Policy = "MustBeCampaignOwner")] //test tính năng nma nào nộp nhớ xóa
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //test tính năng nma nào nộp nhớ xóa
         public async Task<IActionResult> GetCampaignById(int id)
         {
             try
@@ -72,7 +72,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "MustBeCampaignOwner")]
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")]
         public async Task<IActionResult> CreateCampaign(CampaignCreateRequest model)
         {
             try
@@ -91,6 +91,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")]
         public async Task<IActionResult> UpdateCampaign(CampaignUpdateRequest model)
         {
             try
@@ -110,6 +111,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")]
         public async Task<IActionResult> DeleteCampaign(int id)
         {
             try

@@ -51,7 +51,7 @@ namespace PreorderPlatform.Service
                 // Add policies here. Here's an example:
                 options.AddPolicy("MustBeBusinessOwner", policy =>
                          policy.Requirements.Add(new MustBusinessOwnerRequirement()));
-                options.AddPolicy("MustBeCampaignOwner", policy =>
+                options.AddPolicy("MustBeCampaignOwnerOrStaff", policy =>
                          policy.Requirements.Add(new MustCampaignOwnerRequirement()));
 
             });
