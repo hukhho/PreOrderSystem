@@ -13,7 +13,7 @@ namespace PreorderPlatform.Entity.Models
             Payments = new HashSet<Payment>();
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Phone { get; set; }
@@ -24,8 +24,8 @@ namespace PreorderPlatform.Entity.Models
         public string? District { get; set; }
         public string? Province { get; set; }
         public bool? Status { get; set; }
-        public int? RoleId { get; set; }
-        public int? BusinessId { get; set; }
+        public Guid? RoleId { get; set; }
+        public Guid? BusinessId { get; set; }
 
         public virtual Business? Business { get; set; }
         public virtual Role? Role { get; set; }

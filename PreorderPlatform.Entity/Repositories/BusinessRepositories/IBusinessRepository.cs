@@ -9,8 +9,8 @@ namespace PreorderPlatform.Entity.Repositories.BusinessRepositories
 {
     public interface IBusinessRepository : IRepositoryBase<Business>
     {
-        Task<Business> GetBusinessByIdAsync(int id);
-        Task<Business> GetByOwnerIdAsync(int userId);
-        Task<bool> IsUserOwnerOfBusiness(int userId, int businessId);
+        Task<Business> GetBusinessByIdAsync(Guid id);
+        Task<Business> GetByOwnerIdAsync(Guid userId);
+        Task<bool> IsUserOwnerOfBusiness(Guid userId, Guid businessId);
     }
 }

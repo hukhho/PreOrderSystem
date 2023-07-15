@@ -63,9 +63,9 @@ namespace PreorderPlatform.API.Controllers
                     new ApiResponse<object>(null, $"Error fetching orders: {ex.Message}", false, null));
             }
         }
-        
+
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrderById(int id)
+        public async Task<IActionResult> GetOrderById(Guid id)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(int id)
+        public async Task<IActionResult> DeleteOrder(Guid id)
         {
             try
             {

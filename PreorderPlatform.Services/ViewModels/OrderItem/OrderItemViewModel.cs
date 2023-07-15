@@ -8,10 +8,10 @@ namespace PreorderPlatform.Service.ViewModels.OrderItem
 {
     public class OrderItemViewModel
     {
-        public int Id { get; set; }
-        public int? CampaignDetailId { get; set; }
+        public Guid Id { get; set; }
+        public Guid? CampaignDetailId { get; set; }
         public int? Quantity { get; set; }
         public decimal? UnitPrice { get; set; }
-        public int? OrderId { get; set; }
+        public Guid? OrderId { get; set; }
     }
 }

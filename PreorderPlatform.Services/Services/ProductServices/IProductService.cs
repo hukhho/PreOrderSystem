@@ -13,9 +13,9 @@ namespace PreorderPlatform.Service.Services.ProductServices
     public interface IProductService
     {
         Task<ProductResponse> CreateProductAsync(ProductCreateRequest model);
-        Task DeleteProductAsync(int id);
+        Task DeleteProductAsync(Guid productId);
         Task<List<ProductResponse>> GetAllProductsWithCategoryAsync();
-        Task<ProductByIdResponse> GetProductByIdAsync(int id);
+        Task<ProductByIdResponse> GetProductByIdAsync(Guid productId);
         Task<List<ProductResponse>> GetProductsAsync();
         Task UpdateProductAsync(ProductUpdateRequest model);
         Task<(IList<ProductResponse> products, int totalItems)> GetAsync(PaginationParam<ProductEnum.ProductSort> paginationModel, ProductSearchRequest filterModel);

@@ -18,8 +18,8 @@ namespace PreorderPlatform.Service.ViewModels.Campaign.Request
         [FromQuery]
         public DateTime? DateInRange { get; set; }
         public bool? Status { get; set; }
-        public int? OwnerId { get; set; }
-        public int? BusinessId { get; set; }
+        public Guid? OwnerId { get; set; }
+        public Guid? BusinessId { get; set; }
 
     }
 }

@@ -8,8 +8,8 @@ namespace PreorderPlatform.Service.ViewModels.BusinessPaymentCredential.Response
 {
     public class BusinessPaymentCredentialResponse
     {
-        public int Id { get; set; }
-        public int? BusinessId { get; set; }
+        public Guid Id { get; set; }
+        public Guid? BusinessId { get; set; }
         public string? BankAccountNumber { get; set; }
         public string? BankName { get; set; }
         public string? BankRecipientName { get; set; }

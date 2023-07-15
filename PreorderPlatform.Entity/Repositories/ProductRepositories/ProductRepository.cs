@@ -21,7 +21,7 @@ namespace PreorderPlatform.Entity.Repositories.ProductRepositories
             return await GetAllWithIncludeAsync(u => true, u => u.Category);
         }
 
-        public async Task<Product> GetProductByIdAsync(int id)
+        public async Task<Product> GetProductByIdAsync(Guid id)
         {
             var product = await GetWithIncludeAsync(
              p => p.Id == id,

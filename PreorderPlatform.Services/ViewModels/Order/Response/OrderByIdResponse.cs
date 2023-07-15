@@ -11,9 +11,9 @@ namespace PreorderPlatform.Service.ViewModels.Order.Response
 {
     public class OrderByIdResponse
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime? CreatedAt { get; set; }
-        public int? TotalQuantity { get; set; }
+        public Guid? TotalQuantity { get; set; }
         public decimal? TotalPrice { get; set; }
         public decimal? IsDeposited { get; set; }
         public string? Status { get; set; }

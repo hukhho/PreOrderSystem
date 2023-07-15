@@ -55,11 +55,11 @@ namespace PreorderPlatform.Service.Services.CampaignDetailServices
             }
         }
 
-        public async Task<CampaignPriceResponse> GetCampaignDetailByIdAsync(int id)
+public async Task<CampaignPriceResponse> GetCampaignDetailByIdAsync(Guid id)
         {
             try
             {
-                var campaignDetail = await _campaignDetailRepository.GetByIdAsync(id);
+var campaignDetail = await _campaignDetailRepository.GetByIdAsync(id);
 
                 if (campaignDetail == null)
                 {
@@ -75,7 +75,7 @@ namespace PreorderPlatform.Service.Services.CampaignDetailServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching campaign detail with ID {id}.", ex);
+throw new ServiceException($"An error occurred while fetching campaign detail with ID {id}.", ex);
             }
         }
 
@@ -97,26 +97,26 @@ namespace PreorderPlatform.Service.Services.CampaignDetailServices
         {
             try
             {
-                var campaignDetail = await _campaignDetailRepository.GetByIdAsync(model.Id);
+var campaignDetail = await _campaignDetailRepository.GetByIdAsync(model.Id);
                 campaignDetail = _mapper.Map(model, campaignDetail);
                 await _campaignDetailRepository.UpdateAsync(campaignDetail);
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while updating campaign detail with ID {model.Id}.", ex);
+throw new ServiceException($"An error occurred while updating campaign detail with ID {model.Id}.", ex);
             }
         }
 
-        public async Task DeleteCampaignDetailAsync(int id)
+public async Task DeleteCampaignDetailAsync(Guid id)
         {
             try
             {
-                var campaignDetail = await _campaignDetailRepository.GetByIdAsync(id);
+var campaignDetail = await _campaignDetailRepository.GetByIdAsync(id);
                 await _campaignDetailRepository.DeleteAsync(campaignDetail);
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while deleting campaign detail with ID {id}.", ex);
+throw new ServiceException($"An error occurred while deleting campaign detail with ID {id}.", ex);
             }
         }
         
@@ -157,3 +157,4 @@ namespace PreorderPlatform.Service.Services.CampaignDetailServices
 
 
 }
+

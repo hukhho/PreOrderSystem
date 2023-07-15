@@ -11,7 +11,7 @@ namespace PreorderPlatform.Service.ViewModels.BusinessPaymentCredential
     public class BusinessPaymentCredentialUpdateViewModel
     {
         [JsonIgnore]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [StringLength(30, MinimumLength = 6)]
         public string? BankAccountNumber { get; set; }
@@ -38,7 +38,7 @@ namespace PreorderPlatform.Service.ViewModels.BusinessPaymentCredential
         public bool IsMomoActive { get; set; }
 
         [JsonIgnore]
-        public int BusinessId { get; set; }
+        public Guid BusinessId { get; set; }
         
         [Required]
         public bool IsMain { get; set; }

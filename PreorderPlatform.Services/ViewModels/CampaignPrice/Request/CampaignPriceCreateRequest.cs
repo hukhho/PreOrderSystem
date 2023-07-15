@@ -12,7 +12,7 @@ namespace PreorderPlatform.Service.ViewModels.CampaignPrice.Request
         public int? Phase { get; set; }
         public int? AllowedQuantity { get; set; }
         public int? TotalOrdered { get; set; }
-        public int? CampaignId { get; set; }
+        public Guid? CampaignId { get; set; }
         public decimal? Price { get; set; }
     }
 }

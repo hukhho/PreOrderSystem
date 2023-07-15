@@ -31,8 +31,8 @@ namespace PreorderPlatform.Service.ViewModels.User.Request
         public string? Password { get; set; }
 
         [Required(ErrorMessage = "Role ID is required.")]
-        [AllowedRoleIds(2, 3, 4, ErrorMessage = "Invalid Role ID. Allowed values are 2, 3, or 4.")]
-        public int? RoleId { get; set; }
+        //[AllowedRoleIds("2", "3", "4", ErrorMessage = "Invalid Role ID. Allowed values are 2, 3, or 4.")]
+        public Guid? RoleId { get; set; }
 
         [JsonIgnore]
         public bool? Status { get; set; }

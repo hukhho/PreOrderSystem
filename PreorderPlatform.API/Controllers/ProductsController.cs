@@ -24,7 +24,7 @@ namespace PreorderPlatform.API.Controllers
         {
             _productService = productService;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetAllProducts(
             [FromQuery] PaginationParam<ProductEnum.ProductSort> paginationModel,
@@ -52,7 +52,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProductById(int id)
+        public async Task<IActionResult> GetProductById(Guid id)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(Guid id)
         {
             try
             {

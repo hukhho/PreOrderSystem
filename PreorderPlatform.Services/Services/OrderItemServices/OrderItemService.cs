@@ -37,15 +37,15 @@ namespace PreorderPlatform.Service.Services.OrderItemServices
             }
         }
 
-        public async Task<OrderItemViewModel> GetOrderItemByIdAsync(int id)
+public async Task<OrderItemViewModel> GetOrderItemByIdAsync(Guid id)
         {
             try
             {
-                var orderItem = await _orderItemRepository.GetByIdAsync(id);
+var orderItem = await _orderItemRepository.GetByIdAsync(id);
 
                 if (orderItem == null)
                 {
-                    throw new NotFoundException($"Order item with ID {id} was not found.");
+throw new NotFoundException($"Order item with ID {id} was not found.");
                 }
 
                 return _mapper.Map<OrderItemViewModel>(orderItem);
@@ -57,7 +57,7 @@ namespace PreorderPlatform.Service.Services.OrderItemServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching order item with ID {id}.", ex);
+throw new ServiceException($"An error occurred while fetching order item with ID {id}.", ex);
             }
         }
 
@@ -75,30 +75,30 @@ namespace PreorderPlatform.Service.Services.OrderItemServices
             }
         }
 
-        public async Task UpdateOrderItemAsync(OrderItemUpdateViewModel model)
+public async Task UpdateOrderItemAsync(OrderItemUpdateViewModel model)
         {
             try
             {
-                var orderItem = await _orderItemRepository.GetByIdAsync(model.Id);
+var orderItem = await _orderItemRepository.GetByIdAsync(model.Id);
                 orderItem = _mapper.Map(model, orderItem);
                 await _orderItemRepository.UpdateAsync(orderItem);
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while updating order item with ID {model.Id}.", ex);
+throw new ServiceException($"An error occurred while updating order item with ID {model.Id}.", ex);
             }
         }
 
-        public async Task DeleteOrderItemAsync(int id)
+public async Task DeleteOrderItemAsync(Guid id)
         {
             try
             {
-                var orderItem = await _orderItemRepository.GetByIdAsync(id);
+var orderItem = await _orderItemRepository.GetByIdAsync(id);
                 await _orderItemRepository.DeleteAsync(orderItem);
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while deleting order item with ID {id}.", ex);
+throw new ServiceException($"An error occurred while deleting order item with ID {id}.", ex);
             }
         }
         public async Task<(IList<OrderItemViewModel> orderItems, int totalItems)> GetAsync(PaginationParam<OrderItemEnum.OrderItemSort> paginationModel, OrderItemSearchRequest filterModel)
@@ -131,3 +131,4 @@ namespace PreorderPlatform.Service.Services.OrderItemServices
         
     }
 }
+

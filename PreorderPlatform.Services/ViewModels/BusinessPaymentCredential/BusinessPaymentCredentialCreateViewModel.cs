@@ -36,7 +36,7 @@ namespace PreorderPlatform.Service.ViewModels.BusinessPaymentCredential
         public bool IsMomoActive { get; set; }
 
         [JsonIgnore]
-        public int BusinessId { get; set; }
+        public Guid BusinessId { get; set; }
 
         [JsonIgnore]
         public DateTime? CreateAt { get; set; }

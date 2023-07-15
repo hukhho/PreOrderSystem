@@ -425,3 +425,4 @@ namespace PreorderPlatform.Entity.Models
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
+

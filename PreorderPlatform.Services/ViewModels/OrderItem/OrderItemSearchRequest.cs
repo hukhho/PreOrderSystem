@@ -8,7 +8,7 @@ namespace PreorderPlatform.Service.ViewModels.OrderItem
 {
     public class OrderItemSearchRequest
     {
-        public int? CampaignDetailId { get; set; }
-        public int? OrderId { get; set; }
+        public Guid? CampaignDetailId { get; set; }
+        public Guid? OrderId { get; set; }
     }
 }

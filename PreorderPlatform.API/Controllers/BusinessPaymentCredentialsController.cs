@@ -49,13 +49,13 @@ namespace PreorderPlatform.API.Controllers
 
             if (roleName != "ADMIN")
             {
-                int userIdInt;
-                if (!int.TryParse(userId, out userIdInt))
+                Guid userIdInt;
+                if (!Guid.TryParse(userId, out userIdInt))
                 {
                     return BadRequest(new ApiResponse<object>(null, "Invalid user ID format.", false, null));
                 }
                 var business = await _businessPaymentCredentialService.GetBusinessByOwnerIdAsync(userIdInt);
-                int businessId = business.Id;
+                Guid businessId = business.Id;
                 searchModel.BusinessId = businessId;
             }
             try
@@ -80,7 +80,7 @@ namespace PreorderPlatform.API.Controllers
 
         [HttpGet("{id}")]
         [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]
-        public async Task<IActionResult> GetBusinessPaymentCredentialsById(int id)
+        public async Task<IActionResult> GetBusinessPaymentCredentialsById(Guid id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
@@ -107,7 +107,7 @@ namespace PreorderPlatform.API.Controllers
             }
         }
 
-      
+
         [HttpPost]
         public async Task<IActionResult> CreateBusinessPaymentCredentials(BusinessPaymentCredentialCreateViewModel model)
         {
@@ -116,8 +116,8 @@ namespace PreorderPlatform.API.Controllers
             {
                 return Unauthorized(new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
             }
-            int userIdInt;
-            if (!int.TryParse(userId, out userIdInt))
+            Guid userIdInt;
+            if (!Guid.TryParse(userId, out userIdInt))
             {
                 return BadRequest(new ApiResponse<object>(null, "Invalid user ID format.", false, null));
             }
@@ -128,7 +128,7 @@ namespace PreorderPlatform.API.Controllers
             {
                 return StatusCode(StatusCodes.Status403Forbidden, new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
             }
-            int businessId = business.Id;
+            Guid businessId = business.Id;
 
             var businessPaymentCredentialList = await _businessPaymentCredentialService.GetBusinessPaymentCredentialsAsync();
 
@@ -160,7 +160,7 @@ namespace PreorderPlatform.API.Controllers
 
         [HttpPut("{id}")]
         [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]
-        public async Task<IActionResult> UpdateBusinessPaymentCredentials(int id, BusinessPaymentCredentialUpdateViewModel model)
+        public async Task<IActionResult> UpdateBusinessPaymentCredentials(Guid id, BusinessPaymentCredentialUpdateViewModel model)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
@@ -175,18 +175,18 @@ namespace PreorderPlatform.API.Controllers
             }
             try
             {
-                int userIdInt;
-                if (!int.TryParse(userId, out userIdInt))
+                Guid userIdInt;
+                if (!Guid.TryParse(userId, out userIdInt))
                 {
                     return BadRequest(new ApiResponse<object>(null, "Invalid user ID format.", false, null));
                 }
                 var business = await _businessPaymentCredentialService.GetBusinessByOwnerIdAsync(userIdInt);
-                int businessId = business.Id;
+                Guid businessId = business.Id;
 
                 if (roleName != "ADMIN")
                 {
                     var businessPaymentCredentialByIdResponse = await _businessPaymentCredentialService.GetBusinessPaymentCredentialByIdAsync(id, userId);
-                    
+
                     if (businessPaymentCredentialByIdResponse == null)
                     {
                         return NotFound(new ApiResponse<object>(null, $"business Payment Credential with ID {id} not found.", false, null));
@@ -196,7 +196,8 @@ namespace PreorderPlatform.API.Controllers
                     model.Id = id;
 
                     await _businessPaymentCredentialService.UpdateBusinessPaymentCredentialAsync(model);
-                } else
+                }
+                else
                 {
 
                     model.BusinessId = businessId;
@@ -205,7 +206,7 @@ namespace PreorderPlatform.API.Controllers
                     await _businessPaymentCredentialService.UpdateBusinessPaymentCredentialAsync(model);
                 }
 
-                
+
                 return Ok(new ApiResponse<object>(null, "Business payment credentials updated successfully.", true, null));
             }
             catch (NotFoundException ex)
@@ -220,7 +221,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBusinessPaymentCredentials(int id)
+        public async Task<IActionResult> DeleteBusinessPaymentCredentials(Guid id)
         {
             try
             {

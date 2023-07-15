@@ -13,9 +13,9 @@ namespace PreorderPlatform.Service.Services.CampaignServices
     public interface ICampaignService
     {
         Task<CampaignResponse> CreateCampaignAsync(CampaignCreateRequest model);
-        Task DeleteCampaignAsync(int id);
+        Task DeleteCampaignAsync(Guid id);
         //Task<List<CampaignResponse>> GetAllCampaignsWithOwnerAndBusinessAndCampaignDetailsAsync();
-        Task<CampaignDetailResponse> GetCampaignByIdAsync(int id);
+        Task<CampaignDetailResponse> GetCampaignByIdAsync(Guid id);
         Task<List<CampaignResponse>> GetCampaignsAsync();
         Task UpdateCampaignAsync(CampaignUpdateRequest model);
         //Get all campaign/filtered with sort&pagiantion

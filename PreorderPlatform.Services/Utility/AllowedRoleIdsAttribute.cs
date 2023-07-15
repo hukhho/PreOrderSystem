@@ -5,9 +5,9 @@ namespace PreorderPlatform.Services.Utility
 {
     public class AllowedRoleIdsAttribute : ValidationAttribute
     {
-        private readonly int[] _allowedRoleIds;
+        private readonly Guid[] _allowedRoleIds;
 
-        public AllowedRoleIdsAttribute(params int[] allowedRoleIds)
+        public AllowedRoleIdsAttribute(params Guid[] allowedRoleIds)
         {
             _allowedRoleIds = allowedRoleIds;
         }
@@ -19,11 +19,11 @@ namespace PreorderPlatform.Services.Utility
                 return new ValidationResult("Role ID cannot be null");
             }
 
-            int roleId = (int)value;
+            Guid roleId = (Guid)value;
 
             if (Array.IndexOf(_allowedRoleIds, roleId) == -1)
             {
-                return new ValidationResult("Invalid Role ID. Allowed values are 2, 3, or 4.");
+                return new ValidationResult("Invalid Role ID. Allowed values are 'BUSINESS_OWNER', 'BUSINESS_STAFF', or 'CUSTOMER'.");
             }
 
             return ValidationResult.Success;

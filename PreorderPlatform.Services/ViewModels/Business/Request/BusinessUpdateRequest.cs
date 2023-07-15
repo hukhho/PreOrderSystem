@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using PreorderPlatform.Services.Utility;
 using Swashbuckle.AspNetCore.Annotations;
@@ -8,7 +9,7 @@ namespace PreorderPlatform.Service.ViewModels.Business.Request
     public class BusinessUpdateRequest
     {
         [JsonIgnore]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(100)]

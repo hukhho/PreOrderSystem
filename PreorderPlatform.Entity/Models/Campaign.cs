@@ -10,10 +10,10 @@ namespace PreorderPlatform.Entity.Models
             CampaignDetails = new HashSet<CampaignDetail>();
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
-        public int? ProductId { get; set; }
+        public Guid? ProductId { get; set; }
         public DateTime? StartAt { get; set; }
         public DateTime? EndAt { get; set; }
         public int? DepositPercent { get; set; }
@@ -21,8 +21,8 @@ namespace PreorderPlatform.Entity.Models
         public DateTime? CreateAt { get; set; }
         public DateTime? ModifiedAt { get; set; }
         public bool? Status { get; set; }
-        public int? OwnerId { get; set; }
-        public int? BusinessId { get; set; }
+        public Guid? OwnerId { get; set; }
+        public Guid? BusinessId { get; set; }
 
         public virtual Business? Business { get; set; }
         public virtual User? Owner { get; set; }

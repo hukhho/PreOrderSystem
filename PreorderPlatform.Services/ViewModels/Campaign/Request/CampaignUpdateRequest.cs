@@ -8,7 +8,7 @@ namespace PreorderPlatform.Service.ViewModels.Campaign.Request
 {
     public class CampaignUpdateRequest
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public DateTime? StartAt { get; set; }
@@ -18,7 +18,8 @@ namespace PreorderPlatform.Service.ViewModels.Campaign.Request
         public DateTime? CreateAt { get; set; }
         public DateTime? ModifiedAt { get; set; }
         public bool? Status { get; set; }
-        public int? OwnerId { get; set; }
-        public int? BusinessId { get; set; }
+        public Guid? OwnerId { get; set; }
+        public Guid? BusinessId { get; set; }
+        public Guid? SomethingId { get; set; }
     }
 }

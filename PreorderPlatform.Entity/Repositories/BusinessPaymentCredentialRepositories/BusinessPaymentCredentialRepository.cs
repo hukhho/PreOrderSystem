@@ -11,7 +11,7 @@ namespace PreorderPlatform.Entity.Repositories.BusinessPaymentCredentialReposito
         }
 
 
-        public async Task<BusinessPaymentCredential> GetBusinessPaymentCredentialByIdAsync(int id)
+        public async Task<BusinessPaymentCredential> GetBusinessPaymentCredentialByIdAsync(Guid id)
         {
             var businessPayment = await GetWithIncludeAsync(
                 b => b.Id == id,

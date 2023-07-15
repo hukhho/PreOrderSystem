@@ -14,5 +14,11 @@ namespace PreorderPlatform.Entity.Repositories.CampaignDetailRepositories
         {
             return await GetAllAsync();
         }
+
+        // Edit: Convert int id to Guid
+        public async Task<CampaignDetail> GetCampaignDetailByIdAsync(Guid campaignDetailId)
+        {
+            return await GetByIdAsync(campaignDetailId);
+        }
     }
 }

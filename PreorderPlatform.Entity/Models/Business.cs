@@ -13,12 +13,12 @@ namespace PreorderPlatform.Entity.Models
             Users = new HashSet<User>();
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? Phone { get; set; }
         public string? Email { get; set; }
-        public int? OwnerId { get; set; }
+        public Guid? OwnerId { get; set; }
         public bool? Status { get; set; }
 
         public virtual User? Owner { get; set; }

@@ -10,7 +10,7 @@ namespace PreorderPlatform.Entity.Repositories.OrderRepositories
 
         }
 
-        public async Task<Order> GetOrderByIdAsync(int id)
+        public async Task<Order> GetOrderByIdAsync(Guid id)
         {
             var order = await GetWithIncludeAsync(
                 o => o.Id == id,

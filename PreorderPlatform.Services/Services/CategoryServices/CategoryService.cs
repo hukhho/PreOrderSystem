@@ -40,15 +40,15 @@ namespace PreorderPlatform.Service.Services.CategoryServices
             }
         }
 
-        public async Task<CategoryViewModel> GetCategoryByIdAsync(int id)
+public async Task<CategoryViewModel> GetCategoryByIdAsync(Guid id)
         {
             try
             {
-                var category = await _categoryRepository.GetByIdAsync(id);
+var category = await _categoryRepository.GetByIdAsync(id);
 
                 if (category == null)
                 {
-                    throw new NotFoundException($"Category with ID {id} was not found.");
+throw new NotFoundException($"Category with ID {id} was not found.");
                 }
 
                 return _mapper.Map<CategoryViewModel>(category);
@@ -60,7 +60,7 @@ namespace PreorderPlatform.Service.Services.CategoryServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching category with ID {id}.", ex);
+throw new ServiceException($"An error occurred while fetching category with ID {id}.", ex);
             }
         }
 
@@ -78,30 +78,30 @@ namespace PreorderPlatform.Service.Services.CategoryServices
             }
         }
 
-        public async Task UpdateCategoryAsync(CategoryUpdateViewModel model)
+public async Task UpdateCategoryAsync(CategoryUpdateViewModel model)
         {
             try
             {
-                var category = await _categoryRepository.GetByIdAsync(model.Id);
+var category = await _categoryRepository.GetByIdAsync(model.Id);
                 category = _mapper.Map(model, category);
                 await _categoryRepository.UpdateAsync(category);
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while updating category with ID {model.Id}.", ex);
+throw new ServiceException($"An error occurred while updating category with ID {model.Id}.", ex);
             }
         }
 
-        public async Task DeleteCategoryAsync(int id)
+public async Task DeleteCategoryAsync(Guid id)
         {
             try
             {
-                var category = await _categoryRepository.GetByIdAsync(id);
+var category = await _categoryRepository.GetByIdAsync(id);
                 await _categoryRepository.DeleteAsync(category);
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while deleting category with ID {id}.", ex);
+throw new ServiceException($"An error occurred while deleting category with ID {id}.", ex);
             }
         }
 
@@ -136,3 +136,4 @@ namespace PreorderPlatform.Service.Services.CategoryServices
         
     }
 }
+

@@ -19,7 +19,7 @@ namespace PreorderPlatform.API.Controllers
         private readonly IRoleService _roleService;
         private readonly IMapper _mapper;
         private readonly ILogger<RolesController> _logger;
-       
+
         public RolesController(IRoleService roleService, IMapper mapper, ILogger<RolesController> logger)
         {
             _roleService = roleService;
@@ -30,7 +30,7 @@ namespace PreorderPlatform.API.Controllers
         [HttpPost("/createRole")]
         public IActionResult CreateRoleTest(Role role)
         {
-           
+
             return Ok("Oke");
         }
 
@@ -53,7 +53,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRoleById(int id)
+        public async Task<IActionResult> GetRoleById(Guid id)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRole(int id)
+        public async Task<IActionResult> DeleteRole(Guid id)
         {
             try
             {

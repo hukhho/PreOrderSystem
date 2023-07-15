@@ -8,7 +8,7 @@ namespace PreorderPlatform.Service.ViewModels.Order
 {
     public class OrderUpdateViewModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime? CreatedAt { get; set; }
         public int? TotalQuantity { get; set; }
         public decimal? TotalPrice { get; set; }
@@ -23,6 +23,6 @@ namespace PreorderPlatform.Service.ViewModels.Order
         public string? ShippingCode { get; set; }
         public decimal? ShippingPrice { get; set; }
         public string? ShippingStatus { get; set; }
-        public int? UserId { get; set; }
+        public Guid? UserId { get; set; }
     }
 }

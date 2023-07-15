@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PreorderPlatform.Entity.Models;
+using System;
 using System.Collections.Immutable;
 
 namespace PreorderPlatform.Entity.Repositories.BusinessRepositories
@@ -14,7 +15,7 @@ namespace PreorderPlatform.Entity.Repositories.BusinessRepositories
         }
 
         // Add any additional methods specific to BusinessRepository here...
-        public async Task<Business> GetBusinessByIdAsync(int id)
+        public async Task<Business> GetBusinessByIdAsync(Guid id)
         {
             var businesses = await GetWithIncludeAsync(
                 b => b.Id == id,
@@ -31,7 +32,7 @@ namespace PreorderPlatform.Entity.Repositories.BusinessRepositories
             //}
             return businesses;
         }
-        public async Task<bool> IsUserOwnerOfBusiness(int userId, int businessId)
+        public async Task<bool> IsUserOwnerOfBusiness(Guid userId, Guid businessId)
         {
             var business = await _context.Businesses
                 .AsNoTracking()
@@ -40,7 +41,7 @@ namespace PreorderPlatform.Entity.Repositories.BusinessRepositories
             return business != null;
         }
 
-        public async Task<Business> GetByOwnerIdAsync(int userId)
+        public async Task<Business> GetByOwnerIdAsync(Guid userId)
         {
             var business = await GetWithIncludeAsync(
                 b => b.OwnerId == userId,

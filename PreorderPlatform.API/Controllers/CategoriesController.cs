@@ -50,7 +50,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategoryById(int id)
+        public async Task<IActionResult> GetCategoryById(Guid id)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategory(Guid id)
         {
             try
             {

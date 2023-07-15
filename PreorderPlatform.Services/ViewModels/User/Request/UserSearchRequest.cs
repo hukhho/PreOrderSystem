@@ -16,7 +16,7 @@ namespace PreorderPlatform.Service.ViewModels.User.Request
         public string? Ward { get; set; }
         public string? District { get; set; }
         public string? Province { get; set; }
-        public int? RoleId { get; set; }
+        public Guid? RoleId { get; set; }
         public bool? Status { get; set; }
     }
 }

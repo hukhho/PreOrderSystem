@@ -20,15 +20,9 @@ namespace PreorderPlatform.Service.ViewModels.Business.Request
         [EmailAddress]
         public string Email { get; set; }
 
-        /// <summary>
-        /// This property should be ignored by Swashbuckle/Swagger.
-        /// </summary>
         [JsonIgnore]
-        public int OwnerId { get; set; }
-
-        /// <summary>
-        /// This property should be ignored by Swashbuckle/Swagger.
-        /// </summary>
+        public Guid OwnerId { get; set; }
+        
         [JsonIgnore]
         public bool Status { get; set; }
     }

@@ -1,24 +1,25 @@
-﻿using AutoMapper;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.OrderRepositories;
-using PreorderPlatform.Service.Services.OrderServices;
-using PreorderPlatform.Service.ViewModels.Order;
-using PreorderPlatform.Service.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using PreorderPlatform.Service.ViewModels.Order.Response;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.ViewModels.Order.Request;
-using PreorderPlatform.Service.Utility;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Entity.Repositories.OrderRepositories;
+using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.Exceptions;
+using PreorderPlatform.Service.Services.OrderServices;
+using PreorderPlatform.Service.Utility;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.ViewModels.Order;
+using PreorderPlatform.Service.ViewModels.Order.Request;
+using PreorderPlatform.Service.ViewModels.Order.Response;
 
 namespace PreorderPlatform.Service.Services.OrderServices
 {
     internal class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+
         private readonly IMapper _mapper;
 
         public OrderService(IOrderRepository orderRepository, IMapper mapper)
@@ -36,11 +37,12 @@ namespace PreorderPlatform.Service.Services.OrderServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while fetching orders.", ex);
+                throw new ServiceException("An error occurred while fetching orders.",
+                    ex);
             }
         }
 
-        public async Task<OrderByIdResponse> GetOrderByIdAsync(int id)
+        public async Task<OrderByIdResponse> GetOrderByIdAsync(Guid id)
         {
             try
             {
@@ -60,11 +62,13 @@ namespace PreorderPlatform.Service.Services.OrderServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching order with ID {id}.", ex);
+                throw new ServiceException($"An error occurred while fetching order with ID {id}.",
+                    ex);
             }
         }
 
-        public async Task<OrderViewModel> CreateOrderAsync(OrderCreateViewModel model)
+        public async Task<OrderViewModel>
+        CreateOrderAsync(OrderCreateViewModel model)
         {
             try
             {
@@ -74,7 +78,8 @@ namespace PreorderPlatform.Service.Services.OrderServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while creating the order.", ex);
+                throw new ServiceException("An error occurred while creating the order.",
+                    ex);
             }
         }
 
@@ -88,11 +93,12 @@ namespace PreorderPlatform.Service.Services.OrderServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while updating order with ID {model.Id}.", ex);
+                throw new ServiceException($"An error occurred while updating order with ID {model.Id}.",
+                    ex);
             }
         }
 
-        public async Task DeleteOrderAsync(int id)
+        public async Task DeleteOrderAsync(Guid id)
         {
             try
             {
@@ -101,11 +107,16 @@ namespace PreorderPlatform.Service.Services.OrderServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while deleting order with ID {id}.", ex);
+                throw new ServiceException($"An error occurred while deleting order with ID {id}.",
+                    ex);
             }
         }
 
-        public async Task<(IList<OrderResponse> orders, int totalItems)> GetAsync(PaginationParam<OrderEnum.OrderSort> paginationModel, OrderSearchRequest filterModel)
+        public async Task<(IList<OrderResponse> orders, int totalItems)>
+        GetAsync(
+            PaginationParam<OrderEnum.OrderSort> paginationModel,
+            OrderSearchRequest filterModel
+        )
         {
             try
             {
@@ -117,14 +128,21 @@ namespace PreorderPlatform.Service.Services.OrderServices
                 var query = _orderRepository.Table;
 
                 query = query.GetWithSearch(filterModel);
-                query = query.FilterOrderByDate(o => o.CreatedAt, startDate, endDate);
+                query =
+                    query
+                        .FilterOrderByDate(o => o.CreatedAt,
+                        startDate,
+                        endDate);
+
                 // Calculate the total number of items before applying pagination
                 int totalItems = await query.CountAsync();
 
-             
-                query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder)
-                    .GetWithPaging(paginationModel.Page, paginationModel.PageSize);
-
+                query =
+                    query
+                        .GetWithSorting(paginationModel.SortKey.ToString(),
+                        paginationModel.SortOrder)
+                        .GetWithPaging(paginationModel.Page,
+                        paginationModel.PageSize);
 
                 var orderList = await query.ToListAsync();
                 var res = _mapper.Map<List<OrderResponse>>(orderList);
@@ -134,7 +152,8 @@ namespace PreorderPlatform.Service.Services.OrderServices
             catch (Exception e)
             {
                 Console.WriteLine("Exception: " + e.Message);
-                throw new ServiceException("An error occurred while fetching orders.", e);
+                throw new ServiceException("An error occurred while fetching orders.",
+                    e);
             }
         }
     }

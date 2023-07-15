@@ -1,26 +1,30 @@
-﻿using AutoMapper;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.PaymentRepositories;
-using PreorderPlatform.Service.ViewModels.Payment;
-using PreorderPlatform.Service.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using PreorderPlatform.Service.Utility;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.Enum;
 using MoMo;
 using Newtonsoft.Json.Linq;
+using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Entity.Repositories.PaymentRepositories;
+using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.Exceptions;
+using PreorderPlatform.Service.Utility;
+using PreorderPlatform.Service.Utility.Pagination;
+using PreorderPlatform.Service.ViewModels.Payment;
 
 namespace PreorderPlatform.Service.Services.PaymentServices
 {
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepository _paymentRepository;
+
         private readonly IMapper _mapper;
 
-        public PaymentService(IPaymentRepository paymentRepository, IMapper mapper)
+        public PaymentService(
+            IPaymentRepository paymentRepository,
+            IMapper mapper
+        )
         {
             _paymentRepository = paymentRepository;
             _mapper = mapper;
@@ -31,7 +35,8 @@ namespace PreorderPlatform.Service.Services.PaymentServices
             try
             {
                 //request params need to request to MoMo system
-                string endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
+                string endpoint =
+                    "https://test-payment.momo.vn/v2/gateway/api/create";
                 string partnerCode = "MOMO5RGX20191128";
                 string accessKey = "M8brj9K6E22vXoDB";
                 string serectkey = "nqQiVSgDMy809JoPF6OzP5OdBUB550Y4";
@@ -46,60 +51,72 @@ namespace PreorderPlatform.Service.Services.PaymentServices
                 string extraData = "";
 
                 //Before sign HMAC SHA256 signature
-                string rawHash = "accessKey=" + accessKey +
-                    "&amount=" + amount +
-                    "&extraData=" + extraData +
-                    "&ipnUrl=" + ipnUrl +
-                    "&orderId=" + orderId +
-                    "&orderInfo=" + orderInfo +
-                    "&partnerCode=" + partnerCode +
-                    "&redirectUrl=" + redirectUrl +
-                    "&requestId=" + requestId +
-                    "&requestType=" + requestType
-                    ;
+                string rawHash =
+                    "accessKey=" +
+                    accessKey +
+                    "&amount=" +
+                    amount +
+                    "&extraData=" +
+                    extraData +
+                    "&ipnUrl=" +
+                    ipnUrl +
+                    "&orderId=" +
+                    orderId +
+                    "&orderInfo=" +
+                    orderInfo +
+                    "&partnerCode=" +
+                    partnerCode +
+                    "&redirectUrl=" +
+                    redirectUrl +
+                    "&requestId=" +
+                    requestId +
+                    "&requestType=" +
+                    requestType;
 
                 //log.Debug("rawHash = " + rawHash);
-
                 MoMoSecurity crypto = new MoMoSecurity();
+
                 //sign signature SHA256
                 string signature = crypto.signSHA256(rawHash, serectkey);
+
                 //log.Debug("Signature = " + signature);
-
                 //build body json request
-                JObject message = new JObject
-            {
-                { "partnerCode", partnerCode },
-                { "partnerName", "Test" },
-                { "storeId", "MomoTestStore" },
-                { "requestId", requestId },
-                { "amount", amount },
-                { "orderId", orderId },
-                { "orderInfo", orderInfo },
-                { "redirectUrl", redirectUrl },
-                { "ipnUrl", ipnUrl },
-                { "lang", "en" },
-                { "extraData", extraData },
-                { "requestType", requestType },
-                { "signature", signature }
+                JObject message =
+                    new JObject {
+                        { "partnerCode", partnerCode },
+                        { "partnerName", "Test" },
+                        { "storeId", "MomoTestStore" },
+                        { "requestId", requestId },
+                        { "amount", amount },
+                        { "orderId", orderId },
+                        { "orderInfo", orderInfo },
+                        { "redirectUrl", redirectUrl },
+                        { "ipnUrl", ipnUrl },
+                        { "lang", "en" },
+                        { "extraData", extraData },
+                        { "requestType", requestType },
+                        { "signature", signature }
+                    };
 
-            };
                 //log.Debug("Json request to MoMo: " + message.ToString());
-                string responseFromMomo = PaymentRequest.sendPaymentRequest(endpoint, message.ToString());
+                string responseFromMomo =
+                    PaymentRequest
+                        .sendPaymentRequest(endpoint, message.ToString());
 
                 JObject jmessage = JObject.Parse(responseFromMomo);
+
                 //log.Debug("Return from MoMo: " + jmessage.ToString());
                 //DialogResult result = MessageBox.Show(responseFromMomo, "Open in browser", MessageBoxButtons.OKCancel);
-           
                 jmessage.GetValue("payUrl").ToString();
 
                 Console.WriteLine($"Momo {jmessage}");
 
                 return jmessage;
-
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while fetching payments.", ex);
+                throw new ServiceException("An error occurred while fetching payments.",
+                    ex);
             }
         }
 
@@ -107,8 +124,10 @@ namespace PreorderPlatform.Service.Services.PaymentServices
         {
             try
             {
-                string url = "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-                string returnUrl = "https://localhost:44393/Home/PaymentConfirm";
+                string url =
+                    "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+                string returnUrl =
+                    "https://localhost:44393/Home/PaymentConfirm";
 
                 string tmnCode = "B3GJ4EAH";
                 string hashSecret = "RAOFLVMYIXMFIPSSRIFYIAWLBOSIJTPQ";
@@ -120,7 +139,9 @@ namespace PreorderPlatform.Service.Services.PaymentServices
                 pay.AddRequestData("vnp_TmnCode", tmnCode); //Mã website của merchant trên hệ thống của VNPAY (khi đăng ký tài khoản sẽ có trong mail VNPAY gửi về)
                 pay.AddRequestData("vnp_Amount", "1000000"); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
                 pay.AddRequestData("vnp_BankCode", ""); //Mã Ngân hàng thanh toán (tham khảo: https://sandbox.vnpayment.vn/apis/danh-sach-ngan-hang/), có thể để trống, người dùng có thể chọn trên cổng thanh toán VNPAY
-                pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss")); //ngày thanh toán theo định dạng yyyyMMddHHmmss
+                pay
+                    .AddRequestData("vnp_CreateDate",
+                    DateTime.Now.ToString("yyyyMMddHHmmss")); //ngày thanh toán theo định dạng yyyyMMddHHmmss
                 pay.AddRequestData("vnp_CurrCode", "VND"); //Đơn vị tiền tệ sử dụng thanh toán. Hiện tại chỉ hỗ trợ VND
                 pay.AddRequestData("vnp_IpAddr", "192.168.1.1"); //Địa chỉ IP của khách hàng thực hiện giao dịch
                 pay.AddRequestData("vnp_Locale", "vn"); //Ngôn ngữ giao diện hiển thị - Tiếng Việt (vn), Tiếng Anh (en)
@@ -132,11 +153,11 @@ namespace PreorderPlatform.Service.Services.PaymentServices
                 string paymentUrl = pay.CreateRequestUrl(url, hashSecret);
 
                 return (paymentUrl);
-
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while fetching payments.", ex);
+                throw new ServiceException("An error occurred while fetching payments.",
+                    ex);
             }
         }
 
@@ -149,11 +170,12 @@ namespace PreorderPlatform.Service.Services.PaymentServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while fetching payments.", ex);
+                throw new ServiceException("An error occurred while fetching payments.",
+                    ex);
             }
         }
 
-        public async Task<PaymentViewModel> GetPaymentByIdAsync(int id)
+        public async Task<PaymentViewModel> GetPaymentByIdAsync(Guid id)
         {
             try
             {
@@ -161,7 +183,7 @@ namespace PreorderPlatform.Service.Services.PaymentServices
 
                 if (payment == null)
                 {
-                    throw new NotFoundException($"Payment with ID {id} was not found.");
+                    throw new NotFoundException($"Payment with ID  {id} was not found.");
                 }
 
                 return _mapper.Map<PaymentViewModel>(payment);
@@ -173,11 +195,13 @@ namespace PreorderPlatform.Service.Services.PaymentServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching payment with ID {id}.", ex);
+                throw new ServiceException($"An error occurred while fetching payment with ID {id}. ", ex);
+
             }
         }
 
-        public async Task<PaymentViewModel> CreatePaymentAsync(PaymentCreateViewModel model)
+        public async Task<PaymentViewModel>
+        CreatePaymentAsync(PaymentCreateViewModel model)
         {
             try
             {
@@ -187,7 +211,8 @@ namespace PreorderPlatform.Service.Services.PaymentServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while creating the payment.", ex);
+                throw new ServiceException("An error occurred while creating the payment.",
+                    ex);
             }
         }
 
@@ -201,11 +226,12 @@ namespace PreorderPlatform.Service.Services.PaymentServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while updating payment with ID {model.Id}.", ex);
+                throw new ServiceException($"An error occurred while updating payment with ID {model.Id}.",
+                    ex);
             }
         }
 
-        public async Task DeletePaymentAsync(int id)
+        public async Task DeletePaymentAsync(Guid id)
         {
             try
             {
@@ -214,11 +240,16 @@ namespace PreorderPlatform.Service.Services.PaymentServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while deleting payment with ID {id}.", ex);
+                throw new ServiceException($"An error occurred while deleting payment with ID {id}.",
+                    ex);
             }
         }
 
-        public async Task<(IList<PaymentViewModel> payments, int totalItems)> GetAsync(PaginationParam<PaymentEnum.PaymentSort> paginationModel, PaymentSearchRequest filterModel)
+        public async Task<(IList<PaymentViewModel> payments, int totalItems)>
+        GetAsync(
+            PaginationParam<PaymentEnum.PaymentSort> paginationModel,
+            PaymentSearchRequest filterModel
+        )
         {
             try
             {
@@ -229,8 +260,12 @@ namespace PreorderPlatform.Service.Services.PaymentServices
                 // Calculate the total number of items before applying pagination
                 int totalItems = await query.CountAsync();
 
-                query = query.GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder) //sort
-                            .GetWithPaging(paginationModel.Page, paginationModel.PageSize);  // pagination
+                query =
+                    query
+                        .GetWithSorting(paginationModel.SortKey.ToString(),
+                        paginationModel.SortOrder) //sort
+                        .GetWithPaging(paginationModel.Page,
+                        paginationModel.PageSize); // pagination
 
                 var paymentList = await query.ToListAsync(); // Call ToListAsync here
 
@@ -242,9 +277,11 @@ namespace PreorderPlatform.Service.Services.PaymentServices
             catch (Exception ex)
             {
                 Console.WriteLine("Exception " + ex.Message);
-                throw new ServiceException("An error occurred while fetching payments.", ex);
+                throw new ServiceException("An error occurred while fetching payments.",
+                    ex);
             }
         }
-        
     }
 }
+
+

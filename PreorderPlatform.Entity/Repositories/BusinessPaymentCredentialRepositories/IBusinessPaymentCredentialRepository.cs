@@ -9,6 +9,6 @@ namespace PreorderPlatform.Entity.Repositories.BusinessPaymentCredentialReposito
 {
     public interface IBusinessPaymentCredentialRepository : IRepositoryBase<BusinessPaymentCredential>
     {
-        Task<BusinessPaymentCredential> GetBusinessPaymentCredentialByIdAsync(int id);
+        Task<BusinessPaymentCredential> GetBusinessPaymentCredentialByIdAsync(Guid id);
     }
 }

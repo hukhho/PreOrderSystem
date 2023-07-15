@@ -1,19 +1,20 @@
-﻿using AutoMapper;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.RoleRepositories;
-using PreorderPlatform.Service.Services.RoleServices;
-using PreorderPlatform.Service.ViewModels.Role;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.ViewModels.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Entity.Repositories.RoleRepositories;
+using PreorderPlatform.Service.Exceptions;
+using PreorderPlatform.Service.Services.RoleServices;
+using PreorderPlatform.Service.ViewModels.Role;
+using PreorderPlatform.Service.ViewModels.User;
 
 namespace PreorderPlatform.Service.Services.RoleServices
 {
     internal class RoleService : IRoleService
     {
         private readonly IRoleRepository _roleRepository;
+
         private readonly IMapper _mapper;
 
         public RoleService(IRoleRepository roleRepository, IMapper mapper)
@@ -31,11 +32,12 @@ namespace PreorderPlatform.Service.Services.RoleServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while fetching roles.", ex);
+                throw new ServiceException("An error occurred while fetching roles.",
+                    ex);
             }
         }
 
-        public async Task<RoleDetailViewModel> GetRoleByIdAsync(int id)
+        public async Task<RoleDetailViewModel> GetRoleByIdAsync(Guid id)
         {
             try
             {
@@ -55,11 +57,13 @@ namespace PreorderPlatform.Service.Services.RoleServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching role with ID {id}.", ex);
+                throw new ServiceException($"An error occurred while fetching role with ID {id}.",
+                    ex);
             }
         }
 
-        public async Task<RoleDetailViewModel> CreateRoleAsync(RoleCreateViewModel model)
+        public async Task<RoleDetailViewModel>
+        CreateRoleAsync(RoleCreateViewModel model)
         {
             try
             {
@@ -69,7 +73,8 @@ namespace PreorderPlatform.Service.Services.RoleServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while creating the role.", ex);
+                throw new ServiceException("An error occurred while creating the role.",
+                    ex);
             }
         }
 
@@ -83,11 +88,12 @@ namespace PreorderPlatform.Service.Services.RoleServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while updating role with ID {model.Id}.", ex);
+                throw new ServiceException($"An error occurred while updating role with ID {model.Id}.",
+                    ex);
             }
         }
 
-        public async Task DeleteRoleAsync(int id)
+        public async Task DeleteRoleAsync(Guid id)
         {
             try
             {
@@ -96,7 +102,8 @@ namespace PreorderPlatform.Service.Services.RoleServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while deleting role with ID {id}.", ex);
+                throw new ServiceException($"An error occurred while deleting role with ID {id}.",
+                    ex);
             }
         }
     }

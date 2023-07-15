@@ -12,9 +12,9 @@ namespace PreorderPlatform.Service.Services.OrderItemServices
     public interface IOrderItemService
     {
         Task<OrderItemViewModel> CreateOrderItemAsync(OrderItemCreateViewModel model);
-        Task DeleteOrderItemAsync(int id);
+        Task DeleteOrderItemAsync(Guid id);
         Task<(IList<OrderItemViewModel> orderItems, int totalItems)> GetAsync(PaginationParam<OrderItemEnum.OrderItemSort> paginationModel, OrderItemSearchRequest filterModel);
-        Task<OrderItemViewModel> GetOrderItemByIdAsync(int id);
+        Task<OrderItemViewModel> GetOrderItemByIdAsync(Guid id);
         Task<List<OrderItemViewModel>> GetOrderItemsAsync();
         Task UpdateOrderItemAsync(OrderItemUpdateViewModel model);
     }

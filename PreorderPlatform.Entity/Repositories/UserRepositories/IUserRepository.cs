@@ -10,7 +10,7 @@ namespace PreorderPlatform.Entity.Repositories.UserRepositories
     public interface IUserRepository : IRepositoryBase<User>
     {
         Task<IEnumerable<User>> GetAllUsersWithRoleAndBusinessAsync();
-        Task<User> GetUserWithRoleAndBusinessByIdAsync(int id);
+        Task<User> GetUserWithRoleAndBusinessByIdAsync(Guid id);
         Task<bool> IsEmailUnique(string email);
         Task<bool> IsPhoneUnique(string phone);
         Task<User> ValidateUserCredentials(string email, string password);

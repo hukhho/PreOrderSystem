@@ -6,7 +6,7 @@ namespace PreorderPlatform.Services.ViewModels.Business.Request
         public string? Description { get; set; }
         public string? Phone { get; set; }
         public string? Email { get; set; }
-        public int? OwnerId { get; set; }
+        public Guid? OwnerId { get; set; }
         public bool? Status { get; set; }
     }
 }

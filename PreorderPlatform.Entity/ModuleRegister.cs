@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PreorderPlatform.Entity.Data;
 using PreorderPlatform.Entity.Models;
 using PreorderPlatform.Entity.Repositories.BusinessPaymentCredentialRepositories;
 using PreorderPlatform.Entity.Repositories.BusinessRepositories;
@@ -27,6 +28,7 @@ namespace PreorderPlatform.Entity
 
         public static void RegisterRepository(this IServiceCollection services)
         {
+            services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped<IBusinessRepository, BusinessRepository>();
             services.AddScoped<IBusinessPaymentCredentialRepository, BusinessPaymentCredentialRepository>();
             services.AddScoped<ICampaignRepository, CampaignRepository>();

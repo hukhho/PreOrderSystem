@@ -27,7 +27,7 @@ namespace PreorderPlatform.API.Controllers
 
         [HttpGet("/test-momo")]
         public async Task<IActionResult> TestMomo(
-         
+
         )
         {
             try
@@ -106,7 +106,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPayment(int id)
+        public async Task<IActionResult> GetPayment(Guid id)
         {
             try
             {
@@ -140,7 +140,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePayment(int id, [FromBody] PaymentUpdateViewModel model)
+        public async Task<IActionResult> UpdatePayment(Guid id, [FromBody] PaymentUpdateViewModel model)
         {
             if (id != model.Id)
             {
@@ -164,7 +164,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePayment(int id)
+        public async Task<IActionResult> DeletePayment(Guid id)
         {
             try
             {

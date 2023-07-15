@@ -11,7 +11,7 @@ namespace PreorderPlatform.Service.ViewModels.Product.Request
         public string? Name { get; set; }
         public string? Description { get; set; }
         public bool? Status { get; set; }
-        public int? CategoryId { get; set; }
-        public int? BusinessId { get; set; }
+        public Guid? CategoryId { get; set; }
+        public Guid? BusinessId { get; set; }
     }
 }

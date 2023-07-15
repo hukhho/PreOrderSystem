@@ -13,6 +13,6 @@ namespace PreorderPlatform.Service.ViewModels.Order.Request
         public string? Status { get; set; }
         public string? RevicerName { get; set; }
         public string? RevicerPhone { get; set; }
-        public int? UserId { get; set; }
+        public Guid? UserId { get; set; }
     }
 }

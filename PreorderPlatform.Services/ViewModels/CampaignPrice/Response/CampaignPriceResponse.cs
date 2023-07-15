@@ -9,11 +9,11 @@ namespace PreorderPlatform.Service.ViewModels.CampaignPrice.Response
 {
     public class CampaignPriceResponse
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public int? Phase { get; set; }
         public int? AllowedQuantity { get; set; }
         public int? TotalOrdered { get; set; }
-        public int? CampaignId { get; set; }
+        public Guid? CampaignId { get; set; }
         public decimal? Price { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace PreorderPlatform.Service.ViewModels.Business.Response
 {
     public class BusinessByIdResponse
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? Phone { get; set; }

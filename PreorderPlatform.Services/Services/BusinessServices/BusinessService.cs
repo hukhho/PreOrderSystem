@@ -45,7 +45,7 @@ namespace PreorderPlatform.Service.Services.BusinessServices
             }
         }
 
-        public async Task<BusinessByIdResponse> GetBusinessByIdAsync(int id)
+public async Task<BusinessByIdResponse> GetBusinessByIdAsync(Guid id)
         {
             try
             {
@@ -128,18 +128,25 @@ namespace PreorderPlatform.Service.Services.BusinessServices
             }
         }
 
-        public async Task DeleteBusinessAsync(int id)
-        {
-            try
-            {
-                var business = await _businessRepository.GetByIdAsync(id);
-                await _businessRepository.DeleteAsync(business);
-            }
-            catch (Exception ex)
-            {
-                throw new ServiceException($"An error occurred while deleting business with ID {id}.", ex);
-            }
-        }
+//public async Task DeleteBusinessAsync(Guid id)
+//        {
+//            var user = await _userRepository.GetByIdAsync(model.OwnerGuid);
+//            user.BusinessId = business.Guid;
+//            var business = await _businessRepository.GetByIdAsync(model.Guid);
+//            throw new ServiceException($"An error occurred while updating business with ID {model.Guid}.", ex);
+//            {
+//                try
+//                {
+//                    var business = await _businessRepository.GetByIdAsync(id);
+//                    await _businessRepository.DeleteAsync(business);
+//                }
+//                catch (Exception ex)
+//                {
+//                    throw new ServiceException($"An error occurred while deleting business with ID {id}.", ex);
+//                }
+//            }
+//        }
+
 
 
         public async Task<(IList<BusinessResponse> businesses, int totalItems)> GetAsync(PaginationParam<BusinessEnum.BusinessSort> paginationModel, BusinessSearchRequest filterModel)
@@ -174,3 +181,4 @@ namespace PreorderPlatform.Service.Services.BusinessServices
 
     }
 }
+

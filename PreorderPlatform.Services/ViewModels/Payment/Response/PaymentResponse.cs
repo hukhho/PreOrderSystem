@@ -8,13 +8,13 @@ namespace PreorderPlatform.Service.ViewModels.Payment.Response
 {
     public class PaymentResponse
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? Method { get; set; }
         public decimal? Total { get; set; }
         public int? PaymentCount { get; set; }
         public DateTime? PayedAt { get; set; }
         public string? Status { get; set; }
-        public int? UserId { get; set; }
-        public int? OrderId { get; set; }
+        public Guid? UserId { get; set; }
+        public Guid? OrderId { get; set; }
     }
 }

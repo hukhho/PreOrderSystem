@@ -48,7 +48,7 @@ namespace PreorderPlatform.Entity.Repositories
             return await query.Where(predicate).ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(Guid id)
         {
             return await _dbSet.FindAsync(id);
         }

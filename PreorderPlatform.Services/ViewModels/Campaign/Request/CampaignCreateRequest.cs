@@ -17,7 +17,7 @@ namespace PreorderPlatform.Service.ViewModels.Campaign.Request
         public DateTime? CreateAt { get; set; }
         public DateTime? ModifiedAt { get; set; }
         public bool? Status { get; set; }
-        public int? OwnerId { get; set; }
-        public int? BusinessId { get; set; }
+        public Guid? OwnerId { get; set; }
+        public Guid? BusinessId { get; set; }
     }
 }

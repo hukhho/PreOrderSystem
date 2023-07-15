@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using PreorderPlatform.API.Ultils;
 using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.Middleware;
+using PreorderPlatform.Entity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -121,6 +122,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+    dbInitializer.Initialize();
 }
 
 app.UseMiddleware<ExceptionMiddleware>(); // Add this line

@@ -54,15 +54,15 @@ namespace PreorderPlatform.Service.Services.ProductServices
             }
         }
 
-        public async Task<ProductByIdResponse> GetProductByIdAsync(int id)
+public async Task<ProductByIdResponse> GetProductByIdAsync(Guid id)
         {
             try
             {
-                var product = await _productRepository.GetProductByIdAsync(id);
+var product = await _productRepository.GetProductByIdAsync(id);
 
                 if (product == null)
                 {
-                    throw new NotFoundException($"Product with ID {id} was not found.");
+throw new NotFoundException($"Product with ID {id} was not found.");
                 }
 
                 return _mapper.Map<ProductByIdResponse>(product);
@@ -74,7 +74,7 @@ namespace PreorderPlatform.Service.Services.ProductServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching product with ID {id}.", ex);
+throw new ServiceException($"An error occurred while fetching product with ID {id}.", ex);
             }
         }
 
@@ -96,26 +96,26 @@ namespace PreorderPlatform.Service.Services.ProductServices
         {
             try
             {
-                var product = await _productRepository.GetByIdAsync(model.Id);
+var product = await _productRepository.GetByIdAsync(model.Id);
                 product = _mapper.Map(model, product);
                 await _productRepository.UpdateAsync(product);
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while updating product with ID {model.Id}.", ex);
+throw new ServiceException($"An error occurred while updating product with ID {model.Id}.", ex);
             }
         }
 
-        public async Task DeleteProductAsync(int id)
+public async Task DeleteProductAsync(Guid id)
         {
             try
             {
-                var product = await _productRepository.GetByIdAsync(id);
+var product = await _productRepository.GetByIdAsync(id);
                 await _productRepository.DeleteAsync(product);
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while deleting product with ID {id}.", ex);
+throw new ServiceException($"An error occurred while deleting product with ID {id}.", ex);
             }
         }
 
@@ -150,3 +150,4 @@ namespace PreorderPlatform.Service.Services.ProductServices
 
     }
 }
+

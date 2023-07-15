@@ -53,15 +53,15 @@ namespace PreorderPlatform.Service.Services.CampaignServices
                 throw new ServiceException("An error occurred while fetching campaigns.", ex);
             }
         }
-        public async Task<CampaignDetailResponse> GetCampaignByIdAsync(int id)
+public async Task<CampaignDetailResponse> GetCampaignByIdAsync(Guid id)
         {
             try
             {
-                var campaign = await _campaignRepository.GetCampaignWithDetailsAsync(id);
+var campaign = await _campaignRepository.GetCampaignWithDetailsAsync(id);
 
                 if (campaign == null)
                 {
-                    throw new NotFoundException($"Campaign with ID {id} was not found.");
+throw new NotFoundException($"Campaign with ID {id} was not found.");
                 }
 
                 return _mapper.Map<CampaignDetailResponse>(campaign);
@@ -73,7 +73,7 @@ namespace PreorderPlatform.Service.Services.CampaignServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching campaign with ID {id}.", ex);
+throw new ServiceException($"An error occurred while fetching campaign with ID {id}.", ex);
             }
         }
 
@@ -95,26 +95,26 @@ namespace PreorderPlatform.Service.Services.CampaignServices
         {
             try
             {
-                var campaign = await _campaignRepository.GetByIdAsync(model.Id);
+var campaign = await _campaignRepository.GetByIdAsync(model.Id);
                 campaign = _mapper.Map(model, campaign);
                 await _campaignRepository.UpdateAsync(campaign);
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while updating campaign with ID {model.Id}.", ex);
+throw new ServiceException($"An error occurred while updating campaign with ID {model.Id}.", ex);
             }
         }
 
-        public async Task DeleteCampaignAsync(int id)
+public async Task DeleteCampaignAsync(Guid id)
         {
             try
             {
-                var campaign = await _campaignRepository.GetByIdAsync(id);
+var campaign = await _campaignRepository.GetByIdAsync(id);
                 await _campaignRepository.DeleteAsync(campaign);
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while deleting campaign with ID {id}.", ex);
+throw new ServiceException($"An error occurred while deleting campaign with ID {id}.", ex);
             }
         }
 
@@ -152,3 +152,4 @@ namespace PreorderPlatform.Service.Services.CampaignServices
 
     }
 }
+

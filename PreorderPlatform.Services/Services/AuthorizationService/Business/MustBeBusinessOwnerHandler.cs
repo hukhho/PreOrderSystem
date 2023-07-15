@@ -44,16 +44,16 @@ namespace PreorderPlatform.Service.Services.AuthorizationService.Business
 
             var httpContext = _httpContextAccessor.HttpContext;
             var routeData = httpContext.GetRouteData();
-            if (routeData.Values["id"] is not string businessIdString || !int.TryParse(businessIdString, out var businessId))
+            if (routeData.Values["id"] is not string businessIdString || !Guid.TryParse(businessIdString, out var businessId))
             {
-                throw new NotFoundException("Business ID not found or not a valid integer.");
+                throw new NotFoundException("Business ID not found or not a valid Guid.");
             }
 
             using (var scope = _serviceProvider.CreateScope())
             {
                 var businessRepo = scope.ServiceProvider.GetRequiredService<IBusinessRepository>();
 
-                var userId = int.Parse(context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
+                var userId = Guid.Parse(context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
                 var userEmail = context.User.FindFirst(c => c.Type == ClaimTypes.Name).Value;
 

@@ -41,16 +41,16 @@ namespace PreorderPlatform.Service.Services.AuthorizationService.Campaign
 
             var httpContext = _httpContextAccessor.HttpContext;
             var routeData = httpContext.GetRouteData();
-            if (routeData.Values["id"] is not string idString || !int.TryParse(idString, out var campaignId))
+            if (routeData.Values["id"] is not string idString || !Guid.TryParse(idString, out var campaignId))
             {
-                throw new NotFoundException("Business ID not found or not a valid integer.");
+                throw new NotFoundException("Business ID not found or not a valid Guid.");
             }
 
             using (var scope = _serviceProvider.CreateScope())
             {
                 var repo = scope.ServiceProvider.GetRequiredService<ICampaignRepository>();
 
-                var userId = int.Parse(context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
+                var userId = Guid.Parse(context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
                 var userEmail = context.User.FindFirst(c => c.Type == ClaimTypes.Name).Value;
 

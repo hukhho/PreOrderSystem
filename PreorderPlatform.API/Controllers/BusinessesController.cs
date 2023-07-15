@@ -54,8 +54,8 @@ namespace PreorderPlatform.API.Controllers
 
             if (roleName != "ADMIN")
             {
-                int ownerId;
-                if (int.TryParse(userId, out ownerId))
+                Guid ownerId;
+                if (Guid.TryParse(userId, out ownerId))
                 {
                     searchModel.OwnerId = ownerId;
                 }
@@ -93,7 +93,7 @@ namespace PreorderPlatform.API.Controllers
         [HttpGet("{id}")]
         [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")] //test tính năng nma nào nộp nhớ xóa
         [Authorize(Policy = "MustBeBusinessOwner")]
-        public async Task<IActionResult> GetBusinessById(int id)
+        public async Task<IActionResult> GetBusinessById(Guid id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
@@ -127,8 +127,8 @@ namespace PreorderPlatform.API.Controllers
             }
             try
             {
-                int userIdInt;
-                if (!int.TryParse(userId, out userIdInt))
+                Guid userIdInt;
+                if (!Guid.TryParse(userId, out userIdInt))
                 {
                     return BadRequest(new ApiResponse<object>(null, "Invalid user ID.", false, null));
                 }
@@ -151,7 +151,7 @@ namespace PreorderPlatform.API.Controllers
 
         [HttpPut("{id}")]
         [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]
-        public async Task<IActionResult> UpdateBusiness(int id, [FromBody] BusinessUpdateRequest updateRequest)
+        public async Task<IActionResult> UpdateBusiness(Guid id, [FromBody] BusinessUpdateRequest updateRequest)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
@@ -222,7 +222,7 @@ namespace PreorderPlatform.API.Controllers
 
         [HttpPatch("{id}")]
         [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]
-        public async Task<IActionResult> UpdateBusiness(int id, [FromBody] JsonPatchDocument<BusinessPatchRequest> patchDocument)
+        public async Task<IActionResult> UpdateBusiness(Guid id, [FromBody] JsonPatchDocument<BusinessPatchRequest> patchDocument)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)

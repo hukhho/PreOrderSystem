@@ -53,7 +53,7 @@ namespace PreorderPlatform.API.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //test tính năng nma nào nộp nhớ xóa
-        public async Task<IActionResult> GetCampaignById(int id)
+        public async Task<IActionResult> GetCampaignById(Guid id)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace PreorderPlatform.API.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "MustBeCampaignOwnerOrStaff")]
-        public async Task<IActionResult> DeleteCampaign(int id)
+        public async Task<IActionResult> DeleteCampaign(Guid id)
         {
             try
             {

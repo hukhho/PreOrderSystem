@@ -21,7 +21,7 @@ namespace PreorderPlatform.Entity.Repositories.CampaignRepositories
         }
 
 
-        public async Task<Campaign> GetCampaignWithDetailsAsync(int id)
+        public async Task<Campaign> GetCampaignWithDetailsAsync(Guid id)
         {
             var campaign = await GetWithIncludeAsync(
              u => u.Id == id,
@@ -33,7 +33,7 @@ namespace PreorderPlatform.Entity.Repositories.CampaignRepositories
             return campaign;
         }
 
-        public async Task<bool> IsOwnerOrStaff(int userId, int campaignId)
+        public async Task<bool> IsOwnerOrStaff(Guid userId, Guid campaignId)
         {
             var campaign = await _context.Campaigns.FindAsync(campaignId);
 

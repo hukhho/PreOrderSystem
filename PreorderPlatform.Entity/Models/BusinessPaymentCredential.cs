@@ -5,8 +5,8 @@ namespace PreorderPlatform.Entity.Models
 {
     public partial class BusinessPaymentCredential
     {
-        public int Id { get; set; }
-        public int? BusinessId { get; set; }
+        public Guid Id { get; set; }
+        public Guid? BusinessId { get; set; }
         public string? BankAccountNumber { get; set; }
         public string? BankName { get; set; }
         public string? BankRecipientName { get; set; }
@@ -16,6 +16,7 @@ namespace PreorderPlatform.Entity.Models
         public string? MomoSecretToken { get; set; }
         public bool? IsMomoActive { get; set; }
         public bool? IsMain { get; set; }
+
         public DateTime? CreateAt { get; set; }
         public bool? Status { get; set; }
 

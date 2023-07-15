@@ -11,7 +11,7 @@ namespace PreorderPlatform.Entity.Models
             Payments = new HashSet<Payment>();
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime? CreatedAt { get; set; }
         public int? TotalQuantity { get; set; }
         public decimal? TotalPrice { get; set; }
@@ -26,7 +26,7 @@ namespace PreorderPlatform.Entity.Models
         public string? ShippingCode { get; set; }
         public decimal? ShippingPrice { get; set; }
         public string? ShippingStatus { get; set; }
-        public int? UserId { get; set; }
+        public Guid? UserId { get; set; }
 
         public virtual User? User { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }

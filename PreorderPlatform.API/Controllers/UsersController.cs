@@ -62,7 +62,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById(int id)
+        public async Task<IActionResult> GetUserById(Guid id)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("roleandbusiness/{id}")]
-        public async Task<IActionResult> GetUserWithRoleAndBusinessById(int id)
+        public async Task<IActionResult> GetUserWithRoleAndBusinessById(Guid id)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPost]
-        
+
         public async Task<IActionResult> CreateUser(UserCreateRequest model)
         {
             try
@@ -109,7 +109,7 @@ namespace PreorderPlatform.API.Controllers
                 model.Status = true;
 
                 var user = await _userService.CreateUserAsync(model);
-                
+
                 return CreatedAtAction(nameof(GetUserById),
                                        new { id = user.Id },
                                        new ApiResponse<UserResponse>(user, "User created successfully.", true, null));
@@ -124,7 +124,7 @@ namespace PreorderPlatform.API.Controllers
         [HttpPost("test")]
         public async Task<IActionResult> Test(UserCreateRequest model)
         {
-           
+
             return Ok(new ApiResponse<object>(null, "tét.", true, null));
 
         }
@@ -149,7 +149,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(Guid id)
         {
             try
             {

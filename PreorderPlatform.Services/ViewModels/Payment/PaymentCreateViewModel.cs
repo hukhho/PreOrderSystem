@@ -13,7 +13,7 @@ namespace PreorderPlatform.Service.ViewModels.Payment
         public int? PaymentCount { get; set; }
         public DateTime? PayedAt { get; set; }
         public string? Status { get; set; }
-        public int? UserId { get; set; }
-        public int? OrderId { get; set; }
+        public Guid? UserId { get; set; }
+        public Guid? OrderId { get; set; }
     }
 }
