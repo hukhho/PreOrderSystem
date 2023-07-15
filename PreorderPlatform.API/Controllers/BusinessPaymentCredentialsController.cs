@@ -23,29 +23,46 @@ namespace PreorderPlatform.API.Controllers
         private readonly IBusinessPaymentCredentialService _businessPaymentCredentialService;
         private readonly IMapper _mapper;
 
-        public BusinessPaymentCredentialsController(IBusinessPaymentCredentialService businessPaymentCredentialService, IMapper mapper)
+        public BusinessPaymentCredentialsController(
+            IBusinessPaymentCredentialService businessPaymentCredentialService,
+            IMapper mapper
+        )
         {
             _businessPaymentCredentialService = businessPaymentCredentialService;
             _mapper = mapper;
         }
 
         [HttpGet]
-        [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]
         public async Task<IActionResult> GetAllBusinessPaymentCredentials(
-            [FromQuery] PaginationParam<BusinessPaymentCredentialEnum.BusinessPaymentCredentialSort> paginationModel,
+            [FromQuery]
+                PaginationParam<BusinessPaymentCredentialEnum.BusinessPaymentCredentialSort> paginationModel,
             [FromQuery] BusinessPaymentCredentialSearchRequest searchModel
         )
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
             {
-                return Unauthorized(new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
+                return Unauthorized(
+                    new ApiResponse<object>(
+                        null,
+                        "You don't have permission to access this resource.",
+                        false,
+                        null
+                    )
+                );
             }
             var roleName = User.FindFirst(ClaimTypes.Role)?.Value;
 
             if (roleName == null)
             {
-                return Unauthorized(new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
+                return Unauthorized(
+                    new ApiResponse<object>(
+                        null,
+                        "You don't have permission to access this resource.",
+                        false,
+                        null
+                    )
+                );
             }
 
             if (roleName != "ADMIN")
@@ -53,50 +70,89 @@ namespace PreorderPlatform.API.Controllers
                 Guid userIdInt;
                 if (!Guid.TryParse(userId, out userIdInt))
                 {
-                    return BadRequest(new ApiResponse<object>(null, "Invalid user ID format.", false, null));
+                    return BadRequest(
+                        new ApiResponse<object>(null, "Invalid user ID format.", false, null)
+                    );
                 }
-                var business = await _businessPaymentCredentialService.GetBusinessByOwnerIdAsync(userIdInt);
+                var business = await _businessPaymentCredentialService.GetBusinessByOwnerIdAsync(
+                    userIdInt
+                );
                 Guid businessId = business.Id;
                 searchModel.BusinessId = businessId;
             }
+
             try
             {
                 var start = DateTime.Now;
-                var (businessPaymentCredentials, totalItems) = await _businessPaymentCredentialService.GetAsync(paginationModel, searchModel);
+                var (businessPaymentCredentials, totalItems) =
+                    await _businessPaymentCredentialService.GetAsync(paginationModel, searchModel);
                 Console.Write(DateTime.Now.Subtract(start).Milliseconds);
 
-                return Ok(new ApiResponse<IList<BusinessPaymentCredentialViewModel>>(
-                    businessPaymentCredentials,
-                    "Business payment credentials fetched successfully.",
-                    true,
-                    new PaginationInfo(totalItems, paginationModel.PageSize, paginationModel.Page, (int)Math.Ceiling(totalItems / (double)paginationModel.PageSize))
-                ));
+                return Ok(
+                    new ApiResponse<IList<BusinessPaymentCredentialViewModel>>(
+                        businessPaymentCredentials,
+                        "Business payment credentials fetched successfully.",
+                        true,
+                        new PaginationInfo(
+                            totalItems,
+                            paginationModel.PageSize,
+                            paginationModel.Page,
+                            (int)Math.Ceiling(totalItems / (double)paginationModel.PageSize)
+                        )
+                    )
+                );
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error fetching business payment credentials: {ex.Message}", false, null));
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new ApiResponse<object>(
+                        null,
+                        $"Error fetching business payment credentials: {ex.Message}",
+                        false,
+                        null
+                    )
+                );
             }
         }
 
         [HttpGet("{id}")]
-        [Authorize(Policy = "MustBeBusinessOwner")]
+        [Authorize(Policy = "MustBeBusinessPaymentCredentialOwner")]
         public async Task<IActionResult> GetBusinessPaymentCredentialsById(Guid id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
             {
-                return Unauthorized(new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
+                return Unauthorized(
+                    new ApiResponse<object>(
+                        null,
+                        "You don't have permission to access this resource.",
+                        false,
+                        null
+                    )
+                );
             }
             try
             {
-                var businessPaymentCredentials = await _businessPaymentCredentialService.GetBusinessPaymentCredentialByIdAsync(id);
-
-                return Ok(new ApiResponse<BusinessPaymentCredentialViewModel>(businessPaymentCredentials, "Business payment credentials fetched successfully.", true, null));
+                var businessPaymentCredentials =
+                    await _businessPaymentCredentialService.GetBusinessPaymentCredentialByIdAsync(
+                        id
+                    );
+                return Ok(
+                    new ApiResponse<BusinessPaymentCredentialViewModel>(
+                        businessPaymentCredentials,
+                        "Business payment credentials fetched successfully.",
+                        true,
+                        null
+                    )
+                );
             }
             catch (ArgumentException ex)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, new ApiResponse<object>(null, ex.Message, false, null));
+                return StatusCode(
+                    StatusCodes.Status403Forbidden,
+                    new ApiResponse<object>(null, ex.Message, false, null)
+                );
             }
             catch (NotFoundException ex)
             {
@@ -104,39 +160,31 @@ namespace PreorderPlatform.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error fetching business payment credentials: {ex.Message}", false, null));
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new ApiResponse<object>(
+                        null,
+                        $"Error fetching business payment credentials: {ex.Message}",
+                        false,
+                        null
+                    )
+                );
             }
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> CreateBusinessPaymentCredentials(BusinessPaymentCredentialCreateViewModel model)
+        [Authorize(Policy = "MustBeBusinessOwner")]
+        public async Task<IActionResult> CreateBusinessPaymentCredentials(
+            [FromRoute] Guid businessId,
+            BusinessPaymentCredentialCreateViewModel model
+        )
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null)
-            {
-                return Unauthorized(new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
-            }
-            Guid userIdInt;
-            if (!Guid.TryParse(userId, out userIdInt))
-            {
-                return BadRequest(new ApiResponse<object>(null, "Invalid user ID format.", false, null));
-            }
-
-
-            var business = await _businessPaymentCredentialService.GetBusinessByOwnerIdAsync(userIdInt);
-            if (business == null)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
-            }
-            Guid businessId = business.Id;
-
-            var businessPaymentCredentialList = await _businessPaymentCredentialService.GetBusinessPaymentCredentialsAsync();
+            var businessPaymentCredentialList =
+                await _businessPaymentCredentialService.GetBusinessPaymentCredentialsAsync();
 
             var filteredList = businessPaymentCredentialList
-                     .Where(c => c.BusinessId == businessId)
-                     .ToList();
+                .Where(c => c.BusinessId == businessId)
+                .ToList();
 
             bool hasMain = filteredList.Any(c => c.IsMain == true);
 
@@ -147,69 +195,50 @@ namespace PreorderPlatform.API.Controllers
 
             try
             {
-                var businessPaymentCredentials = await _businessPaymentCredentialService.CreateBusinessPaymentCredentialAsync(model);
+                var businessPaymentCredentials =
+                    await _businessPaymentCredentialService.CreateBusinessPaymentCredentialAsync(
+                        model
+                    );
 
-                return CreatedAtAction(nameof(GetBusinessPaymentCredentialsById),
-                new { id = businessPaymentCredentials.Id },
-                                       new ApiResponse<BusinessPaymentCredentialViewModel>(businessPaymentCredentials, "Business payment credentials created successfully.", true, null));
+
+                return StatusCode(StatusCodes.Status201Created, new ApiResponse<object>(businessPaymentCredentials, "Create business successly!", false, null));
+
+
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error creating business payment credentials: {ex.Message}", false, null));
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new ApiResponse<object>(
+                        null,
+                        $"Error creating business payment credentials: {ex.Message}",
+                        false,
+                        null
+                    )
+                );
             }
         }
 
         [HttpPut("{id}")]
-        [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]
-        public async Task<IActionResult> UpdateBusinessPaymentCredentials(Guid id, BusinessPaymentCredentialUpdateViewModel model)
+        [Authorize(Policy = "MustBeBusinessPaymentCredentialOwner")]
+        public async Task<IActionResult> UpdateBusinessPaymentCredentials(
+            Guid id,
+            BusinessPaymentCredentialUpdateViewModel model
+        )
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null)
-            {
-                return Unauthorized(new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
-            }
-            var roleName = User.FindFirst(ClaimTypes.Role)?.Value;
-
-            if (roleName == null)
-            {
-                return Unauthorized(new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
-            }
             try
             {
-                Guid userIdInt;
-                if (!Guid.TryParse(userId, out userIdInt))
-                {
-                    return BadRequest(new ApiResponse<object>(null, "Invalid user ID format.", false, null));
-                }
-                var business = await _businessPaymentCredentialService.GetBusinessByOwnerIdAsync(userIdInt);
-                Guid businessId = business.Id;
+                Console.WriteLine($"UpdateBusinessPaymentCredentials id: {id} ");
+                await _businessPaymentCredentialService.UpdateBusinessPaymentCredentialAsync(id, model);
 
-                if (roleName != "ADMIN")
-                {
-                    var businessPaymentCredentialByIdResponse = await _businessPaymentCredentialService.GetBusinessPaymentCredentialByIdAsync(id);
-
-                    if (businessPaymentCredentialByIdResponse == null)
-                    {
-                        return NotFound(new ApiResponse<object>(null, $"business Payment Credential with ID {id} not found.", false, null));
-                    }
-
-                    model.BusinessId = businessId;
-                    model.Id = id;
-
-                    await _businessPaymentCredentialService.UpdateBusinessPaymentCredentialAsync(model);
-                }
-                else
-                {
-
-                    model.BusinessId = businessId;
-                    model.Id = id;
-
-                    await _businessPaymentCredentialService.UpdateBusinessPaymentCredentialAsync(model);
-                }
-
-
-                return Ok(new ApiResponse<object>(null, "Business payment credentials updated successfully.", true, null));
+                return Ok(
+                    new ApiResponse<object>(
+                        null,
+                        "Business payment credentials updated successfully.",
+                        true,
+                        null
+                    )
+                );
             }
             catch (NotFoundException ex)
             {
@@ -217,18 +246,33 @@ namespace PreorderPlatform.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error updating business payment credentials: {ex.Message}", false, null));
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new ApiResponse<object>(
+                        null,
+                        $"Error updating business payment credentials: {ex.Message}",
+                        false,
+                        null
+                    )
+                );
             }
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "MustBeBusinessPaymentCredentialOwner")]
         public async Task<IActionResult> DeleteBusinessPaymentCredentials(Guid id)
         {
             try
             {
                 await _businessPaymentCredentialService.DeleteBusinessPaymentCredentialAsync(id);
-                return Ok(new ApiResponse<object>(null, "Business payment credentials deleted successfully.", true, null));
+                return Ok(
+                    new ApiResponse<object>(
+                        null,
+                        "Business payment credentials deleted successfully.",
+                        true,
+                        null
+                    )
+                );
             }
             catch (NotFoundException ex)
             {
@@ -236,8 +280,15 @@ namespace PreorderPlatform.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error deleting business payment credentials: {ex.Message}", false, null));
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new ApiResponse<object>(
+                        null,
+                        $"Error deleting business payment credentials: {ex.Message}",
+                        false,
+                        null
+                    )
+                );
             }
         }
     }

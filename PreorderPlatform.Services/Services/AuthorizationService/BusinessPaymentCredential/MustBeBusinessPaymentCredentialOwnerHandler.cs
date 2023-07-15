@@ -3,20 +3,21 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using PreorderPlatform.Entity.Repositories.BusinessPaymentCredentialRepositories;
 using PreorderPlatform.Entity.Repositories.BusinessRepositories;
 using PreorderPlatform.Service.Exceptions;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace PreorderPlatform.Service.Services.AuthorizationService.Business
+namespace PreorderPlatform.Service.Services.AuthorizationService.BusinessPaymentCredential
 {
-    public class MustBeBusinessOwnerHandler : AuthorizationHandler<MustBusinessOwnerRequirement>
+    public class MustBeBusinessPaymentCredentialOwnerHandler : AuthorizationHandler<MustBusinessPaymentCredentialOwnerRequirement>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IServiceProvider _serviceProvider;
 
-        public MustBeBusinessOwnerHandler(
+        public MustBeBusinessPaymentCredentialOwnerHandler(
             IHttpContextAccessor httpContextAccessor,
             IServiceProvider serviceProvider
         )
@@ -27,7 +28,7 @@ namespace PreorderPlatform.Service.Services.AuthorizationService.Business
 
         protected override async Task HandleRequirementAsync(
             AuthorizationHandlerContext context,
-            MustBusinessOwnerRequirement requirement
+            MustBusinessPaymentCredentialOwnerRequirement requirement
         )
         {
             if (!context.User.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
@@ -52,29 +53,44 @@ namespace PreorderPlatform.Service.Services.AuthorizationService.Business
 
             var routeData = _httpContextAccessor.HttpContext.GetRouteData();
 
-            string businessIdString;
+            string businessIdString = null;
+            string credentialsIdString = null;
 
             if (routeData.Values["businessId"] is string businessIdFromRoute)
             {
                 businessIdString = businessIdFromRoute;
-            }
-            else if (routeData.Values["id"] is string idString)
-            {
-                businessIdString = idString;
             }
             else
             {
                 throw new NotFoundException("Business ID not found in route data.");
             }
 
-            if (!Guid.TryParse(businessIdString, out var businessId))
+            if (routeData.Values["id"] is string idString)
+            {
+                credentialsIdString = idString;
+            }
+            else
+            {
+                throw new NotFoundException("Credentials ID not found in route data.");
+            }
+
+            if (businessIdString == null || !Guid.TryParse(businessIdString, out var businessId))
             {
                 throw new ArgumentException("Business ID is not a valid Guid.");
+            }
+
+            if (credentialsIdString == null || !Guid.TryParse(credentialsIdString, out var credentialsId))
+            {
+                throw new ArgumentException("Credentials ID is not a valid Guid.");
             }
 
             using (var scope = _serviceProvider.CreateScope())
             {
                 var businessRepo = scope.ServiceProvider.GetRequiredService<IBusinessRepository>();
+
+                // Get instance of IBusinessPaymentCredentialRepository
+                var credentialRepo =
+                    scope.ServiceProvider.GetRequiredService<IBusinessPaymentCredentialRepository>();
 
                 var userId = Guid.Parse(
                     context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value
@@ -86,6 +102,19 @@ namespace PreorderPlatform.Service.Services.AuthorizationService.Business
                 if (!await businessRepo.IsExistsByGuid(businessId))
                 {
                     throw new NotFoundException($"Business {businessId} does not exist.");
+                }
+
+                // Check if credential is in business
+                if (
+                    !await credentialRepo.IsBusinessPaymentCredentialInBusiness(
+                        businessId,
+                        credentialsId
+                    )
+                )
+                {
+                    throw new AuthorizationException(
+                        $"Credentials {credentialsId} are not part of business {businessId}."
+                    );
                 }
 
                 // Check if user is owner

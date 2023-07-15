@@ -130,7 +130,7 @@ namespace PreorderPlatform.API.Controllers
                 Console.WriteLine($"modeL {model}");
 
                 var businessResponse = await _businessService.CreateBusinessAsync(model);
-                return Ok(businessResponse);
+                return StatusCode(StatusCodes.Status201Created, new ApiResponse<object>(null, "Create business successly!", false, null));
             }
             catch (ServiceException ex)
             {

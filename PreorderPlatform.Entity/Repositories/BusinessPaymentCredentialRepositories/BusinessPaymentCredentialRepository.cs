@@ -16,6 +16,7 @@ namespace PreorderPlatform.Entity.Repositories.BusinessPaymentCredentialReposito
             var businessPayment = await GetWithIncludeAsync(
                 b => b.Id == id,
                 b => b.Include(o => o.Business)
+
                 );
 
             //if (businesses != null)
@@ -23,6 +24,17 @@ namespace PreorderPlatform.Entity.Repositories.BusinessPaymentCredentialReposito
             //    businesses.Users = businesses.Users.Where(user => user.RoleId != 2).ToList();
             //}
             return businessPayment;
+        }
+
+
+        public async Task<bool> IsBusinessPaymentCredentialInBusiness(Guid businessId, Guid credentialsId)
+        {
+            var businessPaymentCredential = await GetWithIncludeAsync(
+                b => b.Id == credentialsId,
+                b => b.Include(o => o.Business)
+                );
+
+            return businessPaymentCredential.BusinessId == businessId;
         }
 
         // Add any additional methods specific to BusinessPaymentCredentialRepository here...

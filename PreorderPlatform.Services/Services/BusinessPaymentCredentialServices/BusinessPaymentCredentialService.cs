@@ -76,8 +76,6 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
                     );
                 }
 
-
-
                 return _mapper.Map<BusinessPaymentCredentialViewModel>(businessPaymentCredential);
             }
             catch (NotFoundException)
@@ -124,20 +122,21 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
         }
 
         public async Task UpdateBusinessPaymentCredentialAsync(
+            Guid id,
             BusinessPaymentCredentialUpdateViewModel model
         )
         {
             try
             {
                 var businessPaymentCredential =
-                    await _businessPaymentCredentialRepository.GetByIdAsync(model.Id);
+                    await _businessPaymentCredentialRepository.GetByIdAsync(id);
                 businessPaymentCredential = _mapper.Map(model, businessPaymentCredential);
                 await _businessPaymentCredentialRepository.UpdateAsync(businessPaymentCredential);
             }
             catch (Exception ex)
             {
                 throw new ServiceException(
-                    $"An error occurred while updating business payment credential with ID {model.Id}.",
+                    $"An error occurred while updating business payment credential with ID {id}.",
                     ex
                 );
             }
