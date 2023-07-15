@@ -12,10 +12,11 @@ using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Services.Enum;
 using PreorderPlatform.Service.Utility.CustomAuthorizeAttribute;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PreorderPlatform.API.Controllers
 {
-    [Route("api/business/business-payment-credentials")]
+    [Route("api/business/{businessId}/business-payment-credentials")]
     [ApiController]
     public class BusinessPaymentCredentialsController : ControllerBase
     {
@@ -79,7 +80,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]
+        [Authorize(Policy = "MustBeBusinessOwner")]
         public async Task<IActionResult> GetBusinessPaymentCredentialsById(Guid id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -89,7 +90,8 @@ namespace PreorderPlatform.API.Controllers
             }
             try
             {
-                var businessPaymentCredentials = await _businessPaymentCredentialService.GetBusinessPaymentCredentialByIdAsync(id, userId);
+                var businessPaymentCredentials = await _businessPaymentCredentialService.GetBusinessPaymentCredentialByIdAsync(id);
+
                 return Ok(new ApiResponse<BusinessPaymentCredentialViewModel>(businessPaymentCredentials, "Business payment credentials fetched successfully.", true, null));
             }
             catch (ArgumentException ex)
@@ -185,7 +187,7 @@ namespace PreorderPlatform.API.Controllers
 
                 if (roleName != "ADMIN")
                 {
-                    var businessPaymentCredentialByIdResponse = await _businessPaymentCredentialService.GetBusinessPaymentCredentialByIdAsync(id, userId);
+                    var businessPaymentCredentialByIdResponse = await _businessPaymentCredentialService.GetBusinessPaymentCredentialByIdAsync(id);
 
                     if (businessPaymentCredentialByIdResponse == null)
                     {

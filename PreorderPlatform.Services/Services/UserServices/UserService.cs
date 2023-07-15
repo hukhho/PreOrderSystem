@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Entity.Repositories.RoleRepositories;
 using PreorderPlatform.Entity.Repositories.UserRepositories;
 using PreorderPlatform.Entity.Repositories.UserRepository;
 using PreorderPlatform.Service.Enum;
@@ -20,12 +21,14 @@ namespace PreorderPlatform.Service.Services.UserServices
     internal class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
 
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
             _mapper = mapper;
         }
 
@@ -38,25 +41,21 @@ namespace PreorderPlatform.Service.Services.UserServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while fetching users.",
-                    ex);
+                throw new ServiceException("An error occurred while fetching users.", ex);
             }
         }
 
         //GetAllUsersWithRoleAndBusinessAsync
-        public async Task<List<UserResponse>>
-        GetAllUsersWithRoleAndBusinessAsync()
+        public async Task<List<UserResponse>> GetAllUsersWithRoleAndBusinessAsync()
         {
             try
             {
-                var users =
-                    await _userRepository.GetAllUsersWithRoleAndBusinessAsync();
+                var users = await _userRepository.GetAllUsersWithRoleAndBusinessAsync();
                 return _mapper.Map<List<UserResponse>>(users);
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while fetching users.",
-                    ex);
+                throw new ServiceException("An error occurred while fetching users.", ex);
             }
         }
 
@@ -80,18 +79,18 @@ namespace PreorderPlatform.Service.Services.UserServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching user with ID {id}.", ex);
+                throw new ServiceException(
+                    $"An error occurred while fetching user with ID {id}.",
+                    ex
+                );
             }
         }
 
-        public async Task<UserResponse>
-        GetUserWithRoleAndBusinessByIdAsync(Guid id)
+        public async Task<UserResponse> GetUserWithRoleAndBusinessByIdAsync(Guid id)
         {
             try
             {
-                var user =
-                    await _userRepository
-                        .GetUserWithRoleAndBusinessByIdAsync(id);
+                var user = await _userRepository.GetUserWithRoleAndBusinessByIdAsync(id);
 
                 if (user == null)
                 {
@@ -107,8 +106,10 @@ namespace PreorderPlatform.Service.Services.UserServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching user with ID {id}.",
-                    ex);
+                throw new ServiceException(
+                    $"An error occurred while fetching user with ID {id}.",
+                    ex
+                );
             }
         }
 
@@ -116,14 +117,20 @@ namespace PreorderPlatform.Service.Services.UserServices
         {
             try
             {
+                var role = await _roleRepository.GetByNameAsync(model.RoleName);
+                if (role == null)
+                {
+                    throw new ServiceException($"Role {model.RoleName} does not exist.");
+                }
+
                 var user = _mapper.Map<User>(model);
+                user.RoleId = role.Id;
                 await _userRepository.CreateAsync(user);
                 return _mapper.Map<UserResponse>(user);
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while creating the user.",
-                    ex);
+                throw new ServiceException("An error occurred while creating the user.", ex);
             }
         }
 
@@ -137,8 +144,10 @@ namespace PreorderPlatform.Service.Services.UserServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while updating user with ID {model.Id}.",
-                    ex);
+                throw new ServiceException(
+                    $"An error occurred while updating user with ID {model.Id}.",
+                    ex
+                );
             }
         }
 
@@ -151,13 +160,14 @@ namespace PreorderPlatform.Service.Services.UserServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while deleting user with ID {id}.",
-                    ex);
+                throw new ServiceException(
+                    $"An error occurred while deleting user with ID {id}.",
+                    ex
+                );
             }
         }
 
-        public async Task<(IList<UserResponse> users, int totalItems)>
-        GetAsync(
+        public async Task<(IList<UserResponse> users, int totalItems)> GetAsync(
             PaginationParam<UserEnum.UserSort> paginationModel,
             UserSearchRequest filterModel
         )
@@ -171,12 +181,9 @@ namespace PreorderPlatform.Service.Services.UserServices
                 // Calculate the total number of items before applying pagination
                 int totalItems = await query.CountAsync();
 
-                query =
-                    query
-                        .GetWithSorting(paginationModel.SortKey.ToString(),
-                        paginationModel.SortOrder) //sort
-                        .GetWithPaging(paginationModel.Page,
-                        paginationModel.PageSize); // pagination
+                query = query
+                    .GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder) //sort
+                    .GetWithPaging(paginationModel.Page, paginationModel.PageSize); // pagination
 
                 var userList = await query.ToListAsync(); // Call ToListAsync here
 
@@ -188,8 +195,7 @@ namespace PreorderPlatform.Service.Services.UserServices
             catch (Exception ex)
             {
                 Console.WriteLine("Exception " + ex.Message);
-                throw new ServiceException("An error occurred while fetching users.",
-                    ex);
+                throw new ServiceException("An error occurred while fetching users.", ex);
             }
         }
 
@@ -203,8 +209,10 @@ namespace PreorderPlatform.Service.Services.UserServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while checking uniqueness of email {email}.",
-                    ex);
+                throw new ServiceException(
+                    $"An error occurred while checking uniqueness of email {email}.",
+                    ex
+                );
             }
         }
 
@@ -218,8 +226,10 @@ namespace PreorderPlatform.Service.Services.UserServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while checking the uniqueness of phone number {phone}.",
-                    ex);
+                throw new ServiceException(
+                    $"An error occurred while checking the uniqueness of phone number {phone}.",
+                    ex
+                );
             }
         }
     }

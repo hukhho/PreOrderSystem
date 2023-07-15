@@ -7,8 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using PreorderPlatform.Entity.Models;
-using
-    PreorderPlatform.Entity.Repositories.BusinessPaymentCredentialRepositories;
+using PreorderPlatform.Entity.Repositories.BusinessPaymentCredentialRepositories;
 using PreorderPlatform.Entity.Repositories.BusinessRepositories;
 using PreorderPlatform.Service.Exceptions;
 using PreorderPlatform.Service.Utility;
@@ -19,67 +18,65 @@ using PreorderPlatform.Services.Enum;
 
 namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
 {
-    public class
-    BusinessPaymentCredentialService
-    : IBusinessPaymentCredentialService
+    public class BusinessPaymentCredentialService : IBusinessPaymentCredentialService
     {
-        private readonly IBusinessPaymentCredentialRepository
-            _businessPaymentCredentialRepository;
+        private readonly IBusinessPaymentCredentialRepository _businessPaymentCredentialRepository;
 
         private readonly IBusinessRepository _businessRepository;
 
         private readonly IMapper _mapper;
 
         public BusinessPaymentCredentialService(
-            IBusinessPaymentCredentialRepository
-            businessPaymentCredentialRepository,
+            IBusinessPaymentCredentialRepository businessPaymentCredentialRepository,
             IBusinessRepository businessRepository,
             IMapper mapper
         )
         {
-            _businessPaymentCredentialRepository =
-                businessPaymentCredentialRepository;
+            _businessPaymentCredentialRepository = businessPaymentCredentialRepository;
             _businessRepository = businessRepository;
             _mapper = mapper;
         }
 
-        public async Task<List<BusinessPaymentCredentialViewModel>>
-        GetBusinessPaymentCredentialsAsync()
+        public async Task<
+            List<BusinessPaymentCredentialViewModel>
+        > GetBusinessPaymentCredentialsAsync()
         {
             try
             {
                 var businessPaymentCredentials =
                     await _businessPaymentCredentialRepository.GetAllAsync();
-                return _mapper
-                    .Map
-                    <List<BusinessPaymentCredentialViewModel>
-                    >(businessPaymentCredentials);
+                return _mapper.Map<List<BusinessPaymentCredentialViewModel>>(
+                    businessPaymentCredentials
+                );
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while fetching business payment credentials.",
-                    ex);
+                throw new ServiceException(
+                    "An error occurred while fetching business payment credentials.",
+                    ex
+                );
             }
         }
 
-        public async Task<BusinessPaymentCredentialViewModel>
-        GetBusinessPaymentCredentialByIdAsync(Guid id, string? userId)
+        public async Task<BusinessPaymentCredentialViewModel> GetBusinessPaymentCredentialByIdAsync(
+            Guid id
+        )
         {
             try
             {
                 var businessPaymentCredential =
-                    await _businessPaymentCredentialRepository
-                        .GetBusinessPaymentCredentialByIdAsync(id);
+                    await _businessPaymentCredentialRepository.GetBusinessPaymentCredentialByIdAsync(
+                        id
+                    );
 
                 if (businessPaymentCredential == null)
                 {
-                    throw new NotFoundException($"Business payment credential with ID {id} was not found.");
+                    throw new NotFoundException(
+                        $"Business payment credential with ID {id} was not found."
+                    );
                 }
 
-                if (businessPaymentCredential.Business.OwnerId != Guid.Parse(userId))
-                {
-                    throw new ArgumentException($"You don't have permission to access this resource. Business payment credential owner ID is {businessPaymentCredential.Business.OwnerId} and user ID is {userId}");
-                }
+
 
                 return _mapper.Map<BusinessPaymentCredentialViewModel>(businessPaymentCredential);
             }
@@ -88,31 +85,24 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
                 // Rethrow NotFoundException to be handled by the caller
                 throw;
             }
-            catch (ArgumentException ex)
-            {
-                throw;
-            }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching business payment credential with ID {id}.", ex);
+                throw new ServiceException(
+                    $"An error occurred while fetching business payment credential with ID {id}.",
+                    ex
+                );
             }
         }
 
-        public async Task<BusinessPaymentCredentialViewModel>
-        CreateBusinessPaymentCredentialAsync(
+        public async Task<BusinessPaymentCredentialViewModel> CreateBusinessPaymentCredentialAsync(
             BusinessPaymentCredentialCreateViewModel model
         )
         {
             try
             {
-                var businessPaymentCredential =
-                    _mapper.Map<BusinessPaymentCredential>(model);
-                await _businessPaymentCredentialRepository
-                    .CreateAsync(businessPaymentCredential);
-                return _mapper
-                    .Map
-                    <BusinessPaymentCredentialViewModel
-                    >(businessPaymentCredential);
+                var businessPaymentCredential = _mapper.Map<BusinessPaymentCredential>(model);
+                await _businessPaymentCredentialRepository.CreateAsync(businessPaymentCredential);
+                return _mapper.Map<BusinessPaymentCredentialViewModel>(businessPaymentCredential);
             }
             catch (NotFoundException)
             {
@@ -126,30 +116,30 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while creating the business payment credential.",
-                    ex);
+                throw new ServiceException(
+                    "An error occurred while creating the business payment credential.",
+                    ex
+                );
             }
         }
 
-        public async Task
-        UpdateBusinessPaymentCredentialAsync(
+        public async Task UpdateBusinessPaymentCredentialAsync(
             BusinessPaymentCredentialUpdateViewModel model
         )
         {
             try
             {
                 var businessPaymentCredential =
-                    await _businessPaymentCredentialRepository
-                        .GetByIdAsync(model.Id);
-                businessPaymentCredential =
-                    _mapper.Map(model, businessPaymentCredential);
-                await _businessPaymentCredentialRepository
-                    .UpdateAsync(businessPaymentCredential);
+                    await _businessPaymentCredentialRepository.GetByIdAsync(model.Id);
+                businessPaymentCredential = _mapper.Map(model, businessPaymentCredential);
+                await _businessPaymentCredentialRepository.UpdateAsync(businessPaymentCredential);
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while updating business payment credential with ID {model.Id}.",
-                    ex);
+                throw new ServiceException(
+                    $"An error occurred while updating business payment credential with ID {model.Id}.",
+                    ex
+                );
             }
         }
 
@@ -159,21 +149,22 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
             {
                 var businessPaymentCredential =
                     await _businessPaymentCredentialRepository.GetByIdAsync(id);
-                await _businessPaymentCredentialRepository
-                    .DeleteAsync(businessPaymentCredential);
+                await _businessPaymentCredentialRepository.DeleteAsync(businessPaymentCredential);
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while deleting business payment credential with ID {id}.",
-                    ex);
+                throw new ServiceException(
+                    $"An error occurred while deleting business payment credential with ID {id}.",
+                    ex
+                );
             }
         }
 
-        public async Task<(IList<BusinessPaymentCredentialViewModel> businessPaymentCredentials, int totalItems)>
-        GetAsync(
-            PaginationParam<BusinessPaymentCredentialEnum.BusinessPaymentCredentialSort
-            >
-            paginationModel,
+        public async Task<(
+            IList<BusinessPaymentCredentialViewModel> businessPaymentCredentials,
+            int totalItems
+        )> GetAsync(
+            PaginationParam<BusinessPaymentCredentialEnum.BusinessPaymentCredentialSort> paginationModel,
             BusinessPaymentCredentialSearchRequest filterModel
         )
         {
@@ -186,28 +177,26 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
                 // Calculate the total number of items before applying pagination
                 int totalItems = await query.CountAsync();
 
-                query =
-                    query
-                        .GetWithSorting(paginationModel.SortKey.ToString(),
-                        paginationModel.SortOrder) //sort
-                        .GetWithPaging(paginationModel.Page,
-                        paginationModel.PageSize); // pagination
+                query = query
+                    .GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder) //sort
+                    .GetWithPaging(paginationModel.Page, paginationModel.PageSize); // pagination
 
                 var businessPaymentCredentialList = await query.ToListAsync(); // Call ToListAsync here
 
                 // Map the businessPaymentCredentialList to a list of BusinessPaymentCredentialViewModel objects
-                var result = _mapper
-                        .Map
-                        <List<BusinessPaymentCredentialViewModel>
-                        >(businessPaymentCredentialList);
+                var result = _mapper.Map<List<BusinessPaymentCredentialViewModel>>(
+                    businessPaymentCredentialList
+                );
 
                 return (result, totalItems);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Exception " + ex.Message);
-                throw new ServiceException("An error occurred while fetching business payment credentials.",
-                    ex);
+                throw new ServiceException(
+                    "An error occurred while fetching business payment credentials.",
+                    ex
+                );
             }
         }
 
@@ -215,8 +204,7 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
         {
             try
             {
-                var business =
-                    await _businessRepository.GetByOwnerIdAsync(userId);
+                var business = await _businessRepository.GetByOwnerIdAsync(userId);
 
                 if (business == null)
                 {
@@ -236,8 +224,10 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching the business for user with ID {userId}.",
-                    ex);
+                throw new ServiceException(
+                    $"An error occurred while fetching the business for user with ID {userId}.",
+                    ex
+                );
             }
         }
     }

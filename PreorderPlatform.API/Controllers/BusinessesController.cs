@@ -81,20 +81,11 @@ namespace PreorderPlatform.API.Controllers
         }
 
 
-        //[HttpGet("/test-nha/{id}")]
-        //[Authorize(Policy = "MustBeBusinessOwner")]
-        //public async Task<IActionResult> TestNha(int id)
-        //{
-        //    return Ok(new ApiResponse<object>(null, $"Business fetch id {id} successfully.", true, null));
-        //}
-
-
-
         [HttpGet("{id}")]
-        [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")] //test tính năng nma nào nộp nhớ xóa
         [Authorize(Policy = "MustBeBusinessOwner")]
         public async Task<IActionResult> GetBusinessById(Guid id)
         {
+
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
             {
@@ -135,6 +126,9 @@ namespace PreorderPlatform.API.Controllers
 
                 model.OwnerId = userIdInt;
                 model.Status = true;
+
+                Console.WriteLine($"modeL {model}");
+
                 var businessResponse = await _businessService.CreateBusinessAsync(model);
                 return Ok(businessResponse);
             }
@@ -150,7 +144,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]
+        [Authorize(Policy = "MustBeBusinessOwner")]
         public async Task<IActionResult> UpdateBusiness(Guid id, [FromBody] BusinessUpdateRequest updateRequest)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -221,7 +215,7 @@ namespace PreorderPlatform.API.Controllers
         //}
 
         [HttpPatch("{id}")]
-        [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER")]
+        [Authorize(Policy = "MustBeBusinessOwner")]
         public async Task<IActionResult> UpdateBusiness(Guid id, [FromBody] JsonPatchDocument<BusinessPatchRequest> patchDocument)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

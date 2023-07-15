@@ -14,7 +14,7 @@ namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
     {
         Task<BusinessPaymentCredentialViewModel> CreateBusinessPaymentCredentialAsync(BusinessPaymentCredentialCreateViewModel model);
         Task DeleteBusinessPaymentCredentialAsync(Guid id);
-        Task<BusinessPaymentCredentialViewModel> GetBusinessPaymentCredentialByIdAsync(Guid id, string? userId);
+        Task<BusinessPaymentCredentialViewModel> GetBusinessPaymentCredentialByIdAsync(Guid id);
         Task<List<BusinessPaymentCredentialViewModel>> GetBusinessPaymentCredentialsAsync();
         Task UpdateBusinessPaymentCredentialAsync(BusinessPaymentCredentialUpdateViewModel model);
         Task<(IList<BusinessPaymentCredentialViewModel> businessPaymentCredentials, int totalItems)> GetAsync(PaginationParam<BusinessPaymentCredentialEnum.BusinessPaymentCredentialSort> paginationModel, BusinessPaymentCredentialSearchRequest filterModel);

@@ -52,7 +52,6 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //test tính năng nma nào nộp nhớ xóa
         public async Task<IActionResult> GetCampaignById(Guid id)
         {
             try

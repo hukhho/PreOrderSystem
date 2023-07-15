@@ -30,7 +30,7 @@ namespace PreorderPlatform.Service.Services.BusinessServices
             _userRepository = userRepository;
             _mapper = mapper;
         }
-       
+
 
         public async Task<List<BusinessResponse>> GetBusinessesAsync()
         {
@@ -45,7 +45,7 @@ namespace PreorderPlatform.Service.Services.BusinessServices
             }
         }
 
-public async Task<BusinessByIdResponse> GetBusinessByIdAsync(Guid id)
+        public async Task<BusinessByIdResponse> GetBusinessByIdAsync(Guid id)
         {
             try
             {
@@ -91,6 +91,10 @@ public async Task<BusinessByIdResponse> GetBusinessByIdAsync(Guid id)
                 }
 
                 var business = _mapper.Map<Business>(model);
+
+                // Assign a new GUID to the business
+                business.Id = Guid.NewGuid();
+
                 await _businessRepository.CreateAsync(business);
 
                 // Update user's BusinessId
@@ -128,24 +132,24 @@ public async Task<BusinessByIdResponse> GetBusinessByIdAsync(Guid id)
             }
         }
 
-//public async Task DeleteBusinessAsync(Guid id)
-//        {
-//            var user = await _userRepository.GetByIdAsync(model.OwnerGuid);
-//            user.BusinessId = business.Guid;
-//            var business = await _businessRepository.GetByIdAsync(model.Guid);
-//            throw new ServiceException($"An error occurred while updating business with ID {model.Guid}.", ex);
-//            {
-//                try
-//                {
-//                    var business = await _businessRepository.GetByIdAsync(id);
-//                    await _businessRepository.DeleteAsync(business);
-//                }
-//                catch (Exception ex)
-//                {
-//                    throw new ServiceException($"An error occurred while deleting business with ID {id}.", ex);
-//                }
-//            }
-//        }
+        //public async Task DeleteBusinessAsync(Guid id)
+        //        {
+        //            var user = await _userRepository.GetByIdAsync(model.OwnerGuid);
+        //            user.BusinessId = business.Guid;
+        //            var business = await _businessRepository.GetByIdAsync(model.Guid);
+        //            throw new ServiceException($"An error occurred while updating business with ID {model.Guid}.", ex);
+        //            {
+        //                try
+        //                {
+        //                    var business = await _businessRepository.GetByIdAsync(id);
+        //                    await _businessRepository.DeleteAsync(business);
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    throw new ServiceException($"An error occurred while deleting business with ID {id}.", ex);
+        //                }
+        //            }
+        //        }
 
 
 
@@ -156,7 +160,7 @@ public async Task<BusinessByIdResponse> GetBusinessByIdAsync(Guid id)
                 var query = _businessRepository.Table;
 
                 query = query.GetWithSearch(filterModel); //search
-                
+
 
                 // Calculate the total number of items before applying pagination
                 int totalItems = await query.CountAsync();
@@ -177,7 +181,7 @@ public async Task<BusinessByIdResponse> GetBusinessByIdAsync(Guid id)
                 throw new ServiceException("An error occurred while fetching businesses.", ex);
             }
         }
-        
+
 
     }
 }

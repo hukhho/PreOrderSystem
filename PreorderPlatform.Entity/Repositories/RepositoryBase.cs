@@ -32,9 +32,9 @@ namespace PreorderPlatform.Entity.Repositories
         {
             IQueryable<T> query = _dbSet;
 
-            query = predicate==null ? query : query.Where(predicate);
+            query = predicate == null ? query : query.Where(predicate);
 
-            query = includes==null||includes.Length==0 ? query : includes.Aggregate(query, (current, include) => current.Include(include));
+            query = includes == null || includes.Length == 0 ? query : includes.Aggregate(query, (current, include) => current.Include(include));
 
             return await query.ToListAsync();
         }
@@ -81,6 +81,10 @@ namespace PreorderPlatform.Entity.Repositories
 
         //    return await query.FirstOrDefaultAsync(predicate);
         //}
+        public async Task<bool> IsExistsByGuid(Guid id)
+        {
+            return await _dbSet.AnyAsync(entity => EF.Property<Guid>(entity, "Id") == id);
+        }
 
         public async Task CreateAsync(T entity)
         {

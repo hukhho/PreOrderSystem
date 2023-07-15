@@ -21,12 +21,38 @@ using PreorderPlatform.API.Ultils;
 using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.Middleware;
 using PreorderPlatform.Entity.Data;
+using PreorderPlatform.API.HealthChecks;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+
+
+static Task WriteResponse(HttpContext httpContext, HealthReport result)
+{
+    httpContext.Response.ContentType = "application/json";
+
+    var json = new JObject(
+        new JProperty("status", result.Status.ToString()),
+        new JProperty("results", new JObject(result.Entries.Select(pair =>
+            new JProperty(pair.Key, new JObject(
+                new JProperty("status", pair.Value.Status.ToString()),
+                new JProperty("description", pair.Value.Description),
+                new JProperty("data", new JObject(pair.Value.Data.Select(
+                    p => new JProperty(p.Key, p.Value))))))))));
+
+    return httpContext.Response.WriteAsync(json.ToString(Formatting.Indented));
+}
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers()    
+builder.Services.AddControllers()
                 .AddNewtonsoftJson();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -115,7 +141,22 @@ builder.Services.AddControllers(options =>
     options.InputFormatters.Insert(0, MyJPIF.GetJsonPatchInputFormatter());
 });
 
+
+builder.Services.AddMemoryCache();
+//builder.Services.AddHealthChecks()
+//    .AddCheck<SystemResourcesHealthCheck>("System Resources Check");
+
 var app = builder.Build();
+
+//app.UseRouting();
+
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapHealthChecks("/healthz", new HealthCheckOptions
+//    {
+//        ResponseWriter = WriteResponse
+//    });
+//});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -130,7 +171,10 @@ using (var scope = app.Services.CreateScope())
     dbInitializer.Initialize();
 }
 
-app.UseMiddleware<ExceptionMiddleware>(); // Add this line
+
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<RequestResponseLoggingMiddleware>();
+
 
 app.UseHttpsRedirection();
 
@@ -139,3 +183,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.Run();
+
+
+
+public partial class Program { }

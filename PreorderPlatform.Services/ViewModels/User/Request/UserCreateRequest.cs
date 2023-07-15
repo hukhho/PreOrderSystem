@@ -1,4 +1,5 @@
-﻿using PreorderPlatform.Services.Utility;
+﻿using PreorderPlatform.Service.Utility;
+using PreorderPlatform.Services.Utility;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
@@ -30,9 +31,12 @@ namespace PreorderPlatform.Service.ViewModels.User.Request
         [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$", ErrorMessage = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.")]
         public string? Password { get; set; }
 
-        [Required(ErrorMessage = "Role ID is required.")]
-        //[AllowedRoleIds("2", "3", "4", ErrorMessage = "Invalid Role ID. Allowed values are 2, 3, or 4.")]
-        public Guid? RoleId { get; set; }
+        //[Required(ErrorMessage = "Role ID is required.")]
+        ////[AllowedRoleIds("2", "3", "4", ErrorMessage = "Invalid Role ID. Allowed values are 2, 3, or 4.")]
+        //public Guid? RoleId { get; set; }
+        [Required(ErrorMessage = "Role name is required.")]
+        [AllowedRoleNames("CUSTOMER", "BUSINESS_OWNER", "BUSINESS_STAFF", ErrorMessage = "Invalid role name. Allowed values are CUSTOMER, BUSINESS_OWNER, or BUSINESS_STAFF.")]
+        public string? RoleName { get; set; }
 
         [JsonIgnore]
         public bool? Status { get; set; }

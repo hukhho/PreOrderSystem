@@ -7,6 +7,10 @@ namespace PreorderPlatform.Service.ViewModels.Business.Request
 {
     public class BusinessCreateRequest
     {
+
+        [JsonIgnore]
+        public Guid Id { get; set; }
+
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
@@ -22,7 +26,9 @@ namespace PreorderPlatform.Service.ViewModels.Business.Request
 
         [JsonIgnore]
         public Guid OwnerId { get; set; }
-        
+
+
+
         [JsonIgnore]
         public bool Status { get; set; }
     }
