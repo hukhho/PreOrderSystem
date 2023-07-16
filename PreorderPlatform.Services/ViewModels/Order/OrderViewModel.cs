@@ -12,7 +12,8 @@ namespace PreorderPlatform.Service.ViewModels.Order
         public DateTime? CreatedAt { get; set; }
         public int? TotalQuantity { get; set; }
         public decimal? TotalPrice { get; set; }
-        public decimal? IsDeposited { get; set; }
+        public bool IsDeposited { get; set; }
+        public decimal? RequiredDepositAmount { get; set; }
         public string? Status { get; set; }
         public string? RevicerName { get; set; }
         public string? RevicerPhone { get; set; }

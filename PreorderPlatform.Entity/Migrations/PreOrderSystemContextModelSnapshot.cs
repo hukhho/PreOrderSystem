@@ -266,9 +266,13 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("created_at");
 
-                    b.Property<decimal?>("IsDeposited")
-                        .HasColumnType("numeric(18,0)")
+                    b.Property<bool>("IsDeposited")
+                        .HasColumnType("bit")
                         .HasColumnName("is_deposited");
+
+                    b.Property<decimal?>("RequiredDepositAmount")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("required_deposit_amount");
 
                     b.Property<string>("RevicerName")
                         .HasColumnType("nvarchar(max)")

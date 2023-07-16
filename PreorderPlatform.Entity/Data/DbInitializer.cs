@@ -681,7 +681,8 @@ namespace PreorderPlatform.Entity.Data
                                 CreatedAt = DateTime.Now,
                                 TotalQuantity = 0,
                                 TotalPrice = 0,
-                                IsDeposited = 0,
+                                IsDeposited = false,
+                                RequiredDepositAmount = 0,
                                 Status = "Created",
                                 RevicerName = user.FirstName + " " + user.LastName,
                                 RevicerPhone = user.Phone,
@@ -733,6 +734,7 @@ namespace PreorderPlatform.Entity.Data
 
                                     order.TotalQuantity += quantity;
                                     order.TotalPrice += quantity * unitPrice;
+                                    order.RequiredDepositAmount = quantity * unitPrice * 1 / 2;
                                 }
 
                                 order.ShippingPrice = order.TotalQuantity * 10; // Assume shipping cost is 10 per item
@@ -754,7 +756,8 @@ namespace PreorderPlatform.Entity.Data
                             _logger.LogInformation("Payment created.");
 
                             order.Payments.Add(payment);
-                            order.IsDeposited = payment.Total;
+
+                            order.IsDeposited = true;
 
                             context.Orders.Add(order);
 

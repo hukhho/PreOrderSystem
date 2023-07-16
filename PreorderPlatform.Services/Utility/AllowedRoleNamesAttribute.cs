@@ -16,7 +16,7 @@ namespace PreorderPlatform.Service.Utility
             _allowedRoleNames = allowedRoleNames;
         }
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext? validationContext)
         {
             var roleName = value as string;
 

@@ -7,17 +7,14 @@ namespace PreorderPlatform.Entity.Models
 {
     public partial class PreOrderSystemContext : DbContext
     {
-        public PreOrderSystemContext()
-        {
-        }
+        public PreOrderSystemContext() { }
 
         public PreOrderSystemContext(DbContextOptions<PreOrderSystemContext> options)
-            : base(options)
-        {
-        }
+            : base(options) { }
 
         public virtual DbSet<Business> Businesses { get; set; } = null!;
-        public virtual DbSet<BusinessPaymentCredential> BusinessPaymentCredentials { get; set; } = null!;
+        public virtual DbSet<BusinessPaymentCredential> BusinessPaymentCredentials { get; set; } =
+            null!;
         public virtual DbSet<Campaign> Campaigns { get; set; } = null!;
         public virtual DbSet<CampaignDetail> CampaignDetails { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; } = null!;
@@ -33,7 +30,9 @@ namespace PreorderPlatform.Entity.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=(local);Uid=sa;Pwd=123;Database=PreOrderSystem");
+                optionsBuilder.UseSqlServer(
+                    "Server=(local);Uid=sa;Pwd=123;Database=PreOrderSystem"
+                );
             }
         }
 
@@ -47,21 +46,18 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.Description).HasColumnName("description");
 
-                entity.Property(e => e.Email)
-                    .IsUnicode(false)
-                    .HasColumnName("email");
+                entity.Property(e => e.Email).IsUnicode(false).HasColumnName("email");
 
                 entity.Property(e => e.Name).HasColumnName("name");
 
                 entity.Property(e => e.OwnerId).HasColumnName("owner_id");
 
-                entity.Property(e => e.Phone)
-                    .IsUnicode(false)
-                    .HasColumnName("phone");
+                entity.Property(e => e.Phone).IsUnicode(false).HasColumnName("phone");
 
                 entity.Property(e => e.Status).HasColumnName("status");
 
-                entity.HasOne(d => d.Owner)
+                entity
+                    .HasOne(d => d.Owner)
                     .WithMany(p => p.Businesses)
                     .HasForeignKey(d => d.OwnerId)
                     .HasConstraintName("FK__Business__owner___29572725");
@@ -73,21 +69,22 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.BankAccountNumber)
+                entity
+                    .Property(e => e.BankAccountNumber)
                     .IsUnicode(false)
                     .HasColumnName("bank_account_number");
 
-                entity.Property(e => e.BankName)
-                    .IsUnicode(false)
-                    .HasColumnName("bank_name");
+                entity.Property(e => e.BankName).IsUnicode(false).HasColumnName("bank_name");
 
-                entity.Property(e => e.BankRecipientName)
+                entity
+                    .Property(e => e.BankRecipientName)
                     .IsUnicode(false)
                     .HasColumnName("bank_recipient_name");
 
                 entity.Property(e => e.BusinessId).HasColumnName("business_id");
 
-                entity.Property(e => e.CreateAt)
+                entity
+                    .Property(e => e.CreateAt)
                     .HasColumnType("datetime")
                     .HasColumnName("create_at");
 
@@ -95,25 +92,27 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.IsMomoActive).HasColumnName("is_momo_active");
 
-                entity.Property(e => e.MomoAccessToken)
+                entity
+                    .Property(e => e.MomoAccessToken)
                     .IsUnicode(false)
                     .HasColumnName("momo_access_token");
 
-                entity.Property(e => e.MomoApiKey)
-                    .IsUnicode(false)
-                    .HasColumnName("momo_api_key");
+                entity.Property(e => e.MomoApiKey).IsUnicode(false).HasColumnName("momo_api_key");
 
-                entity.Property(e => e.MomoPartnerCode)
+                entity
+                    .Property(e => e.MomoPartnerCode)
                     .IsUnicode(false)
                     .HasColumnName("momo_partner_code");
 
-                entity.Property(e => e.MomoSecretToken)
+                entity
+                    .Property(e => e.MomoSecretToken)
                     .IsUnicode(false)
                     .HasColumnName("momo_secret_token");
 
                 entity.Property(e => e.Status).HasColumnName("status");
 
-                entity.HasOne(d => d.Business)
+                entity
+                    .HasOne(d => d.Business)
                     .WithMany(p => p.BusinessPaymentCredentials)
                     .HasForeignKey(d => d.BusinessId)
                     .HasConstraintName("FK__BusinessP__busin__2D27B809");
@@ -127,7 +126,8 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.BusinessId).HasColumnName("business_id");
 
-                entity.Property(e => e.CreateAt)
+                entity
+                    .Property(e => e.CreateAt)
                     .HasColumnType("datetime")
                     .HasColumnName("create_at");
 
@@ -135,15 +135,15 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.Description).HasColumnName("description");
 
-                entity.Property(e => e.EndAt)
-                    .HasColumnType("datetime")
-                    .HasColumnName("end_at");
+                entity.Property(e => e.EndAt).HasColumnType("datetime").HasColumnName("end_at");
 
-                entity.Property(e => e.ExpectedShippingDate)
+                entity
+                    .Property(e => e.ExpectedShippingDate)
                     .HasColumnType("date")
                     .HasColumnName("expected_shipping_date");
 
-                entity.Property(e => e.ModifiedAt)
+                entity
+                    .Property(e => e.ModifiedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("modified_at");
 
@@ -153,23 +153,24 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.ProductId).HasColumnName("product_id");
 
-                entity.Property(e => e.StartAt)
-                    .HasColumnType("datetime")
-                    .HasColumnName("start_at");
+                entity.Property(e => e.StartAt).HasColumnType("datetime").HasColumnName("start_at");
 
                 entity.Property(e => e.Status).HasColumnName("status");
 
-                entity.HasOne(d => d.Business)
+                entity
+                    .HasOne(d => d.Business)
                     .WithMany(p => p.Campaigns)
                     .HasForeignKey(d => d.BusinessId)
                     .HasConstraintName("FK__Campaign__busine__37A5467C");
 
-                entity.HasOne(d => d.Owner)
+                entity
+                    .HasOne(d => d.Owner)
                     .WithMany(p => p.Campaigns)
                     .HasForeignKey(d => d.OwnerId)
                     .HasConstraintName("FK__Campaign__owner___36B12243");
 
-                entity.HasOne(d => d.Product)
+                entity
+                    .HasOne(d => d.Product)
                     .WithMany(p => p.Campaigns)
                     .HasForeignKey(d => d.ProductId)
                     .HasConstraintName("FK__Campaign__produc__35BCFE0A");
@@ -187,13 +188,15 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.Phase).HasColumnName("phase");
 
-                entity.Property(e => e.Price)
+                entity
+                    .Property(e => e.Price)
                     .HasColumnType("numeric(18, 0)")
                     .HasColumnName("price");
 
                 entity.Property(e => e.TotalOrdered).HasColumnName("total_ordered");
 
-                entity.HasOne(d => d.Campaign)
+                entity
+                    .HasOne(d => d.Campaign)
                     .WithMany(p => p.CampaignDetails)
                     .HasForeignKey(d => d.CampaignId)
                     .HasConstraintName("FK__CampaignD__campa__3A81B327");
@@ -218,29 +221,36 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CreatedAt)
+                entity
+                    .Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("created_at");
 
-                entity.Property(e => e.IsDeposited)
-                    .HasColumnType("numeric(18, 0)")
-                    .HasColumnName("is_deposited");
+                entity.Property(e => e.IsDeposited).IsRequired().HasColumnName("is_deposited");
+
+                entity
+                    .Property(e => e.RequiredDepositAmount)
+                    .HasColumnType("decimal(18, 2)")
+                    .HasColumnName("required_deposit_amount");
 
                 entity.Property(e => e.RevicerName).HasColumnName("revicer_name");
 
-                entity.Property(e => e.RevicerPhone)
+                entity
+                    .Property(e => e.RevicerPhone)
                     .IsUnicode(false)
                     .HasColumnName("revicer_phone");
 
                 entity.Property(e => e.ShippingAddress).HasColumnName("shipping_address");
 
-                entity.Property(e => e.ShippingCode)
+                entity
+                    .Property(e => e.ShippingCode)
                     .IsUnicode(false)
                     .HasColumnName("shipping_code");
 
                 entity.Property(e => e.ShippingDistrict).HasColumnName("shipping_district");
 
-                entity.Property(e => e.ShippingPrice)
+                entity
+                    .Property(e => e.ShippingPrice)
                     .HasColumnType("numeric(18, 0)")
                     .HasColumnName("shipping_price");
 
@@ -252,7 +262,8 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.Status).HasColumnName("status");
 
-                entity.Property(e => e.TotalPrice)
+                entity
+                    .Property(e => e.TotalPrice)
                     .HasColumnType("numeric(18, 0)")
                     .HasColumnName("total_price");
 
@@ -260,7 +271,8 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
-                entity.HasOne(d => d.User)
+                entity
+                    .HasOne(d => d.User)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK__Order__user_id__3D5E1FD2");
@@ -278,16 +290,19 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
 
-                entity.Property(e => e.UnitPrice)
+                entity
+                    .Property(e => e.UnitPrice)
                     .HasColumnType("numeric(18, 0)")
                     .HasColumnName("unit_price");
 
-                entity.HasOne(d => d.CampaignDetail)
+                entity
+                    .HasOne(d => d.CampaignDetail)
                     .WithMany(p => p.OrderItems)
                     .HasForeignKey(d => d.CampaignDetailId)
                     .HasConstraintName("FK__OrderItem__campa__412EB0B6");
 
-                entity.HasOne(d => d.Order)
+                entity
+                    .HasOne(d => d.Order)
                     .WithMany(p => p.OrderItems)
                     .HasForeignKey(d => d.OrderId)
                     .HasConstraintName("FK__OrderItem__order__403A8C7D");
@@ -303,26 +318,27 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.OrderId).HasColumnName("order_id");
 
-                entity.Property(e => e.PayedAt)
-                    .HasColumnType("datetime")
-                    .HasColumnName("payed_at");
+                entity.Property(e => e.PayedAt).HasColumnType("datetime").HasColumnName("payed_at");
 
                 entity.Property(e => e.PaymentCount).HasColumnName("payment_count");
 
                 entity.Property(e => e.Status).HasColumnName("status");
 
-                entity.Property(e => e.Total)
+                entity
+                    .Property(e => e.Total)
                     .HasColumnType("numeric(18, 0)")
                     .HasColumnName("total");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
-                entity.HasOne(d => d.Order)
+                entity
+                    .HasOne(d => d.Order)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.OrderId)
                     .HasConstraintName("FK__Payment__order_i__44FF419A");
 
-                entity.HasOne(d => d.User)
+                entity
+                    .HasOne(d => d.User)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK__Payment__user_id__440B1D61");
@@ -340,24 +356,25 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.Description).HasColumnName("description");
 
-                entity.Property(e => e.Image)
-                    .IsUnicode(false)
-                    .HasColumnName("image");
+                entity.Property(e => e.Image).IsUnicode(false).HasColumnName("image");
 
                 entity.Property(e => e.Name).HasColumnName("name");
 
-                entity.Property(e => e.Price)
+                entity
+                    .Property(e => e.Price)
                     .HasColumnType("numeric(18, 0)")
                     .HasColumnName("price");
 
                 entity.Property(e => e.Status).HasColumnName("status");
 
-                entity.HasOne(d => d.Business)
+                entity
+                    .HasOne(d => d.Business)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.BusinessId)
                     .HasConstraintName("FK__Product__busines__32E0915F");
 
-                entity.HasOne(d => d.Category)
+                entity
+                    .HasOne(d => d.Category)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.CategoryId)
                     .HasConstraintName("FK__Product__categor__31EC6D26");
@@ -384,21 +401,15 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.District).HasColumnName("district");
 
-                entity.Property(e => e.Email)
-                    .IsUnicode(false)
-                    .HasColumnName("email");
+                entity.Property(e => e.Email).IsUnicode(false).HasColumnName("email");
 
                 entity.Property(e => e.FirstName).HasColumnName("first_name");
 
                 entity.Property(e => e.LastName).HasColumnName("last_name");
 
-                entity.Property(e => e.Password)
-                    .IsUnicode(false)
-                    .HasColumnName("password");
+                entity.Property(e => e.Password).IsUnicode(false).HasColumnName("password");
 
-                entity.Property(e => e.Phone)
-                    .IsUnicode(false)
-                    .HasColumnName("phone");
+                entity.Property(e => e.Phone).IsUnicode(false).HasColumnName("phone");
 
                 entity.Property(e => e.Province).HasColumnName("province");
 
@@ -408,12 +419,14 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.Ward).HasColumnName("ward");
 
-                entity.HasOne(d => d.Business)
+                entity
+                    .HasOne(d => d.Business)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.BusinessId)
                     .HasConstraintName("FK__User__business_i__2A4B4B5E");
 
-                entity.HasOne(d => d.Role)
+                entity
+                    .HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
                     .HasConstraintName("FK__User__role_id__267ABA7A");
@@ -425,4 +438,3 @@ namespace PreorderPlatform.Entity.Models
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
-

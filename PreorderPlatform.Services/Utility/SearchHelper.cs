@@ -6,17 +6,23 @@ namespace PreorderPlatform.Service.Utility
 {
     public static class SearchHelper
     {
-        public static IQueryable<TEntity> GetWithSearch<TEntity>(this IQueryable<TEntity> query, object searchModel) where TEntity : class
+        public static IQueryable<TEntity> GetWithSearch<TEntity>(
+            this IQueryable<TEntity> query,
+            object searchModel
+        )
+            where TEntity : class
         {
             foreach (var prop in searchModel.GetType().GetProperties())
             {
                 var value = prop.GetValue(searchModel, null);
 
-                if (value == null) continue;
+                if (value == null)
+                    continue;
 
                 var entityProperty = typeof(TEntity).GetProperty(prop.Name);
 
-                if (entityProperty == null) continue;
+                if (entityProperty == null)
+                    continue;
 
                 // Build expression tree
                 //--entity
@@ -35,7 +41,13 @@ namespace PreorderPlatform.Service.Utility
                     body = Expression.Call(entityProp, nameof(string.Contains), null, searchValue);
                 }
                 // Filter by int, Guid, DateTime, byte, and bool
-                else if (value is int || value is Guid || value is DateTime || value is byte || value is bool)
+                else if (
+                    value is int
+                    || value is Guid
+                    || value is DateTime
+                    || value is byte
+                    || value is bool
+                )
                 {
                     // Check if the property type is nullable and convert the search value accordingly
                     if (Nullable.GetUnderlyingType(entityProp.Type) != null)
@@ -65,26 +77,43 @@ namespace PreorderPlatform.Service.Utility
             return query;
         }
 
-
         public static IQueryable<TEntity> FilterByDateInRange<TEntity>(
-        this IQueryable<TEntity> query,
-        DateTime? date,
-        Expression<Func<TEntity, DateTime?>> startSelector,
-        Expression<Func<TEntity, DateTime?>> endSelector)
+            this IQueryable<TEntity> query,
+            DateTime? date,
+            Expression<Func<TEntity, DateTime?>> startSelector,
+            Expression<Func<TEntity, DateTime?>> endSelector
+        )
         {
             if (date.HasValue)
             {
                 var entityType = typeof(TEntity);
                 var entityParameter = Expression.Parameter(entityType, "e");
 
-                var startSelectorBody = ReplaceParameter(startSelector.Body, startSelector.Parameters[0], entityParameter);
-                var startCondition = Expression.LessThanOrEqual(startSelectorBody, Expression.Constant(date.Value, typeof(DateTime?)));
+                var startSelectorBody = ReplaceParameter(
+                    startSelector.Body,
+                    startSelector.Parameters[0],
+                    entityParameter
+                );
+                var startCondition = Expression.LessThanOrEqual(
+                    startSelectorBody,
+                    Expression.Constant(date.Value, typeof(DateTime?))
+                );
 
-                var endSelectorBody = ReplaceParameter(endSelector.Body, endSelector.Parameters[0], entityParameter);
-                var endCondition = Expression.GreaterThanOrEqual(endSelectorBody, Expression.Constant(date.Value, typeof(DateTime?)));
+                var endSelectorBody = ReplaceParameter(
+                    endSelector.Body,
+                    endSelector.Parameters[0],
+                    entityParameter
+                );
+                var endCondition = Expression.GreaterThanOrEqual(
+                    endSelectorBody,
+                    Expression.Constant(date.Value, typeof(DateTime?))
+                );
 
                 var combinedCondition = Expression.AndAlso(startCondition, endCondition);
-                var lambda = Expression.Lambda<Func<TEntity, bool>>(combinedCondition, entityParameter);
+                var lambda = Expression.Lambda<Func<TEntity, bool>>(
+                    combinedCondition,
+                    entityParameter
+                );
 
                 query = query.Where(lambda);
             }
@@ -93,10 +122,11 @@ namespace PreorderPlatform.Service.Utility
         }
 
         public static IQueryable<TEntity> FilterOrderByDate<TEntity>(
-    this IQueryable<TEntity> query,
-    Expression<Func<TEntity, DateTime?>> date,
-    DateTime? startDate,
-    DateTime? endDate)
+            this IQueryable<TEntity> query,
+            Expression<Func<TEntity, DateTime?>> date,
+            DateTime? startDate,
+            DateTime? endDate
+        )
         {
             if (date != null && startDate.HasValue && endDate.HasValue)
             {
@@ -105,8 +135,14 @@ namespace PreorderPlatform.Service.Utility
 
                 var dateBody = ReplaceParameter(date.Body, date.Parameters[0], entityParameter);
                 var dateCondition = Expression.AndAlso(
-                    Expression.GreaterThanOrEqual(dateBody, Expression.Constant(startDate.Value, typeof(DateTime?))),
-                    Expression.LessThanOrEqual(dateBody, Expression.Constant(endDate.Value, typeof(DateTime?)))
+                    Expression.GreaterThanOrEqual(
+                        dateBody,
+                        Expression.Constant(startDate.Value, typeof(DateTime?))
+                    ),
+                    Expression.LessThanOrEqual(
+                        dateBody,
+                        Expression.Constant(endDate.Value, typeof(DateTime?))
+                    )
                 );
 
                 var lambda = Expression.Lambda<Func<TEntity, bool>>(dateCondition, entityParameter);
@@ -117,8 +153,11 @@ namespace PreorderPlatform.Service.Utility
             return query;
         }
 
-
-        private static Expression ReplaceParameter(Expression expression, ParameterExpression oldParameter, ParameterExpression newParameter)
+        private static Expression ReplaceParameter(
+            Expression expression,
+            ParameterExpression oldParameter,
+            ParameterExpression newParameter
+        )
         {
             return new ParameterReplacer(oldParameter, newParameter).Visit(expression);
         }
@@ -128,7 +167,10 @@ namespace PreorderPlatform.Service.Utility
             private readonly ParameterExpression _oldParameter;
             private readonly ParameterExpression _newParameter;
 
-            public ParameterReplacer(ParameterExpression oldParameter, ParameterExpression newParameter)
+            public ParameterReplacer(
+                ParameterExpression oldParameter,
+                ParameterExpression newParameter
+            )
             {
                 _oldParameter = oldParameter;
                 _newParameter = newParameter;
