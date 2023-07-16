@@ -22,5 +22,6 @@ namespace PreorderPlatform.Entity.Repositories
         Task<T> GetWithIncludeAsync(Expression<Func<T, bool>> predicate, params Func<IQueryable<T>, IIncludableQueryable<T, object>>[] includeExpressions);
         Task<bool> IsExistsByGuid(Guid id);
         Task UpdateAsync(T entity);
+        Task UpdateMultiAsync(IEnumerable<T> entities);
     }
 }

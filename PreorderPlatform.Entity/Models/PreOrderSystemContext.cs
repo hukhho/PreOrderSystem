@@ -38,6 +38,12 @@ namespace PreorderPlatform.Entity.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Set global DeleteBehavior to NoAction
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.NoAction;
+            }
+
             modelBuilder.Entity<Business>(entity =>
             {
                 entity.ToTable("Business");
@@ -161,18 +167,21 @@ namespace PreorderPlatform.Entity.Models
                     .HasOne(d => d.Business)
                     .WithMany(p => p.Campaigns)
                     .HasForeignKey(d => d.BusinessId)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("FK__Campaign__busine__37A5467C");
 
                 entity
                     .HasOne(d => d.Owner)
                     .WithMany(p => p.Campaigns)
                     .HasForeignKey(d => d.OwnerId)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("FK__Campaign__owner___36B12243");
 
                 entity
                     .HasOne(d => d.Product)
                     .WithMany(p => p.Campaigns)
                     .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.NoAction) // prevent cascade delete
                     .HasConstraintName("FK__Campaign__produc__35BCFE0A");
             });
 
@@ -299,6 +308,7 @@ namespace PreorderPlatform.Entity.Models
                     .HasOne(d => d.CampaignDetail)
                     .WithMany(p => p.OrderItems)
                     .HasForeignKey(d => d.CampaignDetailId)
+                    .OnDelete(DeleteBehavior.NoAction) // prevent cascade delete
                     .HasConstraintName("FK__OrderItem__campa__412EB0B6");
 
                 entity
@@ -360,10 +370,6 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.Name).HasColumnName("name");
 
-                entity
-                    .Property(e => e.Price)
-                    .HasColumnType("numeric(18, 0)")
-                    .HasColumnName("price");
 
                 entity.Property(e => e.Status).HasColumnName("status");
 

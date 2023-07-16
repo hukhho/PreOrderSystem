@@ -11,6 +11,7 @@ using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.ViewModels.Order.Request;
 using PreorderPlatform.Service.ViewModels.Order.Response;
+using System.Security.Claims;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -86,12 +87,30 @@ namespace PreorderPlatform.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOrder(OrderCreateViewModel model)
         {
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized(new ApiResponse<object>(null, "You don't have permission to access this resource.", false, null));
+            }
+            Guid userIdGuid;
+            if (!Guid.TryParse(userId, out userIdGuid))
+            {
+                return BadRequest(
+                    new ApiResponse<object>(null, "Invalid user ID format.", false, null)
+                );
+            }
+
             try
             {
-                var order = await _orderService.CreateOrderAsync(model);
-                return CreatedAtAction(nameof(GetOrderById),
-                                       new { id = order.Id },
-                                       new ApiResponse<OrderViewModel>(order, "Order created successfully.", true, null));
+                var order = await _orderService.CreateOrderAsync(userIdGuid, model);
+
+                return StatusCode(StatusCodes.Status201Created, new ApiResponse<object>(order, "Order created successfully.", false, null));
+
+                //return CreatedAtAction(nameof(GetOrderById),
+                //                       new { id = order.Id },
+                //                       new ApiResponse<OrderViewModel>(order, "Order created successfully.", true, null));
             }
             catch (Exception ex)
             {

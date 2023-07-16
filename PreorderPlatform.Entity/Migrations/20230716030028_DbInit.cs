@@ -28,7 +28,7 @@ namespace PreorderPlatform.Entity.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,7 +57,7 @@ namespace PreorderPlatform.Entity.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    business_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    business_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     bank_account_number = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
                     bank_name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
                     bank_recipient_name = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
@@ -65,10 +65,10 @@ namespace PreorderPlatform.Entity.Migrations
                     momo_partner_code = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
                     momo_access_token = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
                     momo_secret_token = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    is_momo_active = table.Column<bool>(type: "bit", nullable: true),
-                    is_main = table.Column<bool>(type: "bit", nullable: true),
-                    create_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    status = table.Column<bool>(type: "bit", nullable: true)
+                    is_momo_active = table.Column<bool>(type: "bit", nullable: false),
+                    is_main = table.Column<bool>(type: "bit", nullable: false),
+                    create_at = table.Column<DateTime>(type: "datetime", nullable: false),
+                    status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,13 +85,12 @@ namespace PreorderPlatform.Entity.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     image = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    price = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     status = table.Column<bool>(type: "bit", nullable: true),
-                    category_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    business_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    category_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    business_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -113,17 +112,17 @@ namespace PreorderPlatform.Entity.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    first_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    last_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    phone = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    email = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    password = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    first_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    last_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    phone = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
+                    email = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
+                    password = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
                     address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ward = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     district = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     province = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    status = table.Column<bool>(type: "bit", nullable: true),
-                    role_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    status = table.Column<bool>(type: "bit", nullable: false),
+                    role_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     business_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -146,18 +145,18 @@ namespace PreorderPlatform.Entity.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    start_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    end_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    deposit_percent = table.Column<int>(type: "int", nullable: true),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    start_at = table.Column<DateTime>(type: "datetime", nullable: false),
+                    end_at = table.Column<DateTime>(type: "datetime", nullable: false),
+                    deposit_percent = table.Column<int>(type: "int", nullable: false),
                     expected_shipping_date = table.Column<DateTime>(type: "date", nullable: true),
-                    create_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    modified_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    status = table.Column<bool>(type: "bit", nullable: true),
-                    owner_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    business_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    create_at = table.Column<DateTime>(type: "datetime", nullable: false),
+                    modified_at = table.Column<DateTime>(type: "datetime", nullable: false),
+                    status = table.Column<bool>(type: "bit", nullable: false),
+                    owner_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    business_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -184,22 +183,22 @@ namespace PreorderPlatform.Entity.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    created_at = table.Column<DateTime>(type: "datetime", nullable: true),
-                    total_quantity = table.Column<int>(type: "int", nullable: true),
-                    total_price = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
+                    created_at = table.Column<DateTime>(type: "datetime", nullable: false),
+                    total_quantity = table.Column<int>(type: "int", nullable: false),
+                    total_price = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     is_deposited = table.Column<bool>(type: "bit", nullable: false),
-                    required_deposit_amount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    required_deposit_amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     revicer_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     revicer_phone = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
                     shipping_address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     shipping_province = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     shipping_ward = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     shipping_district = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    shipping_code = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
-                    shipping_price = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    shipping_status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    shipping_code = table.Column<string>(type: "varchar(max)", unicode: false, nullable: false),
+                    shipping_price = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
+                    shipping_status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -216,11 +215,11 @@ namespace PreorderPlatform.Entity.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    phase = table.Column<int>(type: "int", nullable: true),
-                    allowed_quantity = table.Column<int>(type: "int", nullable: true),
-                    total_ordered = table.Column<int>(type: "int", nullable: true),
-                    campaign_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    price = table.Column<decimal>(type: "numeric(18,0)", nullable: true)
+                    phase = table.Column<int>(type: "int", nullable: false),
+                    allowed_quantity = table.Column<int>(type: "int", nullable: false),
+                    total_ordered = table.Column<int>(type: "int", nullable: false),
+                    campaign_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    price = table.Column<decimal>(type: "numeric(18,0)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -265,10 +264,10 @@ namespace PreorderPlatform.Entity.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    campaign_detail_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    quantity = table.Column<int>(type: "int", nullable: true),
-                    unit_price = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    order_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    campaign_detail_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    quantity = table.Column<int>(type: "int", nullable: false),
+                    unit_price = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
+                    order_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {

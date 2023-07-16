@@ -15,7 +15,7 @@ namespace PreorderPlatform.Service.Services.OrderServices
 {
     public interface IOrderService
     {
-        Task<OrderViewModel> CreateOrderAsync(OrderCreateViewModel model);
+        Task<OrderViewModel> CreateOrderAsync(Guid userId, OrderCreateViewModel model);
 
         Task DeleteOrderAsync(Guid orderId);
 

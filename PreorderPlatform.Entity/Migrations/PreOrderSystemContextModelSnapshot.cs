@@ -84,19 +84,19 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("varchar(max)")
                         .HasColumnName("bank_recipient_name");
 
-                    b.Property<Guid?>("BusinessId")
+                    b.Property<Guid>("BusinessId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("business_id");
 
-                    b.Property<DateTime?>("CreateAt")
+                    b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime")
                         .HasColumnName("create_at");
 
-                    b.Property<bool?>("IsMain")
+                    b.Property<bool>("IsMain")
                         .HasColumnType("bit")
                         .HasColumnName("is_main");
 
-                    b.Property<bool?>("IsMomoActive")
+                    b.Property<bool>("IsMomoActive")
                         .HasColumnType("bit")
                         .HasColumnName("is_momo_active");
 
@@ -120,7 +120,7 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("varchar(max)")
                         .HasColumnName("momo_secret_token");
 
-                    b.Property<bool?>("Status")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit")
                         .HasColumnName("status");
 
@@ -138,23 +138,24 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<Guid?>("BusinessId")
+                    b.Property<Guid>("BusinessId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("business_id");
 
-                    b.Property<DateTime?>("CreateAt")
+                    b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime")
                         .HasColumnName("create_at");
 
-                    b.Property<int?>("DepositPercent")
+                    b.Property<int>("DepositPercent")
                         .HasColumnType("int")
                         .HasColumnName("deposit_percent");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
-                    b.Property<DateTime?>("EndAt")
+                    b.Property<DateTime>("EndAt")
                         .HasColumnType("datetime")
                         .HasColumnName("end_at");
 
@@ -162,27 +163,28 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("date")
                         .HasColumnName("expected_shipping_date");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("modified_at");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
-                    b.Property<Guid?>("OwnerId")
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("owner_id");
 
-                    b.Property<Guid?>("ProductId")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("product_id");
 
-                    b.Property<DateTime?>("StartAt")
+                    b.Property<DateTime>("StartAt")
                         .HasColumnType("datetime")
                         .HasColumnName("start_at");
 
-                    b.Property<bool?>("Status")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit")
                         .HasColumnName("status");
 
@@ -204,23 +206,23 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<int?>("AllowedQuantity")
+                    b.Property<int>("AllowedQuantity")
                         .HasColumnType("int")
                         .HasColumnName("allowed_quantity");
 
-                    b.Property<Guid?>("CampaignId")
+                    b.Property<Guid>("CampaignId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("campaign_id");
 
-                    b.Property<int?>("Phase")
+                    b.Property<int>("Phase")
                         .HasColumnType("int")
                         .HasColumnName("phase");
 
-                    b.Property<decimal?>("Price")
+                    b.Property<decimal>("Price")
                         .HasColumnType("numeric(18,0)")
                         .HasColumnName("price");
 
-                    b.Property<int?>("TotalOrdered")
+                    b.Property<int>("TotalOrdered")
                         .HasColumnType("int")
                         .HasColumnName("total_ordered");
 
@@ -262,7 +264,7 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("created_at");
 
@@ -270,7 +272,7 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("is_deposited");
 
-                    b.Property<decimal?>("RequiredDepositAmount")
+                    b.Property<decimal>("RequiredDepositAmount")
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("required_deposit_amount");
 
@@ -288,6 +290,7 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnName("shipping_address");
 
                     b.Property<string>("ShippingCode")
+                        .IsRequired()
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)")
                         .HasColumnName("shipping_code");
@@ -296,7 +299,7 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("shipping_district");
 
-                    b.Property<decimal?>("ShippingPrice")
+                    b.Property<decimal>("ShippingPrice")
                         .HasColumnType("numeric(18,0)")
                         .HasColumnName("shipping_price");
 
@@ -305,6 +308,7 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnName("shipping_province");
 
                     b.Property<string>("ShippingStatus")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("shipping_status");
 
@@ -313,18 +317,19 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnName("shipping_ward");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("status");
 
-                    b.Property<decimal?>("TotalPrice")
+                    b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric(18,0)")
                         .HasColumnName("total_price");
 
-                    b.Property<int?>("TotalQuantity")
+                    b.Property<int>("TotalQuantity")
                         .HasColumnType("int")
                         .HasColumnName("total_quantity");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("user_id");
 
@@ -342,19 +347,19 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<Guid?>("CampaignDetailId")
+                    b.Property<Guid>("CampaignDetailId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("campaign_detail_id");
 
-                    b.Property<Guid?>("OrderId")
+                    b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("order_id");
 
-                    b.Property<int?>("Quantity")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.Property<decimal?>("UnitPrice")
+                    b.Property<decimal>("UnitPrice")
                         .HasColumnType("numeric(18,0)")
                         .HasColumnName("unit_price");
 
@@ -418,15 +423,16 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<Guid?>("BusinessId")
+                    b.Property<Guid>("BusinessId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("business_id");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("category_id");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
@@ -436,12 +442,9 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnName("image");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
-
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("numeric(18,0)")
-                        .HasColumnName("price");
 
                     b.Property<bool?>("Status")
                         .HasColumnType("bit")
@@ -464,6 +467,7 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
@@ -492,24 +496,29 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnName("district");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)")
                         .HasColumnName("email");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("first_name");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("last_name");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)")
                         .HasColumnName("password");
 
                     b.Property<string>("Phone")
+                        .IsRequired()
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)")
                         .HasColumnName("phone");
@@ -518,11 +527,11 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("province");
 
-                    b.Property<Guid?>("RoleId")
+                    b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("role_id");
 
-                    b.Property<bool?>("Status")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit")
                         .HasColumnName("status");
 
@@ -554,6 +563,8 @@ namespace PreorderPlatform.Entity.Migrations
                     b.HasOne("PreorderPlatform.Entity.Models.Business", "Business")
                         .WithMany("BusinessPaymentCredentials")
                         .HasForeignKey("BusinessId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
                         .HasConstraintName("FK__BusinessP__busin__2D27B809");
 
                     b.Navigation("Business");
@@ -564,16 +575,22 @@ namespace PreorderPlatform.Entity.Migrations
                     b.HasOne("PreorderPlatform.Entity.Models.Business", "Business")
                         .WithMany("Campaigns")
                         .HasForeignKey("BusinessId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
                         .HasConstraintName("FK__Campaign__busine__37A5467C");
 
                     b.HasOne("PreorderPlatform.Entity.Models.User", "Owner")
                         .WithMany("Campaigns")
                         .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
                         .HasConstraintName("FK__Campaign__owner___36B12243");
 
                     b.HasOne("PreorderPlatform.Entity.Models.Product", "Product")
                         .WithMany("Campaigns")
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
                         .HasConstraintName("FK__Campaign__produc__35BCFE0A");
 
                     b.Navigation("Business");
@@ -588,6 +605,8 @@ namespace PreorderPlatform.Entity.Migrations
                     b.HasOne("PreorderPlatform.Entity.Models.Campaign", "Campaign")
                         .WithMany("CampaignDetails")
                         .HasForeignKey("CampaignId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
                         .HasConstraintName("FK__CampaignD__campa__3A81B327");
 
                     b.Navigation("Campaign");
@@ -598,6 +617,8 @@ namespace PreorderPlatform.Entity.Migrations
                     b.HasOne("PreorderPlatform.Entity.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
                         .HasConstraintName("FK__Order__user_id__3D5E1FD2");
 
                     b.Navigation("User");
@@ -608,11 +629,15 @@ namespace PreorderPlatform.Entity.Migrations
                     b.HasOne("PreorderPlatform.Entity.Models.CampaignDetail", "CampaignDetail")
                         .WithMany("OrderItems")
                         .HasForeignKey("CampaignDetailId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
                         .HasConstraintName("FK__OrderItem__campa__412EB0B6");
 
                     b.HasOne("PreorderPlatform.Entity.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
                         .HasConstraintName("FK__OrderItem__order__403A8C7D");
 
                     b.Navigation("CampaignDetail");
@@ -625,11 +650,13 @@ namespace PreorderPlatform.Entity.Migrations
                     b.HasOne("PreorderPlatform.Entity.Models.Order", "Order")
                         .WithMany("Payments")
                         .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .HasConstraintName("FK__Payment__order_i__44FF419A");
 
                     b.HasOne("PreorderPlatform.Entity.Models.User", "User")
                         .WithMany("Payments")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .HasConstraintName("FK__Payment__user_id__440B1D61");
 
                     b.Navigation("Order");
@@ -642,11 +669,15 @@ namespace PreorderPlatform.Entity.Migrations
                     b.HasOne("PreorderPlatform.Entity.Models.Business", "Business")
                         .WithMany("Products")
                         .HasForeignKey("BusinessId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
                         .HasConstraintName("FK__Product__busines__32E0915F");
 
                     b.HasOne("PreorderPlatform.Entity.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
                         .HasConstraintName("FK__Product__categor__31EC6D26");
 
                     b.Navigation("Business");
@@ -664,6 +695,8 @@ namespace PreorderPlatform.Entity.Migrations
                     b.HasOne("PreorderPlatform.Entity.Models.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
                         .HasConstraintName("FK__User__role_id__267ABA7A");
 
                     b.Navigation("Business");

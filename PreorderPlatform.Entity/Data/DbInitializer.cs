@@ -307,7 +307,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "MacBook Pro",
                                 Description = "Apple laptop",
-                                Price = 2000,
                                 CategoryId = laptopCategory.Id,
                                 BusinessId = laptopBusiness.Id,
                                 Status = true
@@ -317,7 +316,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Dell XPS",
                                 Description = "Dell laptop",
-                                Price = 1500,
                                 CategoryId = laptopCategory.Id,
                                 BusinessId = laptopBusiness.Id,
                                 Status = true
@@ -327,7 +325,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "HP Pavilion",
                                 Description = "HP laptop",
-                                Price = 1300,
                                 CategoryId = laptopCategory.Id,
                                 BusinessId = laptopBusiness.Id,
                                 Status = true
@@ -337,7 +334,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Lenovo ThinkPad",
                                 Description = "Lenovo laptop",
-                                Price = 1200,
                                 CategoryId = laptopCategory.Id,
                                 BusinessId = laptopBusiness.Id,
                                 Status = true
@@ -347,7 +343,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Surface Pro",
                                 Description = "Microsoft laptop",
-                                Price = 1700,
                                 CategoryId = laptopCategory.Id,
                                 BusinessId = laptopBusiness.Id,
                                 Status = true
@@ -357,7 +352,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "iPhone 13",
                                 Description = "Apple smartphone",
-                                Price = 1100,
                                 CategoryId = smartphoneCategory.Id,
                                 BusinessId = smartphoneBusiness.Id,
                                 Status = true
@@ -367,7 +361,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Samsung Galaxy S21",
                                 Description = "Samsung smartphone",
-                                Price = 1000,
                                 CategoryId = smartphoneCategory.Id,
                                 BusinessId = smartphoneBusiness.Id,
                                 Status = true
@@ -377,7 +370,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Google Pixel 6",
                                 Description = "Google smartphone",
-                                Price = 900,
                                 CategoryId = smartphoneCategory.Id,
                                 BusinessId = smartphoneBusiness.Id,
                                 Status = true
@@ -387,7 +379,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "OnePlus 9",
                                 Description = "OnePlus smartphone",
-                                Price = 800,
                                 CategoryId = smartphoneCategory.Id,
                                 BusinessId = smartphoneBusiness.Id,
                                 Status = true
@@ -397,7 +388,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Huawei P50",
                                 Description = "Huawei smartphone",
-                                Price = 850,
                                 CategoryId = smartphoneCategory.Id,
                                 BusinessId = smartphoneBusiness.Id,
                                 Status = true
@@ -407,7 +397,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Samsung QLED",
                                 Description = "Samsung TV",
-                                Price = 1500,
                                 CategoryId = tvCategory.Id,
                                 BusinessId = tvBusiness.Id,
                                 Status = true
@@ -417,7 +406,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Sony Bravia",
                                 Description = "Sony TV",
-                                Price = 1400,
                                 CategoryId = tvCategory.Id,
                                 BusinessId = tvBusiness.Id,
                                 Status = true
@@ -427,7 +415,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "LG OLED",
                                 Description = "LG TV",
-                                Price = 1600,
                                 CategoryId = tvCategory.Id,
                                 BusinessId = tvBusiness.Id,
                                 Status = true
@@ -437,7 +424,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "TCL 6-Series",
                                 Description = "TCL TV",
-                                Price = 900,
                                 CategoryId = tvCategory.Id,
                                 BusinessId = tvBusiness.Id,
                                 Status = true
@@ -447,7 +433,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Hisense H8G",
                                 Description = "Hisense TV",
-                                Price = 800,
                                 CategoryId = tvCategory.Id,
                                 BusinessId = tvBusiness.Id,
                                 Status = true
@@ -457,7 +442,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "iPad Pro",
                                 Description = "Apple tablet",
-                                Price = 1100,
                                 CategoryId = tabletCategory.Id,
                                 BusinessId = tabletBusiness.Id,
                                 Status = true
@@ -467,7 +451,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Samsung Galaxy Tab S7",
                                 Description = "Samsung tablet",
-                                Price = 900,
                                 CategoryId = tabletCategory.Id,
                                 BusinessId = tabletBusiness.Id,
                                 Status = true
@@ -477,7 +460,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Microsoft Surface Pro 7",
                                 Description = "Microsoft tablet",
-                                Price = 1200,
                                 CategoryId = tabletCategory.Id,
                                 BusinessId = tabletBusiness.Id,
                                 Status = true
@@ -487,7 +469,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Lenovo Tab P11",
                                 Description = "Lenovo tablet",
-                                Price = 600,
                                 CategoryId = tabletCategory.Id,
                                 BusinessId = tabletBusiness.Id,
                                 Status = true
@@ -497,7 +478,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Amazon Fire HD 10",
                                 Description = "Amazon tablet",
-                                Price = 150,
                                 CategoryId = tabletCategory.Id,
                                 BusinessId = tabletBusiness.Id,
                                 Status = true
@@ -507,7 +487,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Bose QuietComfort 35 II",
                                 Description = "Bose headphone",
-                                Price = 350,
                                 CategoryId = headphoneCategory.Id,
                                 BusinessId = headphoneBusiness.Id,
                                 Status = true
@@ -517,7 +496,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Sony WH-1000XM4",
                                 Description = "Sony headphone",
-                                Price = 350,
                                 CategoryId = headphoneCategory.Id,
                                 BusinessId = headphoneBusiness.Id,
                                 Status = true
@@ -527,7 +505,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Jabra Elite 85h",
                                 Description = "Jabra headphone",
-                                Price = 250,
                                 CategoryId = headphoneCategory.Id,
                                 BusinessId = headphoneBusiness.Id,
                                 Status = true
@@ -537,7 +514,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Sennheiser HD 660 S",
                                 Description = "Sennheiser headphone",
-                                Price = 500,
                                 CategoryId = headphoneCategory.Id,
                                 BusinessId = headphoneBusiness.Id,
                                 Status = true
@@ -547,7 +523,6 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "Audio-Technica ATH-M50x",
                                 Description = "Audio-Technica headphone",
-                                Price = 150,
                                 CategoryId = headphoneCategory.Id,
                                 BusinessId = headphoneBusiness.Id,
                                 Status = true
@@ -599,16 +574,34 @@ namespace PreorderPlatform.Entity.Data
                                         $"Selected user with ID {ownerId} as owner for campaign of business: {business.Name}"
                                     );
 
+                                    Random rand = new Random();
+
+                                    int randomShippingMonths = rand.Next(1, 6); // Generates a random integer between 1 and 5
+
+                                    int randomStartDays = rand.Next(-15, 15); // Generates a random integer between 7 and 14
+                                    int randomEndDays = rand.Next(7, 30); // Generates a random integer between 7 and 14
+                                    int randomShipDate = rand.Next(7, 30);
+
+                                    var startDate = DateTime.Now.AddDays(randomStartDays);
+                                    var endDate = startDate.AddDays(randomEndDays);
+                                    var shipDate = endDate.AddDays(randomStartDays);
+
                                     campaigns.Add(
                                         new Campaign
                                         {
                                             Id = Guid.NewGuid(),
                                             Name = $"Campaign{i} for {business.Name}",
-                                            Description =
-                                                $"Description for Campaign{i} of {business.Name} , create by {ownerId}",
+                                            Description = $"Description for Campaign{i} of {business.Name} , create by {ownerId}",
                                             BusinessId = business.Id,
                                             OwnerId = ownerId,
-                                            ProductId = business.Products.First().Id
+                                            ProductId = business.Products.First().Id,
+                                            StartAt = startDate,
+                                            EndAt = endDate, // Ends at a random date between 7 to 14 days from now
+                                            DepositPercent = 50,
+                                            ExpectedShippingDate = shipDate, // Ships at a random date between 1 to 5 months from now
+                                            CreateAt = DateTime.Now,
+                                            ModifiedAt = DateTime.Now,
+                                            Status = true
                                         }
                                     );
 
@@ -635,21 +628,24 @@ namespace PreorderPlatform.Entity.Data
                         foreach (var campaign in campaigns)
                         {
                             int randomAllowed = random.Next(1, 10) * 10;
+                            decimal previousPrice = random.Next(10, 100) * 10; // Initialize with base price
+
                             for (int i = 1; i <= 3; i++)
                             {
+                                // Generate a random increment between 10 and 100
+                                decimal priceIncrement = random.Next(1, 10) * 10;
+                                previousPrice += priceIncrement; // Increment the previous price
+
                                 campaignDetails.Add(
                                     new CampaignDetail
                                     {
                                         Id = Guid.NewGuid(),
                                         Phase = i,
                                         AllowedQuantity = randomAllowed + i * 50,
-                                        Price = campaign.Product.Price + i * 10 * 3,
+                                        Price = previousPrice, // Set the new price
                                         CampaignId = campaign.Id,
                                     }
                                 );
-                                ;
-                                ;
-                                ;
                             }
                         }
 
@@ -667,13 +663,21 @@ namespace PreorderPlatform.Entity.Data
                             .Where(u => u.Role.Name == "CUSTOMER")
                             .ToList();
 
-
                         // List of possible shipping statuses
-                        var shippingStatuses = new List<string> { "Not Shipped", "Shipped", "In Transit", "Delivered", "Delayed" };
+                        var shippingStatuses = new List<string>
+                        {
+                            "Not Shipped",
+                            "Shipped",
+                            "In Transit",
+                            "Delivered",
+                            "Delayed"
+                        };
 
                         foreach (var user in users)
                         {
-                            _logger.LogInformation($"Processing user: {user.Id} name: {user.FirstName} lastname: {user.LastName}");
+                            _logger.LogInformation(
+                                $"Processing user: {user.Id} name: {user.FirstName} lastname: {user.LastName}"
+                            );
 
                             var order = new Order
                             {
@@ -692,7 +696,9 @@ namespace PreorderPlatform.Entity.Data
                                 ShippingDistrict = user.District,
                                 ShippingCode = "000000" + random.Next(10000, 99999).ToString(),
                                 ShippingPrice = 0,
-                                ShippingStatus = shippingStatuses[random.Next(shippingStatuses.Count)],
+                                ShippingStatus = shippingStatuses[
+                                    random.Next(shippingStatuses.Count)
+                                ],
                                 UserId = user.Id,
                                 OrderItems = new List<OrderItem>(),
                                 Payments = new List<Payment>(),
@@ -738,7 +744,8 @@ namespace PreorderPlatform.Entity.Data
                                 }
 
                                 order.ShippingPrice = order.TotalQuantity * 10; // Assume shipping cost is 10 per item
-                                order.TotalPrice += order.ShippingPrice;
+
+                                order.TotalPrice += order.ShippingPrice ?? 0;
                             }
 
                             var payment = new Payment

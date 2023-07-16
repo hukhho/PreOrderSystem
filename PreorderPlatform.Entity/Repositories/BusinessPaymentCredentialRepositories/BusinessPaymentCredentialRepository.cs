@@ -33,8 +33,15 @@ namespace PreorderPlatform.Entity.Repositories.BusinessPaymentCredentialReposito
                 b => b.Id == credentialsId,
                 b => b.Include(o => o.Business)
                 );
+            if (businessPaymentCredential != null)
+            {
+                return businessPaymentCredential.BusinessId == businessId;
 
-            return businessPaymentCredential.BusinessId == businessId;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         // Add any additional methods specific to BusinessPaymentCredentialRepository here...
