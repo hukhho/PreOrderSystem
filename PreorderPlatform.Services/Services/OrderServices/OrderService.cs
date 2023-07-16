@@ -7,6 +7,7 @@ using PreorderPlatform.Entity.Models;
 using PreorderPlatform.Entity.Repositories.OrderRepositories;
 using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.Exceptions;
+using PreorderPlatform.Service.Helpers;
 using PreorderPlatform.Service.Services.OrderServices;
 using PreorderPlatform.Service.Utility;
 using PreorderPlatform.Service.Utility.Pagination;
@@ -37,8 +38,7 @@ namespace PreorderPlatform.Service.Services.OrderServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while fetching orders.",
-                    ex);
+                throw new ServiceException("An error occurred while fetching orders.", ex);
             }
         }
 
@@ -62,24 +62,39 @@ namespace PreorderPlatform.Service.Services.OrderServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while fetching order with ID {id}.",
-                    ex);
+                throw new ServiceException(
+                    $"An error occurred while fetching order with ID {id}.",
+                    ex
+                );
             }
         }
 
-        public async Task<OrderViewModel>
-        CreateOrderAsync(OrderCreateViewModel model)
+        public async Task<OrderViewModel> CreateOrderAsync(OrderCreateViewModel model)
         {
             try
             {
                 var order = _mapper.Map<Order>(model);
+
+                // Check if the order has exactly one payment
+                if (order.Payments.Count != 1)
+                {
+                    throw new ServiceException(
+                        "Only one payment can be added when creating an order."
+                    );
+                }
+
+                order.Payments.Single().PayedAt = DateTimeUtcPlus7.Now;
+
+                order.Payments.Single().Status = "Test Ne";
+
                 await _orderRepository.CreateAsync(order);
+
                 return _mapper.Map<OrderViewModel>(order);
             }
             catch (Exception ex)
             {
-                throw new ServiceException("An error occurred while creating the order.",
-                    ex);
+                Console.WriteLine($"CreateOrderAsync {ex}");
+                throw new ServiceException("An error occurred while creating the order.", ex);
             }
         }
 
@@ -93,8 +108,10 @@ namespace PreorderPlatform.Service.Services.OrderServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while updating order with ID {model.Id}.",
-                    ex);
+                throw new ServiceException(
+                    $"An error occurred while updating order with ID {model.Id}.",
+                    ex
+                );
             }
         }
 
@@ -107,13 +124,14 @@ namespace PreorderPlatform.Service.Services.OrderServices
             }
             catch (Exception ex)
             {
-                throw new ServiceException($"An error occurred while deleting order with ID {id}.",
-                    ex);
+                throw new ServiceException(
+                    $"An error occurred while deleting order with ID {id}.",
+                    ex
+                );
             }
         }
 
-        public async Task<(IList<OrderResponse> orders, int totalItems)>
-        GetAsync(
+        public async Task<(IList<OrderResponse> orders, int totalItems)> GetAsync(
             PaginationParam<OrderEnum.OrderSort> paginationModel,
             OrderSearchRequest filterModel
         )
@@ -128,21 +146,14 @@ namespace PreorderPlatform.Service.Services.OrderServices
                 var query = _orderRepository.Table;
 
                 query = query.GetWithSearch(filterModel);
-                query =
-                    query
-                        .FilterOrderByDate(o => o.CreatedAt,
-                        startDate,
-                        endDate);
+                query = query.FilterOrderByDate(o => o.CreatedAt, startDate, endDate);
 
                 // Calculate the total number of items before applying pagination
                 int totalItems = await query.CountAsync();
 
-                query =
-                    query
-                        .GetWithSorting(paginationModel.SortKey.ToString(),
-                        paginationModel.SortOrder)
-                        .GetWithPaging(paginationModel.Page,
-                        paginationModel.PageSize);
+                query = query
+                    .GetWithSorting(paginationModel.SortKey.ToString(), paginationModel.SortOrder)
+                    .GetWithPaging(paginationModel.Page, paginationModel.PageSize);
 
                 var orderList = await query.ToListAsync();
                 var res = _mapper.Map<List<OrderResponse>>(orderList);
@@ -152,8 +163,7 @@ namespace PreorderPlatform.Service.Services.OrderServices
             catch (Exception e)
             {
                 Console.WriteLine("Exception: " + e.Message);
-                throw new ServiceException("An error occurred while fetching orders.",
-                    e);
+                throw new ServiceException("An error occurred while fetching orders.", e);
             }
         }
     }

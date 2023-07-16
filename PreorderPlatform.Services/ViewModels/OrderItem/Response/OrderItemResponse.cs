@@ -10,7 +10,7 @@ namespace PreorderPlatform.Service.ViewModels.OrderItem.Response
     {
         public Guid Id { get; set; }
         public Guid? CampaignDetailId { get; set; }
-        public Guid? Quantity { get; set; }
+        public int? Quantity { get; set; }
         public decimal? UnitPrice { get; set; }
         public Guid? OrderId { get; set; }
     }

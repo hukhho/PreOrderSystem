@@ -7,6 +7,7 @@ namespace PreorderPlatform.Entity.Models
     {
         public Order()
         {
+            Id = Guid.NewGuid();
             OrderItems = new HashSet<OrderItem>();
             Payments = new HashSet<Payment>();
         }

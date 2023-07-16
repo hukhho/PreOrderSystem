@@ -1,5 +1,8 @@
-﻿using System;
+﻿using PreorderPlatform.Service.ViewModels.OrderItem;
+using PreorderPlatform.Service.ViewModels.Payment;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,10 +11,8 @@ namespace PreorderPlatform.Service.ViewModels.Order
 {
     public class OrderCreateViewModel
     {
-        public DateTime? CreatedAt { get; set; }
-        public Guid? TotalQuantity { get; set; }
+        public int? TotalQuantity { get; set; }
         public decimal? TotalPrice { get; set; }
-        public decimal? IsDeposited { get; set; }
         public string? Status { get; set; }
         public string? RevicerName { get; set; }
         public string? RevicerPhone { get; set; }
@@ -23,5 +24,16 @@ namespace PreorderPlatform.Service.ViewModels.Order
         public decimal? ShippingPrice { get; set; }
         public string? ShippingStatus { get; set; }
         public Guid? UserId { get; set; }
+
+
+        // Order items
+        [Required]
+        public List<OrderItemCreateViewModel> OrderItems { get; set; }
+
+        // Payment
+        [Required]
+        public List<PaymentCreateViewModel> Payments { get; set; }
+
+
     }
 }

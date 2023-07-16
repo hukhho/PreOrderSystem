@@ -5,6 +5,10 @@ namespace PreorderPlatform.Entity.Models
 {
     public partial class Payment
     {
+        public Payment()
+        {
+            Id = Guid.NewGuid();
+        }
         public Guid Id { get; set; }
         public string? Method { get; set; }
         public decimal? Total { get; set; }

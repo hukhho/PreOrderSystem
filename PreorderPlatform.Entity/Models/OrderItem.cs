@@ -5,6 +5,10 @@ namespace PreorderPlatform.Entity.Models
 {
     public partial class OrderItem
     {
+        public OrderItem()
+        {
+            Id = Guid.NewGuid();
+        }
         public Guid Id { get; set; }
         public Guid? CampaignDetailId { get; set; }
         public int? Quantity { get; set; }
