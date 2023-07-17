@@ -14,11 +14,7 @@ services:
       - db_data:/var/opt/mssql
     networks:
       - app-network
-    healthcheck:
-      test: /opt/mssql-tools/bin/sqlcmd -U sa -P YourStrong!Passw0rd -Q "SELECT 1"
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    restart: always
 
   web:
     build: 
@@ -32,8 +28,8 @@ services:
     networks:
       - app-network
     depends_on:
-      db:
-        condition: service_healthy
+      - db
+    restart: always
 
 volumes:
   db_data:
