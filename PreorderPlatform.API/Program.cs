@@ -51,6 +51,7 @@ static Task WriteResponse(HttpContext httpContext, HealthReport result)
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.ConfigureDBContext(builder.Configuration);
 
 builder.Services.AddControllers()
                 .AddNewtonsoftJson();
@@ -148,6 +149,22 @@ builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<PreOrderSystemContext>();
+        context.Database.EnsureCreated();
+        context.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating the database.");
+    }
+}
+
 //app.UseRouting();
 
 //app.UseEndpoints(endpoints =>
@@ -157,6 +174,7 @@ var app = builder.Build();
 //        ResponseWriter = WriteResponse
 //    });
 //});
+// Ensure the database is updated to the latest version on startup
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -169,6 +187,7 @@ using (var scope = app.Services.CreateScope())
 {
     var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
     dbInitializer.Initialize();
+    
 }
 
 
@@ -176,7 +195,6 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
 
-app.UseHttpsRedirection();
 
 app.UseAuthentication(); // Add this line
 app.UseAuthorization();

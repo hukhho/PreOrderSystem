@@ -1,0 +1,7 @@
+web_1  | warn: Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository[60]
+web_1  |       Storing keys in a directory '/root/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed.
+web_1  | warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+web_1  |       No XML encryptor configured. Key {98940afb-40db-4d68-af75-ba6072e7a4da} may be persisted to storage in unencrypted form.
+2023-07-17 06:02:35.92 spid8s      Always On: The availability replica manager is going offline because SQL Server is shutting down. This is an informational message only. No user action is required.
+2023-07-17 06:02:35.93 spid8s      SQL Server is terminating in response to a 'stop' request from Service Control Manager. This is an informational message only. No user action is required.
+2023-07-17 06:02:36.10 spid35s     Service Broker manager has shut down.

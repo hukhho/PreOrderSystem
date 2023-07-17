@@ -1,0 +1,37 @@
+version: '3.4'
+
+services:
+  db:
+    build: 
+      context: ./MSSQLDocker
+      dockerfile: Dockerfile
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+    volumes:
+      - db_data:/var/opt/mssql
+    networks:
+      - app-network
+
+  web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5019:80
+    environment:
+      - ConnectionString=Server=db;Database=PreOrderSystem;User ID=SA;Password=YourStrong!Passw0rd
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge

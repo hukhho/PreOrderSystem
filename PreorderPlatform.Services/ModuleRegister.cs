@@ -35,8 +35,6 @@ namespace PreorderPlatform.Service
             services.ConfigAutoMapper();
             services.RegisterPolicies();
             services.AddHttpContextAccessor();
-
-
         }
 
 
@@ -63,7 +61,6 @@ namespace PreorderPlatform.Service
                          policy.Requirements.Add(new MustCampaignOwnerRequirement()));
                 options.AddPolicy("MustBeBusinessPaymentCredentialOwner", policy =>
                     policy.Requirements.Add(new MustBusinessPaymentCredentialOwnerRequirement()));
-
             });
         }
 
@@ -83,7 +80,6 @@ namespace PreorderPlatform.Service
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IJwtService, JwtService>();
-
         }
 
         public static void ConfigAutoMapper(this IServiceCollection services)
