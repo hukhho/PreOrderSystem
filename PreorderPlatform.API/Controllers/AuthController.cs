@@ -61,6 +61,11 @@ namespace PreorderPlatform.API.Controllers
             return Ok("This endpoint is accessible only to users with the Test and Admin role.");
         }
 
+        [HttpGet("test-nha-only")]
+        public IActionResult TestOnlyOk()
+        {
+            return Ok("Test Nha Only");
+        }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest model)
