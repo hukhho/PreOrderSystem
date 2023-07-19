@@ -12,6 +12,7 @@ using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.ViewModels.Order.Request;
 using PreorderPlatform.Service.ViewModels.Order.Response;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -66,6 +67,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "MustBeOrderAccess")]
         public async Task<IActionResult> GetOrderById(Guid id)
         {
             try
@@ -85,6 +87,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPost]
+
         public async Task<IActionResult> CreateOrder(OrderCreateViewModel model)
         {
 

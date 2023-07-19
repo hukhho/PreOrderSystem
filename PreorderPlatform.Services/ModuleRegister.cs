@@ -8,6 +8,7 @@ using PreorderPlatform.Service.Services;
 using PreorderPlatform.Service.Services.AuthorizationService.Business;
 using PreorderPlatform.Service.Services.AuthorizationService.BusinessPaymentCredential;
 using PreorderPlatform.Service.Services.AuthorizationService.Campaign;
+using PreorderPlatform.Service.Services.AuthorizationService.Order;
 using PreorderPlatform.Service.Services.AuthService;
 using PreorderPlatform.Service.Services.BusinessPaymentCredentialServices;
 using PreorderPlatform.Service.Services.BusinessServices;
@@ -52,6 +53,9 @@ namespace PreorderPlatform.Service
             services.AddSingleton<IAuthorizationRequirement, MustCampaignOwnerRequirement>();
             services.AddSingleton<IAuthorizationHandler, MustBeCampaignOwnerHandler>();
 
+            services.AddSingleton<IAuthorizationRequirement, MustBeOrderAccessRequirement>();
+            services.AddSingleton<IAuthorizationHandler, MustBeOrderAccessHandler>();
+
             services.AddAuthorization(options =>
             {
                 // Add policies here. Here's an example:
@@ -61,6 +65,8 @@ namespace PreorderPlatform.Service
                          policy.Requirements.Add(new MustCampaignOwnerRequirement()));
                 options.AddPolicy("MustBeBusinessPaymentCredentialOwner", policy =>
                     policy.Requirements.Add(new MustBusinessPaymentCredentialOwnerRequirement()));
+                options.AddPolicy("MustBeOrderAccess", policy =>
+                  policy.Requirements.Add(new MustBeOrderAccessRequirement()));
             });
         }
 
