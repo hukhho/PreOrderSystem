@@ -122,7 +122,7 @@ namespace PreorderPlatform.Service.Services.OrderServices
                 if (!areAllCampaignDetailsInBusiness)
                 {
                     // Handle the case when not all campaign details belong to the business
-                    throw new Exception("One or more campaign details do not belong to the business.");
+                    throw new ServiceException("One or more campaign details do not belong to the business.");
                 }
 
                 List<CampaignDetail> campaignDetailsToUpdate = new List<CampaignDetail>();
@@ -178,6 +178,14 @@ namespace PreorderPlatform.Service.Services.OrderServices
                 await transaction.CommitAsync();
 
                 return _mapper.Map<OrderViewModel>(order);
+            }
+            catch (NotFoundException ex)
+            {
+                throw;
+            }
+            catch (ServiceException ex)
+            {
+                throw;
             }
             catch (Exception ex)
             {

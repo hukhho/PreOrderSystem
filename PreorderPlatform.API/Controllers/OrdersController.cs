@@ -102,21 +102,15 @@ namespace PreorderPlatform.API.Controllers
                 );
             }
 
-            try
-            {
-                var order = await _orderService.CreateOrderAsync(userIdGuid, model);
+          
+            var order = await _orderService.CreateOrderAsync(userIdGuid, model);
 
-                return StatusCode(StatusCodes.Status201Created, new ApiResponse<object>(order, "Order created successfully.", false, null));
+            return StatusCode(StatusCodes.Status201Created, new ApiResponse<object>(order, "Order created successfully.", false, null));
 
                 //return CreatedAtAction(nameof(GetOrderById),
                 //                       new { id = order.Id },
                 //                       new ApiResponse<OrderViewModel>(order, "Order created successfully.", true, null));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error creating order: {ex.Message}", false, null));
-            }
+          
         }
 
         [HttpPut]

@@ -44,6 +44,10 @@ namespace PreorderPlatform.Service.Middleware
                 {
                     httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 }
+                if (ex is ServiceException)
+                {
+                    httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                }
                 else
                 {
                     httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;

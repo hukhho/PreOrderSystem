@@ -25,17 +25,19 @@ namespace PreorderPlatform.Entity.Repositories.CampaignDetailRepositories
 
         public async Task<bool> AreAllCampaignDetailsInBusinessAsync(IEnumerable<Guid> campaignDetailIds)
         {
-            // Assuming GetWithIncludeAsync returns campaign details with the related Campaign and Business entities
-            var selectedCampaignDetails = await Task.WhenAll(campaignDetailIds.Select(id =>
-                GetWithIncludeAsync(cd => cd.Id == id, cd => cd.Include(d => d.Campaign).ThenInclude(c => c.Business))));
+            // Fetch all campaign details at once
+            var selectedCampaignDetails = await GetAllWithIncludeAsync(
+                cd => campaignDetailIds.Contains(cd.Id),
+                cd => cd.Campaign,
+                cd => cd.Campaign.Business);
 
-            if (selectedCampaignDetails.Any(cd => cd == null))
+            if (selectedCampaignDetails.Count() != campaignDetailIds.Count())
             {
                 return false; // Return false if any selected campaign detail was not found
             }
 
             // Get the ID of the business of the first campaign detail
-            var firstBusinessId = selectedCampaignDetails[0].Campaign.Business.Id;
+            var firstBusinessId = selectedCampaignDetails.First().Campaign.Business.Id;
 
             // Check if all selected campaign details belong to the business with the firstBusinessId
             return selectedCampaignDetails.All(cd => cd.Campaign.Business.Id == firstBusinessId);
