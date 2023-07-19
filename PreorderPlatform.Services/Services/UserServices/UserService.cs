@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PreorderPlatform.Entity.Models;
 using PreorderPlatform.Entity.Repositories.RoleRepositories;
 using PreorderPlatform.Entity.Repositories.UserRepositories;
@@ -231,6 +234,37 @@ namespace PreorderPlatform.Service.Services.UserServices
                     ex
                 );
             }
+        }
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            var user = await _userRepository.GetUserByEmailAsync(email);
+
+            if (user == null)
+            {
+                throw new NotFoundException("User not found.");
+            }
+            return user;
+        }
+        public async Task UpdateUserPasswordAsync(User user, string newPassword)
+        {
+            try
+            {
+                user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+                // Save the changes to the database
+                await _userRepository.UpdateAsync(user);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during the password update process.
+                throw new ServiceException($"Error updating user password: {ex.Message}", ex);
+            }
+        }
+        public string GeneratePasswordResetToken()
+        {
+            // Generate a random 6-digit token
+            Random random = new Random();
+            int tokenValue = random.Next(100000, 999999);
+            return random.Next(100000, 999999).ToString();
         }
     }
 }

@@ -38,5 +38,8 @@ namespace PreorderPlatform.Service.Services.UserServices
         Task<bool> IsEmailUniqueAsync(string email);
 
         Task<bool> IsPhoneUniqueAsync(string phone);
+        Task<User> GetUserByEmailAsync(string email);
+        Task UpdateUserPasswordAsync(User user, string newPassword);
+        string GeneratePasswordResetToken();
     }
 }

@@ -19,6 +19,9 @@ using PreorderPlatform.Service.ViewModels.User.Request;
 using PreorderPlatform.Service.ViewModels.User.Response;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.Enum;
+using System.Net.Mail;
+using System.Net;
+using NuGet.Protocol;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -100,7 +103,6 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPost]
-
         public async Task<IActionResult> CreateUser(UserCreateRequest model)
         {
             try
@@ -147,23 +149,86 @@ namespace PreorderPlatform.API.Controllers
                     new ApiResponse<object>(null, $"Error updating user: {ex.Message}", false, null));
             }
         }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(Guid id)
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordRequest model)
         {
             try
             {
-                await _userService.DeleteUserAsync(id);
-                return Ok(new ApiResponse<object>(null, "User deleted successfully.", true, null));
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(new ApiResponse<string>(null, ex.Message, false, null));
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ApiResponse<object>(null, "Invalid request data.", false, null));
+                }
+                var user = await _userService.GetUserByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    return NotFound(new ApiResponse<string>(null, "User not found.", false, null));
+                }
+                await _userService.UpdateUserPasswordAsync(user, model.NewPassword);
+
+                return Ok(new ApiResponse<object>(null, "Password reset successful.", true, null));
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error deleting user: {ex.Message}", false, null));
+                    new ApiResponse<object>(null, $"Error resetting password: {ex.Message}", false, null));
+            }
+        }
+        [HttpPost("get-reset-token")]
+        public async Task<IActionResult> GetResetTokenAsync(GetResetPasswordToken model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new ApiResponse<object>(null, "Invalid request data.", false, null));
+                }
+                var user = await _userService.GetUserByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    return NotFound(new ApiResponse<string>(null, "User not found.", false, null));
+                }
+                var resetToken = _userService.GeneratePasswordResetToken();
+                await SendPasswordResetEmail(user.Email, resetToken);
+
+                return Ok(new ApiResponse<object>(null, "Password reset token sent successfully.", true, null));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ApiResponse<object>(null, $"Error sending password reset token: {ex.Message}", false, null));
+            }
+        }
+
+        // Method to send the password reset email using your email service
+        private async Task SendPasswordResetEmail(string userEmail, string resetToken)
+        {
+            try
+            {
+                string emailFrom = "myworkemail110@gmail.com";
+                string emailPassword = "Sonaco160911";
+
+                using (var client = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    client.EnableSsl = true;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential(emailFrom, emailPassword);
+
+                    var emailMessage = new MailMessage();
+                    emailMessage.From = new MailAddress(emailFrom, "Pre-Order System Dev Team");
+                    emailMessage.To.Add(userEmail);
+                    emailMessage.Subject = "Pre-Order System :: Get Your Reset Key";
+                    emailMessage.Body = $"Hello, you have requested to reset your password. This is your reset key: {resetToken}. If you did not request a password reset, you can ignore this email.";
+
+                    await client.SendMailAsync(emailMessage);
+                Console.WriteLine(1);
+                }
+
+                // Add any additional error handling or logging if needed
+            }
+            catch (Exception ex)
+            {
+                // Handle the email sending error or log the exception
+                throw new Exception("Failed to send the email.", ex);
             }
         }
     }

@@ -69,6 +69,9 @@ namespace PreorderPlatform.Entity.Repositories.UserRepository
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Phone == phone);
             return user == null;
         }
-
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+        }
     }
 }
