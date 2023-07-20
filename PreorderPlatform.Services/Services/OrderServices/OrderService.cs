@@ -102,16 +102,16 @@ namespace PreorderPlatform.Service.Services.OrderServices
 
                 order.Payments.Single().PayedAt = DateTimeUtcPlus7.Now;
 
-                order.Payments.Single().Status = "Test Ne";
+                order.Payments.Single().Status =Entity.Repositories.Enum.Payment.PaymentStatus.Pending;
 
                 // Iterate over each order item and update the corresponding CampaignDetail entity
                 int totalQuantity = 0;
                 decimal totalPrice = 0;
                 decimal requiredDepositAmount = 0;
-                order.Status = "Init";
+                order.Status = Entity.Repositories.Enum.Order.OrderStatus.Pending;
                 order.UserId = userId;
 
-
+                
                 // Get the list of CampaignDetailIds from the order items
                 var campaignDetailIds = order.OrderItems.Select(item => item.CampaignDetailId);
 
@@ -161,8 +161,8 @@ namespace PreorderPlatform.Service.Services.OrderServices
                 decimal shippingRate = 30000;
 
                 order.ShippingPrice = shippingRate;
-                order.ShippingStatus = "NOT READY";
-                order.ShippingCode = "NULL";
+                order.ShippingStatus = Entity.Repositories.Enum.Order.ShippingStatus.Pending;
+                order.ShippingCode = $"GH-{Guid.NewGuid()}" ;
                 order.TotalPrice += totalPrice;
 
                 requiredDepositAmount = 0.5m * totalPrice;

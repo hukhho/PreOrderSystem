@@ -25,7 +25,6 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet]
-        //localhost/filterModelRequest
         public async Task<IActionResult> GetAllCampaigns(
             [FromQuery] PaginationParam<CampaignEnum.CampaignSort> paginationModel,
             [FromQuery] CampaignSearchRequest searchModel
@@ -71,7 +70,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")]
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //Check if user is owner of the campaign or staff of business have access to the campaign
         public async Task<IActionResult> CreateCampaign(CampaignCreateRequest model)
         {
             try
@@ -90,7 +89,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPut]
-        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")]
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //Check if user is owner of the campaign or staff of business have access to the campaign
         public async Task<IActionResult> UpdateCampaign(CampaignUpdateRequest model)
         {
             try
@@ -110,7 +109,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")]
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //Check if user is owner of the campaign or staff of business have access to the campaign
         public async Task<IActionResult> DeleteCampaign(Guid id)
         {
             try

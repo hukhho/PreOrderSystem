@@ -53,17 +53,22 @@ namespace PreorderPlatform.Service.Services.CampaignServices
                 throw new ServiceException("An error occurred while fetching campaigns.", ex);
             }
         }
-public async Task<CampaignDetailResponse> GetCampaignByIdAsync(Guid id)
+
+    
+        public async Task<CampaignDetailResponse> GetCampaignByIdAsync(Guid id)
         {
             try
             {
-var campaign = await _campaignRepository.GetCampaignWithDetailsAsync(id);
+                // Fetch the campaign with all related details
+                var campaign = await _campaignRepository.GetCampaignWithDetailsAsync(id);
 
+                // If no campaign was found, throw a NotFoundException
                 if (campaign == null)
                 {
-throw new NotFoundException($"Campaign with ID {id} was not found.");
+                    throw new NotFoundException($"Campaign with ID {id} was not found.");
                 }
 
+                // Map the campaign entity to a response model and return it
                 return _mapper.Map<CampaignDetailResponse>(campaign);
             }
             catch (NotFoundException)
@@ -73,10 +78,10 @@ throw new NotFoundException($"Campaign with ID {id} was not found.");
             }
             catch (Exception ex)
             {
-throw new ServiceException($"An error occurred while fetching campaign with ID {id}.", ex);
+                // If any other error occurred, wrap it in a ServiceException and throw it
+                throw new ServiceException($"An error occurred while fetching campaign with ID {id}.", ex);
             }
         }
-
         public async Task<CampaignResponse> CreateCampaignAsync(CampaignCreateRequest model)
         {
             try

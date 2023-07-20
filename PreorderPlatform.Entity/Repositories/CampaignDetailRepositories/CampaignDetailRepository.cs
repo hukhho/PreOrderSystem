@@ -5,9 +5,11 @@ namespace PreorderPlatform.Entity.Repositories.CampaignDetailRepositories
 {
     public class CampaignDetailRepository : RepositoryBase<CampaignDetail>, ICampaignDetailRepository
     {
+        private readonly PreOrderSystemContext _context;
+
         public CampaignDetailRepository(PreOrderSystemContext context) : base(context)
         {
-
+            _context = context;
         }
 
         // Add any additional methods specific to CampaignDetailRepository here...
@@ -41,6 +43,12 @@ namespace PreorderPlatform.Entity.Repositories.CampaignDetailRepositories
 
             // Check if all selected campaign details belong to the business with the firstBusinessId
             return selectedCampaignDetails.All(cd => cd.Campaign.Business.Id == firstBusinessId);
+        }
+
+
+        public async Task<int> GetMaxPhaseAsync()
+        {
+            return await _context.CampaignDetails.MaxAsync(detail => detail.Phase);
         }
     }
 }

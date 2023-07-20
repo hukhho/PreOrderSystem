@@ -22,6 +22,14 @@ using PreorderPlatform.Service.Enum;
 using System.Net.Mail;
 using System.Net;
 using NuGet.Protocol;
+using PreorderPlatform.Service.Utility.CustomAuthorizeAttribute;
+using System.Data;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using MailKit;
+using PreorderPlatform.Service.Services.SendMailServices;
+using NuGet.Common;
+using Newtonsoft.Json.Linq;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -31,14 +39,19 @@ namespace PreorderPlatform.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly IEmailService _emailService;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public UsersController(IUserService userService, IMapper mapper)
+        public UsersController(IUserService userService, IMapper mapper, IEmailService emailService, IWebHostEnvironment hostingEnvironment)
         {
             _userService = userService;
             _mapper = mapper;
+            _emailService = emailService;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet]
+        [CustomAuthorize(Roles = "ADMIN")]
         public async Task<IActionResult> GetAllUsers(
             [FromQuery] PaginationParam<UserEnum.UserSort> paginationModel,
             [FromQuery] UserSearchRequest searchModel
@@ -65,6 +78,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [CustomAuthorize(Roles = "ADMIN")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
             try
@@ -82,14 +96,49 @@ namespace PreorderPlatform.API.Controllers
                     new ApiResponse<object>(null, $"Error fetching user: {ex.Message}", false, null));
             }
         }
-
-        [HttpGet("roleandbusiness/{id}")]
-        public async Task<IActionResult> GetUserWithRoleAndBusinessById(Guid id)
+       
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string email, string token, Entity.Repositories.Enum.User.ActionType action)
         {
             try
             {
-                var user = await _userService.GetUserWithRoleAndBusinessByIdAsync(id);
-                return Ok(new ApiResponse<UserResponse>(user, "User fetched successfully.", true, null));
+                if(action.Equals(Entity.Repositories.Enum.User.ActionType.AccountActivation))
+                {
+                    var result = await _userService.ConfirmEmail(token, action);
+
+                    string templateName = "EmailTemplateWelcome.html";
+                    string rootPath = _hostingEnvironment.WebRootPath ?? _hostingEnvironment.ContentRootPath;
+                    string templatePath = Path.Combine(rootPath, "Templates", templateName);
+                    string htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
+                    string emailBody = htmlTemplate
+                        .Replace("{username}", result.Email);
+
+                    await _emailService.SendEmailAsync(email, "Welcome to Pre Order Platform", emailBody);
+
+                    return Ok(new ApiResponse<UserResponse>(result, "User active succesfully!", true, null));
+                } else if (action.Equals(Entity.Repositories.Enum.User.ActionType.PasswordReset))
+                {
+                    var rawPass = Guid.NewGuid().ToString().Replace("-", "");
+                    var newPassword = BCrypt.Net.BCrypt.HashPassword(rawPass);
+
+                    var result = await _userService.ConfirmEmail(token, action);
+
+                    string templateName = "EmailTemplatePasswordSend.html";
+                    string rootPath = _hostingEnvironment.WebRootPath ?? _hostingEnvironment.ContentRootPath;
+                    string templatePath = Path.Combine(rootPath, "Templates", templateName);
+                    string htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
+                    string emailBody = htmlTemplate
+                        .Replace("{newPassword}", rawPass);
+
+                    await _emailService.SendEmailAsync(email, "Password Reset Successfully Pre Order Platform", emailBody);
+
+                    return Ok(new ApiResponse<UserResponse>(result, "User reset password succesfully!", true, null));
+                }
+                else
+                {
+                    throw new Exception("Action not found");
+                }
+               
             }
             catch (NotFoundException ex)
             {
@@ -98,9 +147,11 @@ namespace PreorderPlatform.API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error fetching user: {ex.Message}", false, null));
+                                       new ApiResponse<object>(null, $"Error confirm email: {ex.Message}", false, null));
             }
         }
+
+
 
         [HttpPost]
         public async Task<IActionResult> CreateUser(UserCreateRequest model)
@@ -108,32 +159,76 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 model.Password = BCrypt.Net.BCrypt.HashPassword(model.Password);
-                model.Status = true;
 
-                var user = await _userService.CreateUserAsync(model);
+                var user = await _userService.RegisterUser(model);
+
+
+                var token = user.ActionToken;
+
+                if (token == null)
+                {
+                    throw new Exception("Token is null");
+                }
+
+                // Generate the email confirmation link
+                var callbackUrl = Url.Action("confirm-email",
+                                             "Users",
+                                              new { email = user.Email, token = token, action = user.ActionTokenType },
+                                              protocol: HttpContext.Request.Scheme);
+
+
+                // Path to the email template
+                // Template name
+                string templateName = "EmailTemplateRegister.html";
+
+                // Path to the email template
+                string rootPath = _hostingEnvironment.WebRootPath ?? _hostingEnvironment.ContentRootPath;
+                string templatePath = Path.Combine(rootPath, "Templates", templateName);
+
+                // Load the content of the email template
+                string htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
+                // Load the content of the email template
+
+                // Replace placeholders with actual values
+                string emailBody = htmlTemplate
+                    .Replace("{username}", model.Email)
+                    .Replace("{activationLink}", callbackUrl);
+
+                // Call your email service, passing in the HTML template
+                await _emailService.SendEmailAsync(user.Email, "Actice Account - Pre Order Platform", emailBody);
+
+                var userResponse = _mapper.Map<UserResponse>(user);
 
                 return CreatedAtAction(nameof(GetUserById),
                                        new { id = user.Id },
-                                       new ApiResponse<UserResponse>(user, "User created successfully.", true, null));
+                                       new ApiResponse<UserResponse>(userResponse, "User created successfully. You will revice link to active account", true, null));
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error creating user: {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new ApiResponse<object>(null, $"Error creating user: {ex.Message}", false, null));
             }
         }
 
-        [HttpPost("test")]
-        public async Task<IActionResult> Test(UserCreateRequest model)
-        {
 
-            return Ok(new ApiResponse<object>(null, "tét.", true, null));
-
-        }
 
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> UpdateUser(UserUpdateRequest model)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+          
+            var roleName = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            Guid userIdGuid = Guid.Parse(userId);
+
+            if (roleName != "ADMIN" || userIdGuid != model.Id)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, new ApiResponse<object>(null, "User {}", true, null));
+            }
+
+
             try
             {
                 await _userService.UpdateUserAsync(model);
@@ -149,86 +244,116 @@ namespace PreorderPlatform.API.Controllers
                     new ApiResponse<object>(null, $"Error updating user: {ex.Message}", false, null));
             }
         }
-        [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordRequest model)
+
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(UserForgotPasswordRequest model)
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(new ApiResponse<object>(null, "Invalid request data.", false, null));
-                }
-                var user = await _userService.GetUserByEmailAsync(model.Email);
-                if (user == null)
-                {
-                    return NotFound(new ApiResponse<string>(null, "User not found.", false, null));
-                }
-                await _userService.UpdateUserPasswordAsync(user, model.NewPassword);
+                var result = await _userService.ForgotPassword(model);
+                var user = _mapper.Map<User>(result);
+                var token = user.ActionToken;
 
-                return Ok(new ApiResponse<object>(null, "Password reset successful.", true, null));
+                if (token == null)
+                {
+                    throw new Exception("Token is null");
+                }
+                var callbackUrl = Url.Action("confirm-email",
+                                       "Users",
+                                        new { email = user.Email, token = token, action = user.ActionTokenType },
+                                        protocol: HttpContext.Request.Scheme);
+
+                string templateName = "EmailTemplatePasswordReset.html";
+                string rootPath = _hostingEnvironment.WebRootPath ?? _hostingEnvironment.ContentRootPath;
+                string templatePath = Path.Combine(rootPath, "Templates", templateName);
+                string htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
+              
+
+                string emailBody = htmlTemplate
+                      .Replace("{username}", user.Email)
+                      .Replace("{activationLink}", callbackUrl);
+
+
+                await _emailService.SendEmailAsync(user.Email, "Pass reset to Pre Order Platform", emailBody);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("send-mail-again")]
+        public async Task<IActionResult> SendMailAgain(string email)
+        {
+            try
+            {
+                var user = await _userService.GetUserByEmailAsync(email);
+                var token = user.ActionToken;
+
+                if (token == null)
+                {
+                    throw new Exception("Token is null");
+                }
+
+                if (user.ActionToken.Equals(Entity.Repositories.Enum.User.ActionType.AccountActivation))
+                {
+                    var callbackUrl = Url.Action("confirm-email",                     
+                                                 "Users",
+                                                 new { email = user.Email, token = token, action = user.ActionTokenType },
+                                                 protocol: HttpContext.Request.Scheme);
+
+                    string templateName = "EmailTemplateRegister.html";
+                    string rootPath = _hostingEnvironment.WebRootPath ?? _hostingEnvironment.ContentRootPath;
+                    string templatePath = Path.Combine(rootPath, "Templates", templateName);
+                    string htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
+                    string emailBody = htmlTemplate
+                        .Replace("{username}", email)
+                            .Replace("{activationLink}", callbackUrl);
+                    await _emailService.SendEmailAsync(email, "Active account to Pre Order Platform", emailBody);
+
+                    return Ok(new ApiResponse<object>(null, "Send mail active succesfully!", true, null));
+                 }
+                 else if (user.ActionToken.Equals(Entity.Repositories.Enum.User.ActionType.PasswordReset))
+                 {   
+                    var callbackUrl = Url.Action("confirm-email",
+                                               "Users",
+                                                new { email = user.Email, token = token, action = user.ActionTokenType },
+                                                protocol: HttpContext.Request.Scheme);
+
+                    string templateName = "EmailTemplatePasswordReset.html";
+                    string rootPath = _hostingEnvironment.WebRootPath ?? _hostingEnvironment.ContentRootPath;
+                    string templatePath = Path.Combine(rootPath, "Templates", templateName);
+                    string htmlTemplate = await System.IO.File.ReadAllTextAsync(templatePath);
+
+
+                    string emailBody = htmlTemplate
+                          .Replace("{username}", user.Email)
+                          .Replace("{resetPasswordLink}", callbackUrl);
+
+
+                    await _emailService.SendEmailAsync(user.Email, "Pass reset to Pre Order Platform", emailBody);
+
+                    return Ok(new ApiResponse<object>(null, "Send mail reset pass succesfully!", true, null));
+
+                }
+                else
+                {
+                    throw new Exception("Action not found");
+                }
+
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(null, ex.Message, false, null));
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error resetting password: {ex.Message}", false, null));
-            }
-        }
-        [HttpPost("get-reset-token")]
-        public async Task<IActionResult> GetResetTokenAsync(GetResetPasswordToken model)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(new ApiResponse<object>(null, "Invalid request data.", false, null));
-                }
-                var user = await _userService.GetUserByEmailAsync(model.Email);
-                if (user == null)
-                {
-                    return NotFound(new ApiResponse<string>(null, "User not found.", false, null));
-                }
-                var resetToken = _userService.GeneratePasswordResetToken();
-                await SendPasswordResetEmail(user.Email, resetToken);
-
-                return Ok(new ApiResponse<object>(null, "Password reset token sent successfully.", true, null));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error sending password reset token: {ex.Message}", false, null));
-            }
-        }
-
-        // Method to send the password reset email using your email service
-        private async Task SendPasswordResetEmail(string userEmail, string resetToken)
-        {
-            try
-            {
-                string emailFrom = "myworkemail110@gmail.com";
-                string emailPassword = "Sonaco160911";
-
-                using (var client = new SmtpClient("smtp.gmail.com", 587))
-                {
-                    client.EnableSsl = true;
-                    client.UseDefaultCredentials = false;
-                    client.Credentials = new NetworkCredential(emailFrom, emailPassword);
-
-                    var emailMessage = new MailMessage();
-                    emailMessage.From = new MailAddress(emailFrom, "Pre-Order System Dev Team");
-                    emailMessage.To.Add(userEmail);
-                    emailMessage.Subject = "Pre-Order System :: Get Your Reset Key";
-                    emailMessage.Body = $"Hello, you have requested to reset your password. This is your reset key: {resetToken}. If you did not request a password reset, you can ignore this email.";
-
-                    await client.SendMailAsync(emailMessage);
-                Console.WriteLine(1);
-                }
-
-                // Add any additional error handling or logging if needed
-            }
-            catch (Exception ex)
-            {
-                // Handle the email sending error or log the exception
-                throw new Exception("Failed to send the email.", ex);
+                                       new ApiResponse<object>(null, $"Error confirm email: {ex.Message}", false, null));
             }
         }
     }

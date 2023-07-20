@@ -9,6 +9,8 @@ using PreorderPlatform.Service.Services.AuthorizationService.Business;
 using PreorderPlatform.Service.Services.AuthorizationService.BusinessPaymentCredential;
 using PreorderPlatform.Service.Services.AuthorizationService.Campaign;
 using PreorderPlatform.Service.Services.AuthorizationService.Order;
+using PreorderPlatform.Service.Services.AuthorizationService.Payment;
+using PreorderPlatform.Service.Services.AuthorizationService.Product;
 using PreorderPlatform.Service.Services.AuthService;
 using PreorderPlatform.Service.Services.BusinessPaymentCredentialServices;
 using PreorderPlatform.Service.Services.BusinessServices;
@@ -20,7 +22,7 @@ using PreorderPlatform.Service.Services.OrderServices;
 using PreorderPlatform.Service.Services.PaymentServices;
 using PreorderPlatform.Service.Services.ProductServices;
 using PreorderPlatform.Service.Services.RoleServices;
-
+using PreorderPlatform.Service.Services.SendMailServices;
 using PreorderPlatform.Service.Services.UserServices;
 using PreorderPlatform.Service.ViewModels.AutoMapperProfile;
 
@@ -56,6 +58,15 @@ namespace PreorderPlatform.Service
             services.AddSingleton<IAuthorizationRequirement, MustBeOrderAccessRequirement>();
             services.AddSingleton<IAuthorizationHandler, MustBeOrderAccessHandler>();
 
+
+            services.AddSingleton<IAuthorizationRequirement, MustBePaymentAccessRequirement>();
+            services.AddSingleton<IAuthorizationHandler, MustBePaymentAccessHandler>();
+
+
+            services.AddSingleton<IAuthorizationRequirement, MustBeProductAccessRequirement>();
+            services.AddSingleton<IAuthorizationHandler, MustBeProductAccessHandler>();
+
+
             services.AddAuthorization(options =>
             {
                 // Add policies here. Here's an example:
@@ -67,12 +78,18 @@ namespace PreorderPlatform.Service
                     policy.Requirements.Add(new MustBusinessPaymentCredentialOwnerRequirement()));
                 options.AddPolicy("MustBeOrderAccess", policy =>
                   policy.Requirements.Add(new MustBeOrderAccessRequirement()));
+                options.AddPolicy("MustBePaymentAccess", policy =>
+                    policy.Requirements.Add(new MustBePaymentAccessRequirement()));
+                options.AddPolicy("MustBeProductAccess", policy =>
+                    policy.Requirements.Add(new MustBeProductAccessRequirement()));
+               
             });
         }
 
 
         public static void RegisterService(this IServiceCollection services)
         {
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IBusinessService, BusinessService>();
             services.AddScoped<IBusinessPaymentCredentialService, BusinessPaymentCredentialService>();
             services.AddScoped<ICampaignService, CampaignService>();

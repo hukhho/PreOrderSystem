@@ -9,11 +9,13 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Entity.Repositories.Enum.User;
 using PreorderPlatform.Entity.Repositories.RoleRepositories;
 using PreorderPlatform.Entity.Repositories.UserRepositories;
 using PreorderPlatform.Entity.Repositories.UserRepository;
 using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.Exceptions;
+using PreorderPlatform.Service.Helpers;
 using PreorderPlatform.Service.Utility;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.ViewModels.User.Request;
@@ -113,6 +115,133 @@ namespace PreorderPlatform.Service.Services.UserServices
                     $"An error occurred while fetching user with ID {id}.",
                     ex
                 );
+            }
+        }
+
+        private string GenerateActionToken()
+        {
+            return Guid.NewGuid().ToString().Replace("-", "");
+        }
+        public async Task<UserResponse> ConfirmEmail(string token, ActionType actionType)
+        {
+            var user = await _userRepository.GetUserByActionTokenAsync(token, actionType);
+            if (user == null)
+            {
+                throw new ServiceException("Invalid token.");
+            }
+            DateTime nowUtcPlus7 = DateTimeUtcPlus7.Now;
+
+            if (nowUtcPlus7 > user.ActionTokenExpiration)
+            {
+                throw new ServiceException("Token has expired.");
+            }
+
+            if(user.Status != UserStatus.Suspended)
+            {
+                user.Status = UserStatus.Active;
+            }
+            if(actionType == ActionType.AccountActivation)
+            {
+                user.ActionToken = null;
+                user.ActionTokenType = null;
+                user.ActionTokenExpiration = null;
+            }
+            else if (actionType== ActionType.PasswordReset)
+            {
+                
+            }
+            user.ActionToken = null;
+            user.ActionTokenType = null;
+            user.ActionTokenExpiration = null;
+            return _mapper.Map<UserResponse>(user);
+        }
+
+        public async Task<bool> IsTokenValid(string token, ActionType actionType)
+        {
+            var user = await _userRepository.GetUserByActionTokenAsync(token, actionType);
+            if (user == null)
+            {
+                return false;
+            }
+            DateTime nowUtcPlus7 = DateTimeUtcPlus7.Now;
+
+            return user.ActionTokenExpiration > nowUtcPlus7;
+        }
+        public async Task<User> RegisterUser(UserCreateRequest model)
+        {
+            try
+            {
+                var role = await _roleRepository.GetByNameAsync(model.RoleName);
+                if (role == null)
+                {
+                    throw new ServiceException($"Role {model.RoleName} does not exist.");
+                } 
+
+                var user = _mapper.Map<User>(model);
+                user.RoleId = role.Id;
+                user.Status = UserStatus.Inactive;
+                user.ActionToken = GenerateActionToken();
+                user.ActionTokenExpiration = DateTime.UtcNow.AddHours(24);
+                user.ActionTokenType = ActionType.AccountActivation;
+
+                await _userRepository.CreateAsync(user);
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw new ServiceException("An error occurred while creating the user.", ex);
+            }
+        }
+
+
+        public async Task<UserResponse> ResendActiveMail(UserForgotPasswordRequest model)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    throw new ServiceException($"User with email {model.Email} does not exist.");
+                }
+
+                user.ActionToken = GenerateActionToken();
+                user.ActionTokenExpiration = DateTime.UtcNow.AddHours(24);
+                user.ActionTokenType = ActionType.AccountActivation;
+
+                await _userRepository.UpdateAsync(user);
+
+                return _mapper.Map<UserResponse>(user);
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("An error occurred while creating the user.", ex);
+            }
+        }
+
+        public async Task<User> ForgotPassword(UserForgotPasswordRequest model)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    throw new ServiceException($"User with email {model.Email} does not exist.");
+                }
+
+                user.ActionToken = GenerateActionToken();
+                user.ActionTokenExpiration = DateTime.UtcNow.AddHours(24);
+                user.ActionTokenType = ActionType.PasswordReset;
+
+                await _userRepository.UpdateAsync(user);
+
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("An error occurred while creating the user.", ex);
             }
         }
 

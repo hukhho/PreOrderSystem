@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Entity.Repositories.Enum.User;
 using PreorderPlatform.Entity.Repositories.UserRepositories;
 using PreorderPlatform.Entity.Repositories.UserRepository;
 using PreorderPlatform.Service.Services.AuthService;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +38,16 @@ namespace PreorderPlatform.Service.Services.AuthService
             // Trả về null nếu thông tin đăng nhập không hợp lệ
 
             var user = await _userRepository.ValidateUserCredentials(loginViewModel.Email, loginViewModel.Password);
+            if (user == null)
+            {
+                throw new AuthenticationException("Invalid username or password.");
+            }
 
+            // Check the user's status
+            if (user.Status != UserStatus.Active)
+            {
+                throw new AuthenticationException("User status is not Active. User cannot be authenticated.");
+            }
             return user;
         }
 

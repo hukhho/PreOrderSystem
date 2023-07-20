@@ -9,6 +9,9 @@ using PreorderPlatform.Service.Exceptions;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.ViewModels.ApiResponse;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using PreorderPlatform.Service.Utility.CustomAuthorizeAttribute;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -18,9 +21,11 @@ namespace PreorderPlatform.API.Controllers
     {
         private readonly IPaymentService _paymentService;
 
-        public PaymentsController(IPaymentService paymentService)
+        private readonly ILogger<PaymentsController> _logger;
+        public PaymentsController(IPaymentService paymentService, ILogger<PaymentsController> logger)
         {
             _paymentService = paymentService;
+            _logger = logger;
         }
 
 
@@ -78,8 +83,8 @@ namespace PreorderPlatform.API.Controllers
             }
         }
 
-
         [HttpGet]
+        //This allows users to see an overview of all payments they have made
         public async Task<IActionResult> GetPayments(
             [FromQuery] PaginationParam<PaymentEnum.PaymentSort> paginationModel,
             [FromQuery] PaymentSearchRequest searchModel
@@ -87,6 +92,9 @@ namespace PreorderPlatform.API.Controllers
         {
             try
             {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;            
+                searchModel.UserId = Guid.Parse(userId);
+
                 var start = DateTime.Now;
                 var (payments, totalItems) = await _paymentService.GetAsync(paginationModel, searchModel);
                 Console.Write(DateTime.Now.Subtract(start).Milliseconds);
@@ -106,6 +114,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "MustBePaymentAccess")]
         public async Task<IActionResult> GetPayment(Guid id)
         {
             try
@@ -140,6 +149,8 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [CustomAuthorize(Roles = "BUSSINESS_OWNER,BUSINESS_STAFF")]
+        [Authorize(Policy = "MustBePaymentAccess")]
         public async Task<IActionResult> UpdatePayment(Guid id, [FromBody] PaymentUpdateViewModel model)
         {
             if (id != model.Id)
@@ -163,24 +174,24 @@ namespace PreorderPlatform.API.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePayment(Guid id)
-        {
-            try
-            {
-                await _paymentService.DeletePaymentAsync(id);
-                return NoContent();
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { message = $"Error deleting payment: {ex.Message}" });
-            }
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeletePayment(Guid id)
+        //{
+        //    try
+        //    {
+        //        await _paymentService.DeletePaymentAsync(id);
+        //        return NoContent();
+        //    }
+        //    catch (NotFoundException ex)
+        //    {
+        //        return NotFound(new { message = ex.Message });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError,
+        //            new { message = $"Error deleting payment: {ex.Message}" });
+        //    }
+        //}
 
 
 

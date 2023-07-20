@@ -1,4 +1,5 @@
 ﻿using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Entity.Repositories.Enum.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace PreorderPlatform.Entity.Repositories.UserRepositories
         Task<bool> IsPhoneUnique(string phone);
         Task<User> ValidateUserCredentials(string email, string password);
         Task<User> GetUserByEmailAsync(string email);
+        Task<User> GetUserByActionTokenAsync(string token, ActionType actionType);
     }
 }

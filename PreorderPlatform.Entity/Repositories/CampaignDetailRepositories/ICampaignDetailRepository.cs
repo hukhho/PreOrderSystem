@@ -11,5 +11,6 @@ namespace PreorderPlatform.Entity.Repositories.CampaignDetailRepositories
     {
         Task<bool> AreAllCampaignDetailsInBusinessAsync(IEnumerable<Guid> campaignDetailIds);
         Task<IEnumerable<CampaignDetail>> GetAllCampainDetailsAsync();
+        Task<int> GetMaxPhaseAsync();
     }
 }

@@ -12,24 +12,30 @@ using PreorderPlatform.Service.ViewModels.CampaignPrice.Response;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.ViewModels.Campaign.Response;
+using PreorderPlatform.Entity.Models;
+using Microsoft.AspNetCore.Authorization;
+using PreorderPlatform.Service.Services.CampaignServices;
 
 namespace PreorderPlatform.API.Controllers
 {
-    [Route("api/campaign/campaign-details")]
+    [Route("api/campaign/{campaignId}/campaign-details")]
     [ApiController]
     public class CampaignDetailsController : ControllerBase
     {
         private readonly ICampaignDetailService _campaignDetailService;
+        private readonly ICampaignService _campaignService;
         private readonly IMapper _mapper;
 
-        public CampaignDetailsController(ICampaignDetailService campaignDetailsService, IMapper mapper)
+        public CampaignDetailsController(ICampaignDetailService campaignDetailsService, ICampaignService campaignService, IMapper mapper)
         {
+            _campaignService = campaignService;
             _campaignDetailService = campaignDetailsService;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCampaignDetails(
+            [FromRoute] Guid campaignId,
             [FromQuery] PaginationParam<CampaignDetailEnum.CampaignDetailSort> paginationModel,
             [FromQuery] CampaignDetailSearchRequest searchModel
         )
@@ -37,7 +43,13 @@ namespace PreorderPlatform.API.Controllers
             try
             {
                 var start = DateTime.Now;
+
+                var campaign = await _campaignService.GetCampaignByIdAsync(campaignId); //Get campaign to check if campaign exist
+
+                searchModel.CampaignId = campaignId; //Set campaign id to search model
+
                 var (campaignDetailsList, totalItems) = await _campaignDetailService.GetAsync(paginationModel, searchModel);
+
                 Console.Write(DateTime.Now.Subtract(start).Milliseconds);
 
                 return Ok(new ApiResponse<IList<CampaignPriceResponse>>(
@@ -55,11 +67,22 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCampaignDetailsById(Guid id)
+        public async Task<IActionResult> GetCampaignDetailsById(
+            [FromRoute] Guid campaignId,
+            Guid id
+            )
         {
             try
             {
-                var campaignDetails = await _campaignDetailService.GetCampaignDetailByIdAsync(id);
+                var campaign = await _campaignService.GetCampaignByIdAsync(campaignId); //Get campaign to check if campaign exist
+
+                var campaignDetails = await _campaignDetailService.GetCampaignDetailByIdAsync(id); //Get campaign detail
+
+                if (campaignDetails.CampaignId != campaignId) //Check if campaign detail is belong to campaign
+                { 
+                    return StatusCode(StatusCodes.Status404NotFound, new ApiResponse<string>(null, $"Campaign details {campaignDetails.Id} not found in campaign id {campaignId}", false, null));
+
+                }
                 return Ok(new ApiResponse<CampaignPriceResponse>(campaignDetails, "Campaign detail fetched successfully.", true, null));
             }
             catch (NotFoundException ex)
@@ -74,10 +97,13 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCampaignDetails(CampaignPriceCreateRequest model)
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //Check if user is in a owner or staff of business that have campaign 
+        public async Task<IActionResult> CreateCampaignDetails([FromRoute] Guid campaignId, CampaignPriceCreateRequest model)
         {
             try
             {
+                model.CampaignId = campaignId; //Set campaign id to model
+
                 var campaignDetails = await _campaignDetailService.CreateCampaignDetailAsync(model);
 
                 return CreatedAtAction(nameof(GetCampaignDetailsById),
@@ -92,25 +118,23 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCampaignDetails(CampaignPriceUpdateRequest model)
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //Check if user is in a owner or staff of business that have campaign 
+        public async Task<IActionResult> UpdateCampaignDetails([FromRoute] Guid campaignId, CampaignPriceUpdateRequest model)
         {
-            try
+            var campaign = await _campaignService.GetCampaignByIdAsync(campaignId); //Get campaign to check if campaign exist
+
+            if (campaignId != model.CampaignId) //Check if campaign detail is belong to campaign
             {
-                await _campaignDetailService.UpdateCampaignDetailAsync(model);
-                return Ok(new ApiResponse<object>(null, "Campaign detail updated successfully.", true, null));
+                return StatusCode(StatusCodes.Status404NotFound, new ApiResponse<string>(null, $"Campaign details {model.Id} not found in campaign id {campaignId}", false, null));
             }
-            catch (NotFoundException ex)
-            {
-                return NotFound(new ApiResponse<object>(null, ex.Message, false, null));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error updating campaign detail: {ex.Message}", false, null));
-            }
+
+            await _campaignDetailService.UpdateCampaignDetailAsync(model);
+
+            return Ok(new ApiResponse<object>(null, "Campaign detail updated successfully.", true, null));
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //Check if user is in a owner or staff of business that have campaign 
         public async Task<IActionResult> DeleteCampaignDetails(Guid id)
         {
             try

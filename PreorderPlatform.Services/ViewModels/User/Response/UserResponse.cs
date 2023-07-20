@@ -1,4 +1,5 @@
 ﻿using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Entity.Repositories.Enum.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,9 @@ namespace PreorderPlatform.Service.ViewModels.User.Response
 
         public string? RoleName { get; set; }
 
+        public Guid? BusinessId { get; set; }
         public string? BusinessName { get; set; }
 
-        public bool? Status { get; set; }
+        public UserStatus? Status { get; set; }
     }
 }

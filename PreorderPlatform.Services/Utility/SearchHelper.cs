@@ -42,12 +42,13 @@ namespace PreorderPlatform.Service.Utility
                 }
                 // Filter by int, Guid, DateTime, byte, and bool
                 else if (
-                    value is int
-                    || value is Guid
-                    || value is DateTime
-                    || value is byte
-                    || value is bool
-                )
+                      value is int
+                      || value is Guid
+                      || value is DateTime
+                      || value is byte
+                      || value is bool
+                      || value is System.Enum   // Add this line
+                  )
                 {
                     // Check if the property type is nullable and convert the search value accordingly
                     if (Nullable.GetUnderlyingType(entityProp.Type) != null)
@@ -67,6 +68,8 @@ namespace PreorderPlatform.Service.Utility
                 {
                     continue;
                 }
+
+
 
                 //--entity => entity.{PropertyName}.(Contains/Equals)(searchValue)
                 var exp = Expression.Lambda<Func<TEntity, bool>>(body, param);

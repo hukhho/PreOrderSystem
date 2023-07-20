@@ -11,6 +11,10 @@ using PreorderPlatform.Service.ViewModels.Product.Request;
 using PreorderPlatform.Service.ViewModels.Product.Response;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Services.Enum;
+using Microsoft.AspNetCore.Authorization;
+using PreorderPlatform.Service.Utility.CustomAuthorizeAttribute;
+using System.Security.Claims;
+using PreorderPlatform.Service.Services.UserServices;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -19,10 +23,11 @@ namespace PreorderPlatform.API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
-
-        public ProductsController(IProductService productService)
+        private readonly IUserService _userService;
+        public ProductsController(IProductService productService, IUserService userService)
         {
             _productService = productService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -71,10 +76,22 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPost]
+        [CustomAuthorize(Roles = "ADMIN,BUSSINESS_OWNER,BUSINESS_STAFF")]
         public async Task<IActionResult> CreateProduct(ProductCreateRequest model)
         {
             try
             {
+                var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var user = await _userService.GetUserByIdAsync(userId);
+
+                if (user.BusinessId == null)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest,
+                                      new ApiResponse<object>(null, "Error creating product", false, null));
+                }
+
+                model.BusinessId = (Guid) user.BusinessId;
+
                 var product = await _productService.CreateProductAsync(model);
                 return CreatedAtAction(nameof(GetProductById),
                                        new { id = product.Id },
@@ -88,6 +105,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "MustBeProductAccess")]
         public async Task<IActionResult> UpdateProduct(ProductUpdateRequest model)
         {
             try
@@ -107,6 +125,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "MustBeProductAccess")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
             try

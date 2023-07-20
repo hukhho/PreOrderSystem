@@ -84,6 +84,10 @@ throw new ServiceException($"An error occurred while fetching campaign detail wi
             try
             {
                 var campaignDetail = _mapper.Map<CampaignDetail>(model);
+
+                // Set the phase to be 1 more than the highest existing phase
+                campaignDetail.Phase = (await _campaignDetailRepository.GetMaxPhaseAsync()) + 1;
+
                 await _campaignDetailRepository.CreateAsync(campaignDetail);
                 return _mapper.Map<CampaignPriceResponse>(campaignDetail);
             }
@@ -93,33 +97,43 @@ throw new ServiceException($"An error occurred while fetching campaign detail wi
             }
         }
 
+
         public async Task UpdateCampaignDetailAsync(CampaignPriceUpdateRequest model)
         {
             try
             {
-var campaignDetail = await _campaignDetailRepository.GetByIdAsync(model.Id);
+                var campaignDetail = await _campaignDetailRepository.GetByIdAsync(model.Id);
                 campaignDetail = _mapper.Map(model, campaignDetail);
                 await _campaignDetailRepository.UpdateAsync(campaignDetail);
             }
             catch (Exception ex)
             {
-throw new ServiceException($"An error occurred while updating campaign detail with ID {model.Id}.", ex);
+                throw new ServiceException($"An error occurred while updating campaign detail with ID {model.Id}.", ex);
             }
         }
 
-public async Task DeleteCampaignDetailAsync(Guid id)
+        public async Task DeleteCampaignDetailAsync(Guid id)
         {
             try
             {
-var campaignDetail = await _campaignDetailRepository.GetByIdAsync(id);
-                await _campaignDetailRepository.DeleteAsync(campaignDetail);
+                var campaignDetail = await _campaignDetailRepository.GetByIdAsync(id);
+
+                // Only allow deletion of the highest phase
+                if (campaignDetail.Phase == await _campaignDetailRepository.GetMaxPhaseAsync())
+                {
+                    await _campaignDetailRepository.DeleteAsync(campaignDetail);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Only the highest phase can be removed.");
+                }
             }
             catch (Exception ex)
             {
-throw new ServiceException($"An error occurred while deleting campaign detail with ID {id}.", ex);
+                throw new ServiceException($"An error occurred while deleting campaign detail with ID {id}.", ex);
             }
         }
-        
+
 
         public async Task<(IList<CampaignPriceResponse> campaigns, int totalItems)> GetAsync(PaginationParam<CampaignDetailEnum.CampaignDetailSort> paginationModel, CampaignDetailSearchRequest filterModel)
         {

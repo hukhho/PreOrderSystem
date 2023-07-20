@@ -13,6 +13,7 @@ namespace PreorderPlatform.Service.ViewModels.Business.Request
 
         [Required]
         [StringLength(100)]
+        [RegularExpression(@"^[a-zA-Z0-9 ]*$", ErrorMessage = "Special characters are not allowed.")]
         public string Name { get; set; }
 
         [StringLength(500)]
@@ -26,8 +27,6 @@ namespace PreorderPlatform.Service.ViewModels.Business.Request
 
         [JsonIgnore]
         public Guid OwnerId { get; set; }
-
-
 
         [JsonIgnore]
         public bool Status { get; set; }

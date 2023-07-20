@@ -33,7 +33,9 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "MustBeBusinessOwner")]
         public async Task<IActionResult> GetAllBusinessPaymentCredentials(
+            [FromRoute] Guid businessId,
             [FromQuery]
                 PaginationParam<BusinessPaymentCredentialEnum.BusinessPaymentCredentialSort> paginationModel,
             [FromQuery] BusinessPaymentCredentialSearchRequest searchModel
@@ -65,21 +67,8 @@ namespace PreorderPlatform.API.Controllers
                 );
             }
 
-            if (roleName != "ADMIN")
-            {
-                Guid userIdInt;
-                if (!Guid.TryParse(userId, out userIdInt))
-                {
-                    return BadRequest(
-                        new ApiResponse<object>(null, "Invalid user ID format.", false, null)
-                    );
-                }
-                var business = await _businessPaymentCredentialService.GetBusinessByOwnerIdAsync(
-                    userIdInt
-                );
-                Guid businessId = business.Id;
-                searchModel.BusinessId = businessId;
-            }
+            searchModel.BusinessId = businessId;
+            
 
             try
             {

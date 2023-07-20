@@ -29,7 +29,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-
+using System.Text.Json.Serialization;
 
 static Task WriteResponse(HttpContext httpContext, HealthReport result)
 {
@@ -125,6 +125,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ADMIN", policy => policy.RequireRole(UserRole.ADMIN.ToString()));
@@ -138,11 +140,14 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 builder.Services.AddControllers(options =>
-{
+{   
     options.InputFormatters.Insert(0, MyJPIF.GetJsonPatchInputFormatter());
 });
 
-
+//builder.Services.AddControllers().AddJsonOptions(options =>
+//{
+//    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+//});
 builder.Services.AddMemoryCache();
 //builder.Services.AddHealthChecks()
 //    .AddCheck<SystemResourcesHealthCheck>("System Resources Check");
@@ -189,7 +194,7 @@ using (var scope = app.Services.CreateScope())
     dbInitializer.Initialize();
     
 }
-
+app.UseStaticFiles();
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseMiddleware<RequestResponseLoggingMiddleware>();

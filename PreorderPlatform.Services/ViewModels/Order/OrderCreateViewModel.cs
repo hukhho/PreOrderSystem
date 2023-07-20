@@ -17,6 +17,7 @@ namespace PreorderPlatform.Service.ViewModels.Order
         public string? ShippingProvince { get; set; }
         public string? ShippingWard { get; set; }
         public string? ShippingDistrict { get; set; }
+        public string? Note { get; set; }
 
         // Order items
         [Required]

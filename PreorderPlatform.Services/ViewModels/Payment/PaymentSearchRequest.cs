@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,8 @@ namespace PreorderPlatform.Service.ViewModels.Payment
         public int? PaymentCount { get; set; }
         public DateTime? PayedAt { get; set; }
         public string? Status { get; set; }
+
+        [JsonIgnore]
         public Guid? UserId { get; set; }
         public Guid? OrderId { get; set; }
     }

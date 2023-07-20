@@ -21,6 +21,8 @@ namespace PreorderPlatform.Entity.Data
         {
             using (var transaction = context.Database.BeginTransaction())
             {
+                // Set all date and time in UTC+7
+                DateTime now = DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromHours(7)).DateTime;
                 try
                 {
                     var random = new Random();
@@ -111,7 +113,9 @@ namespace PreorderPlatform.Entity.Data
                                 Ward = $"Ward {i}",
                                 District = $"District {i}",
                                 Province = $"Province {i}",
-                                Status = true,
+                                CreatedAt = now,
+                                UpdatedAt = now,
+                                Status = Repositories.Enum.User.UserStatus.Active,
                                 RoleId = adminRole.Id
                             };
 
@@ -139,7 +143,9 @@ namespace PreorderPlatform.Entity.Data
                                 Ward = $"Ward {i}",
                                 District = $"District {i}",
                                 Province = $"Province {i}",
-                                Status = true,
+                                CreatedAt = now,
+                                UpdatedAt = now,
+                                Status = Repositories.Enum.User.UserStatus.Active,
                                 RoleId = customerRole.Id
                             };
 
@@ -170,6 +176,12 @@ namespace PreorderPlatform.Entity.Data
                             {
                                 Name = $"Business {i}",
                                 Phone = $"12345678{i}",
+                                LogoUrl = $"https://picsum.photos/200/300?random={i}",
+                                IsVerified = false,
+                                CreatedAt = now,
+                                UpdatedAt = now,     
+                                Description = $"Business {i} description",
+                                Address = $"Business Street {i}",
                                 Email = $"business{i}@gmail.com",
                                 Status = true
                             };
@@ -197,7 +209,9 @@ namespace PreorderPlatform.Entity.Data
                                 Ward = $"Ward {i}",
                                 District = $"District {i}",
                                 Province = $"Province {i}",
-                                Status = true,
+                                CreatedAt = now,
+                                UpdatedAt = now,
+                                Status = Repositories.Enum.User.UserStatus.Active,
                                 RoleId = businessOwnerRoleId,
                                 BusinessId = business.Id
                             };
@@ -222,7 +236,9 @@ namespace PreorderPlatform.Entity.Data
                                 Ward = $"Ward {i}",
                                 District = $"District {i}",
                                 Province = $"Province {i}",
-                                Status = true,
+                                CreatedAt = now,
+                                UpdatedAt = now,
+                                Status = Repositories.Enum.User.UserStatus.Active,
                                 RoleId = businessStaffRoleId,
                                 BusinessId = business.Id
                             };
@@ -307,6 +323,9 @@ namespace PreorderPlatform.Entity.Data
                                 Id = Guid.NewGuid(),
                                 Name = "MacBook Pro",
                                 Description = "Apple laptop",
+                                CreatedAt = now,
+                                UpdatedAt = now,
+                                Image = "https://picsum.photos/200/300?random=1",
                                 CategoryId = laptopCategory.Id,
                                 BusinessId = laptopBusiness.Id,
                                 Status = true
@@ -318,6 +337,9 @@ namespace PreorderPlatform.Entity.Data
                                 Description = "Dell laptop",
                                 CategoryId = laptopCategory.Id,
                                 BusinessId = laptopBusiness.Id,
+                                Image = "https://picsum.photos/200/300?random=2",
+                                CreatedAt = now,
+                                UpdatedAt = now,
                                 Status = true
                             },
                             new Product
@@ -327,6 +349,9 @@ namespace PreorderPlatform.Entity.Data
                                 Description = "HP laptop",
                                 CategoryId = laptopCategory.Id,
                                 BusinessId = laptopBusiness.Id,
+                                Image = "https://picsum.photos/200/300?random=3",
+                                CreatedAt = now,
+                                UpdatedAt = now,
                                 Status = true
                             },
                             new Product
@@ -336,6 +361,7 @@ namespace PreorderPlatform.Entity.Data
                                 Description = "Lenovo laptop",
                                 CategoryId = laptopCategory.Id,
                                 BusinessId = laptopBusiness.Id,
+                                Image = "https://picsum.photos/200/300?random=4",
                                 Status = true
                             },
                             new Product
@@ -345,6 +371,7 @@ namespace PreorderPlatform.Entity.Data
                                 Description = "Microsoft laptop",
                                 CategoryId = laptopCategory.Id,
                                 BusinessId = laptopBusiness.Id,
+                                Image = "https://picsum.photos/200/300?random=5",
                                 Status = true
                             },
                             new Product
@@ -354,6 +381,7 @@ namespace PreorderPlatform.Entity.Data
                                 Description = "Apple smartphone",
                                 CategoryId = smartphoneCategory.Id,
                                 BusinessId = smartphoneBusiness.Id,
+                                Image = "https://picsum.photos/200/300?random=6",
                                 Status = true
                             },
                             new Product
@@ -363,6 +391,7 @@ namespace PreorderPlatform.Entity.Data
                                 Description = "Samsung smartphone",
                                 CategoryId = smartphoneCategory.Id,
                                 BusinessId = smartphoneBusiness.Id,
+                                Image = "https://picsum.photos/200/300?random=7",
                                 Status = true
                             },
                             new Product
@@ -372,6 +401,7 @@ namespace PreorderPlatform.Entity.Data
                                 Description = "Google smartphone",
                                 CategoryId = smartphoneCategory.Id,
                                 BusinessId = smartphoneBusiness.Id,
+                                Image = "https://picsum.photos/200/300?random=8",
                                 Status = true
                             },
                             new Product
@@ -381,6 +411,7 @@ namespace PreorderPlatform.Entity.Data
                                 Description = "OnePlus smartphone",
                                 CategoryId = smartphoneCategory.Id,
                                 BusinessId = smartphoneBusiness.Id,
+                                Image = "https://picsum.photos/200/300?random=9",
                                 Status = true
                             },
                             new Product
@@ -390,6 +421,7 @@ namespace PreorderPlatform.Entity.Data
                                 Description = "Huawei smartphone",
                                 CategoryId = smartphoneCategory.Id,
                                 BusinessId = smartphoneBusiness.Id,
+                                Image = "https://picsum.photos/200/300?random=10",
                                 Status = true
                             },
                             new Product
@@ -399,6 +431,7 @@ namespace PreorderPlatform.Entity.Data
                                 Description = "Samsung TV",
                                 CategoryId = tvCategory.Id,
                                 BusinessId = tvBusiness.Id,
+                                Image = "https://picsum.photos/200/300?random=11",
                                 Status = true
                             },
                             new Product
@@ -582,7 +615,7 @@ namespace PreorderPlatform.Entity.Data
                                     int randomEndDays = rand.Next(7, 30); // Generates a random integer between 7 and 14
                                     int randomShipDate = rand.Next(7, 30);
 
-                                    var startDate = DateTime.Now.AddDays(randomStartDays);
+                                    var startDate = now.AddDays(randomStartDays);
                                     var endDate = startDate.AddDays(randomEndDays);
                                     var shipDate = endDate.AddDays(randomStartDays);
 
@@ -595,16 +628,36 @@ namespace PreorderPlatform.Entity.Data
                                             BusinessId = business.Id,
                                             OwnerId = ownerId,
                                             ProductId = business.Products.First().Id,
+                                            Location = Repositories.Enum.Campaign.CampaignLocation.HoChiMinh,
+                                            IsDeleted = false,
+                                            Type = Repositories.Enum.Campaign.CampaignType.BetaTesting,
                                             StartAt = startDate,
                                             EndAt = endDate, // Ends at a random date between 7 to 14 days from now
                                             DepositPercent = 50,
                                             ExpectedShippingDate = shipDate, // Ships at a random date between 1 to 5 months from now
-                                            CreateAt = DateTime.Now,
-                                            ModifiedAt = DateTime.Now,
-                                            Status = true
+
+                                            Images = new List<CampaignImage>
+                                            {
+                                                new CampaignImage
+                                                {
+                                                    Id = Guid.NewGuid(),
+                                                    Url = "https://picsum.photos/seed/picsum/200/300",
+                                                    Description = "Image 1",
+                                                    IsThumbnail = true,
+                                                    Order = 1
+                                                },
+                                                new CampaignImage
+                                                {
+                                                    Id = Guid.NewGuid(),
+                                                    Url = "https://picsum.photos/seed/picsum/200/300",
+                                                    Description = "Image 2",
+                                                    IsThumbnail = false,
+                                                    Order = 2
+                                                },
+                                            },
+                                            Status = Repositories.Enum.Status.CampaignStatus.Active
                                         }
                                     );
-
                                     _logger.LogInformation(
                                         $"Created Campaign{i} for business: {business.Name}"
                                     );
@@ -628,12 +681,12 @@ namespace PreorderPlatform.Entity.Data
                         foreach (var campaign in campaigns)
                         {
                             int randomAllowed = random.Next(1, 10) * 10;
-                            decimal previousPrice = random.Next(10, 100) * 10; // Initialize with base price
+                            decimal previousPrice = random.Next(10, 100) * 100000; // Initialize with base price
 
                             for (int i = 1; i <= 3; i++)
                             {
                                 // Generate a random increment between 10 and 100
-                                decimal priceIncrement = random.Next(1, 10) * 10;
+                                decimal priceIncrement = random.Next(1, 10) * 100000;
                                 previousPrice += priceIncrement; // Increment the previous price
 
                                 campaignDetails.Add(
@@ -664,14 +717,7 @@ namespace PreorderPlatform.Entity.Data
                             .ToList();
 
                         // List of possible shipping statuses
-                        var shippingStatuses = new List<string>
-                        {
-                            "Not Shipped",
-                            "Shipped",
-                            "In Transit",
-                            "Delivered",
-                            "Delayed"
-                        };
+                     
 
                         foreach (var user in users)
                         {
@@ -687,18 +733,22 @@ namespace PreorderPlatform.Entity.Data
                                 TotalPrice = 0,
                                 IsDeposited = false,
                                 RequiredDepositAmount = 0,
-                                Status = "Created",
+                                Status = Repositories.Enum.Order.OrderStatus.Pending,
                                 RevicerName = user.FirstName + " " + user.LastName,
                                 RevicerPhone = user.Phone,
                                 ShippingAddress = user.Address,
                                 ShippingProvince = user.Province,
                                 ShippingWard = user.Ward,
                                 ShippingDistrict = user.District,
-                                ShippingCode = "000000" + random.Next(10000, 99999).ToString(),
-                                ShippingPrice = 0,
-                                ShippingStatus = shippingStatuses[
-                                    random.Next(shippingStatuses.Count)
-                                ],
+                                CancelledAt = null,
+                                CancelledBy = null,
+                                EstimatedDeliveryDate = null,
+                                Note = $"Order of user {user.Id}",
+                                UpdatedAt = now,
+                                UpdatedBy = null,                            
+                                ShippingCode = "GH" + random.Next(10000, 99999).ToString(),
+                                ShippingPrice = 30000,
+                                ShippingStatus = Repositories.Enum.Order.ShippingStatus.Pending,
                                 UserId = user.Id,
                                 OrderItems = new List<OrderItem>(),
                                 Payments = new List<Payment>(),
@@ -751,11 +801,13 @@ namespace PreorderPlatform.Entity.Data
                             var payment = new Payment
                             {
                                 Id = Guid.NewGuid(),
-                                Method = "Credit Card",
-                                Total = order.TotalPrice * 0.5m, // Assume we pay 50% upfront
+                                Method = Repositories.Enum.Payment.PaymentMethod.Momo,
+                                PaymentAmount = order.TotalPrice * 0.5m, // Assume we pay 50% upfront
                                 PaymentCount = 1,
-                                PayedAt = DateTime.Now,
-                                Status = "Completed",
+                                PayedAt = now,
+                                CreatedAt = now,
+                                UpdatedAt = now,
+                                Status = Repositories.Enum.Payment.PaymentStatus.Completed,
                                 UserId = user.Id,
                                 OrderId = order.Id
                             };

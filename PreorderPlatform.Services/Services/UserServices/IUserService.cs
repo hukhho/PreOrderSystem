@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Entity.Repositories.Enum.User;
 using PreorderPlatform.Service.Enum;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.ViewModels.User.Request;
@@ -41,5 +42,10 @@ namespace PreorderPlatform.Service.Services.UserServices
         Task<User> GetUserByEmailAsync(string email);
         Task UpdateUserPasswordAsync(User user, string newPassword);
         string GeneratePasswordResetToken();
+        Task<User> RegisterUser(UserCreateRequest model);
+        Task<User> ForgotPassword(UserForgotPasswordRequest model);
+        Task<bool> IsTokenValid(string token, ActionType actionType);
+        Task<UserResponse> ConfirmEmail(string token, ActionType actionType);
+        Task<UserResponse> ResendActiveMail(UserForgotPasswordRequest model);
     }
 }

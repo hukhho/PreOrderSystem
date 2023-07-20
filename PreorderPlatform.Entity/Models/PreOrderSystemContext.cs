@@ -27,13 +27,13 @@ namespace PreorderPlatform.Entity.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(
-                    "Server=(local);Uid=sa;Pwd=123;Database=PreOrderSystem"
-                );
-            }
+//            if (!optionsBuilder.IsConfigured)
+//            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//                optionsBuilder.UseSqlServer(
+//                    "Server=(local);Uid=sa;Pwd=123;Database=PreOrderSystem"
+//                );
+//            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -94,7 +94,10 @@ namespace PreorderPlatform.Entity.Models
                     .HasColumnType("datetime")
                     .HasColumnName("create_at");
 
-                entity.Property(e => e.IsMain).HasColumnName("is_main");
+
+                entity.HasIndex(e => new { e.BusinessId, e.IsMain })
+                        .IsUnique()
+                        .HasFilter("[IsMain] = 1");
 
                 entity.Property(e => e.IsMomoActive).HasColumnName("is_momo_active");
 
@@ -133,9 +136,14 @@ namespace PreorderPlatform.Entity.Models
                 entity.Property(e => e.BusinessId).HasColumnName("business_id");
 
                 entity
-                    .Property(e => e.CreateAt)
+                    .Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
-                    .HasColumnName("create_at");
+                    .HasColumnName("created_at");
+
+                entity
+                   .Property(e => e.UpdatedAt)
+                   .HasColumnType("datetime")
+                   .HasColumnName("updated_at");
 
                 entity.Property(e => e.DepositPercent).HasColumnName("deposit_percent");
 
@@ -148,10 +156,7 @@ namespace PreorderPlatform.Entity.Models
                     .HasColumnType("date")
                     .HasColumnName("expected_shipping_date");
 
-                entity
-                    .Property(e => e.ModifiedAt)
-                    .HasColumnType("datetime")
-                    .HasColumnName("modified_at");
+           
 
                 entity.Property(e => e.Name).HasColumnName("name");
 
@@ -161,7 +166,26 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.StartAt).HasColumnType("datetime").HasColumnName("start_at");
 
-                entity.Property(e => e.Status).HasColumnName("status");
+                entity.Property(e => e.Status)
+                      .IsRequired()
+                 .HasConversion<string>();
+
+                entity.Property(e => e.Type)
+                    .IsRequired()
+                     .HasConversion<string>();
+
+                entity.Property(e => e.Visibility)
+                    .IsRequired()
+                    .HasConversion<string>();
+
+                entity.Property(e => e.Location)
+                    .IsRequired()
+                     .HasConversion<string>();
+
+                entity.Property(e => e.IsDeleted)
+                .IsRequired()
+                .HasDefaultValue(false)
+                .HasColumnName("is_deleted");
 
                 entity
                     .HasOne(d => d.Business)
@@ -185,6 +209,28 @@ namespace PreorderPlatform.Entity.Models
                     .HasConstraintName("FK__Campaign__produc__35BCFE0A");
             });
 
+            modelBuilder.Entity<CampaignImage>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Url)
+                    .IsRequired();
+
+                entity.Property(e => e.Description);
+
+                entity.Property(e => e.IsThumbnail)
+                    .HasDefaultValue(false);
+
+                entity.HasIndex(e => new { e.CampaignId, e.IsThumbnail })
+                       .IsUnique()
+                       .HasFilter("[IsThumbnail] = 1");
+
+                entity.HasOne(d => d.Campaign)
+                    .WithMany(p => p.Images)
+                    .HasForeignKey(d => d.CampaignId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
             modelBuilder.Entity<CampaignDetail>(entity =>
             {
                 entity.ToTable("CampaignDetail");
@@ -203,6 +249,12 @@ namespace PreorderPlatform.Entity.Models
                     .HasColumnName("price");
 
                 entity.Property(e => e.TotalOrdered).HasColumnName("total_ordered");
+
+                // Add the IsDeleted property in your database and set it to false by default
+                entity.Property(e => e.IsDeleted)
+                    .IsRequired()
+                    .HasDefaultValue(false)
+                    .HasColumnName("is_deleted");
 
                 entity
                     .HasOne(d => d.Campaign)
@@ -265,12 +317,9 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.ShippingProvince).HasColumnName("shipping_province");
 
-                entity.Property(e => e.ShippingStatus).HasColumnName("shipping_status");
-
                 entity.Property(e => e.ShippingWard).HasColumnName("shipping_ward");
 
-                entity.Property(e => e.Status).HasColumnName("status");
-
+                
                 entity
                     .Property(e => e.TotalPrice)
                     .HasColumnType("numeric(18, 0)")
@@ -279,6 +328,34 @@ namespace PreorderPlatform.Entity.Models
                 entity.Property(e => e.TotalQuantity).HasColumnName("total_quantity");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.Property(e => e.UpdatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("updated_at");
+                //Hey copilot make me public DateTime? EstimatedDeliveryDate { get; set; } public DateTime? CancelledAt { get; set; } public string? CancelledBy { get; set; } public string? UpdatedBy { get; set; } public string? Note { get; set; }
+                entity.Property(e => e.EstimatedDeliveryDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("estimated_delivery_date");
+                entity.Property(e => e.CancelledAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("cancelled_at");
+                entity.Property(e => e.CancelledBy)
+                .HasColumnName("cancelled_by");
+                entity.Property(e => e.UpdatedBy)
+                .HasColumnName("updated_by");
+                entity.Property(e => e.CancelledReason)
+               .HasColumnName("cancelled_reason");  
+                entity.Property(e => e.Note)
+                .HasColumnName("note");
+                entity
+                 .Property(e => e.ShippingStatus)
+                 .HasConversion<string>()
+                 .HasColumnName("shipping_status");
+
+                entity
+                    .Property(e => e.Status)
+                    .HasConversion<string>()
+                    .HasColumnName("status");
 
                 entity
                     .HasOne(d => d.User)
@@ -333,11 +410,26 @@ namespace PreorderPlatform.Entity.Models
                 entity.Property(e => e.PaymentCount).HasColumnName("payment_count");
 
                 entity.Property(e => e.Status).HasColumnName("status");
-
-                entity
-                    .Property(e => e.Total)
+                //public DateTime? UpdatedAt { get; set; } public decimal? PaymentAmount { get; set; }
+                entity.Property(e => e.UpdatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("updated_at");
+                entity.Property(e => e.PaymentAmount)
                     .HasColumnType("numeric(18, 0)")
-                    .HasColumnName("total");
+                    .HasColumnName("payment_amount");
+
+                //public PaymentMethod Method { get; set; } public PaymentStatus Status { get; set; }         public string? CancelledReason { get; set; }
+          
+                entity.Property(e => e.Method)
+                    .HasConversion<string>()
+                    .HasColumnName("method");   
+                entity.Property(e => e.Status)
+                .HasConversion<string>()
+                    .HasColumnName("status");
+
+                //        public string? TransactionId { get; set; }
+                entity.Property(e => e.TransactionId)
+                .HasColumnName("transaction_id");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
@@ -369,6 +461,16 @@ namespace PreorderPlatform.Entity.Models
                 entity.Property(e => e.Image).IsUnicode(false).HasColumnName("image");
 
                 entity.Property(e => e.Name).HasColumnName("name");
+
+                entity
+                  .Property(e => e.CreatedAt)
+                  .HasColumnType("datetime")
+                  .HasColumnName("created_at");
+
+                entity
+                   .Property(e => e.UpdatedAt)
+                   .HasColumnType("datetime")
+                   .HasColumnName("updated_at");
 
 
                 entity.Property(e => e.Status).HasColumnName("status");
@@ -421,7 +523,30 @@ namespace PreorderPlatform.Entity.Models
 
                 entity.Property(e => e.RoleId).HasColumnName("role_id");
 
-                entity.Property(e => e.Status).HasColumnName("status");
+                //public string ActionToken { get; set; } public DateTime? ActionTokenExpiration { get; set; } public ActionType? ActionTokenType { get; set; }
+                
+                entity.Property(e => e.ActionToken)
+                    .HasColumnName("action_token");
+                entity.Property(e => e.ActionTokenExpiration)
+                    .HasColumnType("datetime")
+                    .HasColumnName("action_token_expiration");
+                entity.Property(e => e.ActionTokenType) 
+                    .HasConversion<string>()
+                    .HasColumnName("action_token_type");
+                //            public UserStatus Status { get; set; }
+                entity.Property(e => e.Status)
+                    .HasConversion<string>()
+                    .HasColumnName("status");   
+                entity
+                    .Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("created_at");
+
+                entity
+                   .Property(e => e.UpdatedAt)
+                   .HasColumnType("datetime")
+                   .HasColumnName("updated_at");
+
 
                 entity.Property(e => e.Ward).HasColumnName("ward");
 

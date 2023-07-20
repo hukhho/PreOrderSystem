@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace PreorderPlatform.Service.ViewModels.OrderItem
 {
     public class OrderItemSearchRequest
     {
-        public Guid? CampaignDetailId { get; set; }
-        public Guid? OrderId { get; set; }
+        [JsonIgnore]
+        public Guid OrderId { get; set; }
     }
 }

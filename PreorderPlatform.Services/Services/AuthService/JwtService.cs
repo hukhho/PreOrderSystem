@@ -33,9 +33,9 @@ namespace PreorderPlatform.Service.Services.AuthService
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-            new Claim(ClaimTypes.NameIdentifier, userId),
-            new Claim(ClaimTypes.Name, userName),
-            new Claim(ClaimTypes.Role, role),
+                    new Claim(ClaimTypes.NameIdentifier, userId),
+                    new Claim(ClaimTypes.Name, userName),
+                    new Claim(ClaimTypes.Role, role),
             }),
                 Expires = DateTime.UtcNow.AddHours(_expirationInHours),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

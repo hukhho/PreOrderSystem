@@ -38,7 +38,5 @@ namespace PreorderPlatform.Service.ViewModels.User.Request
         [AllowedRoleNames("CUSTOMER", "BUSINESS_OWNER", "BUSINESS_STAFF", ErrorMessage = "Invalid role name. Allowed values are CUSTOMER, BUSINESS_OWNER, or BUSINESS_STAFF.")]
         public string? RoleName { get; set; }
 
-        [JsonIgnore]
-        public bool? Status { get; set; }
     }
 }

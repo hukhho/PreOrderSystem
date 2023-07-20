@@ -11,5 +11,6 @@ namespace PreorderPlatform.Entity.Repositories.ProductRepositories
     {
         Task<IEnumerable<Product>> GetAllProductsWithCategoryAsync();
         Task<Product> GetProductByIdAsync(Guid id);
+        Task<bool> IsUserCanAccessProduct(Guid userId, Guid productId);
     }
 }

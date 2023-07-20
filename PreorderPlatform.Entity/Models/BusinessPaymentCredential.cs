@@ -5,6 +5,12 @@ namespace PreorderPlatform.Entity.Models
 {
     public partial class BusinessPaymentCredential
     {
+        public BusinessPaymentCredential()
+        {
+            Id = Guid.NewGuid();
+            CreateAt = DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromHours(7)).DateTime;
+        }
+
         public Guid Id { get; set; }
         public Guid BusinessId { get; set; }
         public string? BankAccountNumber { get; set; }

@@ -7,6 +7,10 @@ namespace PreorderPlatform.Entity.Models
     {
         public Product()
         {
+            Id = Guid.NewGuid();
+            DateTime now = DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromHours(7)).DateTime;
+            CreatedAt = now;
+            UpdatedAt = now;
             Campaigns = new HashSet<Campaign>();
         }
 
@@ -14,7 +18,9 @@ namespace PreorderPlatform.Entity.Models
         public string Name { get; set; }
         public string? Image { get; set; }
         public string Description { get; set; }
-        public bool? Status { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public bool Status { get; set; }
         public Guid CategoryId { get; set; }
         public Guid BusinessId { get; set; }
 

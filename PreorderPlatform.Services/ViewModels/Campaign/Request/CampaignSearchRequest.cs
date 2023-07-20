@@ -6,6 +6,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PreorderPlatform.Entity.Repositories.Enum.Campaign;
+using PreorderPlatform.Entity.Repositories.Enum.Status;
 
 namespace PreorderPlatform.Service.ViewModels.Campaign.Request
 {
@@ -17,7 +19,9 @@ namespace PreorderPlatform.Service.ViewModels.Campaign.Request
         [Description("Enter the date in the format 'YYYY-MM-DD'")]
         [FromQuery]
         public DateTime? DateInRange { get; set; }
-        public bool? Status { get; set; }
+        public CampaignType? Type { get; set; }
+        public CampaignLocation? Location { get; set; }
+        public CampaignStatus? Status { get; set; }
         public Guid? OwnerId { get; set; }
         public Guid? BusinessId { get; set; }
 

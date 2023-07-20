@@ -10,30 +10,37 @@ using PreorderPlatform.Service.ViewModels.OrderItem;
 using PreorderPlatform.Service.Exceptions;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.Enum;
+using Microsoft.AspNetCore.Authorization;
+using PreorderPlatform.Service.Services.OrderServices;
 
 namespace PreorderPlatform.API.Controllers
 {
-    [Route("api/orders/orderitems")]
+    [Route("api/orders/{orderId}/orderitems")]
     [ApiController]
+    [Authorize(Policy = "MustBeOrderAccess")]
     public class OrderItemsController : ControllerBase
     {
         private readonly IOrderItemService _orderItemService;
+        private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
 
-        public OrderItemsController(IOrderItemService orderItemService, IMapper mapper)
+        public OrderItemsController(IOrderItemService orderItemService, IOrderService orderService, IMapper mapper)
         {
             _orderItemService = orderItemService;
+            _orderService = orderService;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllOrderItems(
+            [FromRoute] Guid orderId,
             [FromQuery] PaginationParam<OrderItemEnum.OrderItemSort> paginationModel,
             [FromQuery] OrderItemSearchRequest searchModel
         )
         {
             try
             {
+                searchModel.OrderId = orderId;
                 var start = DateTime.Now;
                 var (orderItems, totalItems) = await _orderItemService.GetAsync(paginationModel, searchModel);
                 Console.Write(DateTime.Now.Subtract(start).Milliseconds);
@@ -53,11 +60,19 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrderItemById(Guid id)
+        public async Task<IActionResult> GetOrderItemById(
+            [FromRoute] Guid orderId,
+            Guid id)
         {
             try
             {
+                var order = await _orderService.GetOrderByIdAsync(orderId);
+
                 var orderItem = await _orderItemService.GetOrderItemByIdAsync(id);
+
+                if (orderItem.OrderId != order.Id)
+                    throw new NotFoundException($"Order item not found in order id {orderId}.");
+
                 return Ok(new ApiResponse<OrderItemViewModel>(orderItem, "Order item fetched successfully.", true, null));
             }
             catch (NotFoundException ex)

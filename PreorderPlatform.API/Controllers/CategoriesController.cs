@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using PreorderPlatform.Service.ViewModels.Category;
 using PreorderPlatform.Service.Utility.Pagination;
 using PreorderPlatform.Service.Enum;
+using PreorderPlatform.Service.Utility.CustomAuthorizeAttribute;
 
 namespace PreorderPlatform.API.Controllers
 {
@@ -69,6 +70,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPost]
+        [CustomAuthorize(Roles = "ADMIN")]
         public async Task<IActionResult> CreateCategory(CategoryCreateViewModel model)
         {
             try
@@ -86,6 +88,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPut]
+        [CustomAuthorize(Roles = "ADMIN")]
         public async Task<IActionResult> UpdateCategory(CategoryUpdateViewModel model)
         {
             try
@@ -105,6 +108,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [CustomAuthorize(Roles = "ADMIN")]
         public async Task<IActionResult> DeleteCategory(Guid id)
         {
             try

@@ -7,6 +7,7 @@ namespace PreorderPlatform.Entity.Models
     {
         public Role()
         {
+            Id = Guid.NewGuid();
             Users = new HashSet<User>();
         }
 

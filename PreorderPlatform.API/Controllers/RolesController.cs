@@ -27,15 +27,12 @@ namespace PreorderPlatform.API.Controllers
             _logger = logger;
         }
 
-        [HttpPost("/createRole")]
-        public IActionResult CreateRoleTest(Role role)
-        {
+        //[HttpPost("/createRole")]
+        //public IActionResult CreateRoleTest(Role role)
+        //{
 
-            return Ok("Oke");
-        }
-
-
-
+        //    return Ok("Oke");
+        //}
 
         [HttpGet]
         public async Task<IActionResult> GetAllRoles()
@@ -71,59 +68,59 @@ namespace PreorderPlatform.API.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateRole(RoleCreateViewModel model)
-        {
-            try
-            {
-                var role = await _roleService.CreateRoleAsync(model);
-                return CreatedAtAction(nameof(GetRoleById),
-                                       new { id = role.Id },
-                                       new ApiResponse<RoleDetailViewModel>(role, "Role created successfully.", true, null));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error creating role: {ex.Message}", false, null));
-            }
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> CreateRole(RoleCreateViewModel model)
+        //{
+        //    try
+        //    {
+        //        var role = await _roleService.CreateRoleAsync(model);
+        //        return CreatedAtAction(nameof(GetRoleById),
+        //                               new { id = role.Id },
+        //                               new ApiResponse<RoleDetailViewModel>(role, "Role created successfully.", true, null));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError,
+        //            new ApiResponse<object>(null, $"Error creating role: {ex.Message}", false, null));
+        //    }
+        //}
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateRole(RoleDetailViewModel model)
-        {
-            try
-            {
-                await _roleService.UpdateRoleAsync(model);
-                return Ok(new ApiResponse<object>(null, "Role updated successfully.", true, null));
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(new ApiResponse<object>(null, ex.Message, false, null));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error updating role: {ex.Message}", false, null));
-            }
-        }
+        //[HttpPut]
+        //public async Task<IActionResult> UpdateRole(RoleDetailViewModel model)
+        //{
+        //    try
+        //    {
+        //        await _roleService.UpdateRoleAsync(model);
+        //        return Ok(new ApiResponse<object>(null, "Role updated successfully.", true, null));
+        //    }
+        //    catch (NotFoundException ex)
+        //    {
+        //        return NotFound(new ApiResponse<object>(null, ex.Message, false, null));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError,
+        //            new ApiResponse<object>(null, $"Error updating role: {ex.Message}", false, null));
+        //    }
+        //}
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRole(Guid id)
-        {
-            try
-            {
-                await _roleService.DeleteRoleAsync(id);
-                return Ok(new ApiResponse<object>(null, "Role deleted successfully.", true, null));
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(new ApiResponse<string>(null, ex.Message, false, null));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error deleting role: {ex.Message}", false, null));
-            }
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteRole(Guid id)
+        //{
+        //    try
+        //    {
+        //        await _roleService.DeleteRoleAsync(id);
+        //        return Ok(new ApiResponse<object>(null, "Role deleted successfully.", true, null));
+        //    }
+        //    catch (NotFoundException ex)
+        //    {
+        //        return NotFound(new ApiResponse<string>(null, ex.Message, false, null));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError,
+        //            new ApiResponse<object>(null, $"Error deleting role: {ex.Message}", false, null));
+        //    }
+        //}
     }
 }

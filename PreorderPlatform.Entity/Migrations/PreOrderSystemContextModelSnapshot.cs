@@ -29,16 +29,31 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)")
                         .HasColumnName("email");
 
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LogoUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
@@ -47,13 +62,17 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnName("owner_id");
 
                     b.Property<string>("Phone")
+                        .IsRequired()
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)")
                         .HasColumnName("phone");
 
-                    b.Property<bool?>("Status")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit")
                         .HasColumnName("status");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -93,8 +112,7 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnName("create_at");
 
                     b.Property<bool>("IsMain")
-                        .HasColumnType("bit")
-                        .HasColumnName("is_main");
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsMomoActive")
                         .HasColumnType("bit")
@@ -126,7 +144,9 @@ namespace PreorderPlatform.Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BusinessId");
+                    b.HasIndex("BusinessId", "IsMain")
+                        .IsUnique()
+                        .HasFilter("[IsMain] = 1");
 
                     b.ToTable("BusinessPaymentCredential", (string)null);
                 });
@@ -142,9 +162,9 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("business_id");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
-                        .HasColumnName("create_at");
+                        .HasColumnName("created_at");
 
                     b.Property<int>("DepositPercent")
                         .HasColumnType("int")
@@ -163,9 +183,15 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("date")
                         .HasColumnName("expected_shipping_date");
 
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("modified_at");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_deleted");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -184,9 +210,21 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("start_at");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit")
-                        .HasColumnName("status");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("Visibility")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -214,6 +252,12 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("campaign_id");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_deleted");
+
                     b.Property<int>("Phase")
                         .HasColumnType("int")
                         .HasColumnName("phase");
@@ -231,6 +275,40 @@ namespace PreorderPlatform.Entity.Migrations
                     b.HasIndex("CampaignId");
 
                     b.ToTable("CampaignDetail", (string)null);
+                });
+
+            modelBuilder.Entity("PreorderPlatform.Entity.Models.CampaignImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CampaignId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsThumbnail")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CampaignId", "IsThumbnail")
+                        .IsUnique()
+                        .HasFilter("[IsThumbnail] = 1");
+
+                    b.ToTable("CampaignImage");
                 });
 
             modelBuilder.Entity("PreorderPlatform.Entity.Models.Category", b =>
@@ -264,13 +342,33 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
+                    b.Property<DateTime?>("CancelledAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("cancelled_at");
+
+                    b.Property<string>("CancelledBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("cancelled_by");
+
+                    b.Property<string>("CancelledReason")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("cancelled_reason");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("created_at");
 
+                    b.Property<DateTime?>("EstimatedDeliveryDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("estimated_delivery_date");
+
                     b.Property<bool>("IsDeposited")
                         .HasColumnType("bit")
                         .HasColumnName("is_deposited");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("note");
 
                     b.Property<decimal>("RequiredDepositAmount")
                         .HasColumnType("decimal(18,2)")
@@ -290,7 +388,6 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnName("shipping_address");
 
                     b.Property<string>("ShippingCode")
-                        .IsRequired()
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)")
                         .HasColumnName("shipping_code");
@@ -299,7 +396,7 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("shipping_district");
 
-                    b.Property<decimal>("ShippingPrice")
+                    b.Property<decimal?>("ShippingPrice")
                         .HasColumnType("numeric(18,0)")
                         .HasColumnName("shipping_price");
 
@@ -308,7 +405,6 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnName("shipping_province");
 
                     b.Property<string>("ShippingStatus")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("shipping_status");
 
@@ -328,6 +424,14 @@ namespace PreorderPlatform.Entity.Migrations
                     b.Property<int>("TotalQuantity")
                         .HasColumnType("int")
                         .HasColumnName("total_quantity");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("updated_by");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier")
@@ -379,7 +483,11 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Method")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("method");
 
@@ -391,17 +499,26 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("payed_at");
 
+                    b.Property<decimal?>("PaymentAmount")
+                        .HasColumnType("numeric(18,0)")
+                        .HasColumnName("payment_amount");
+
                     b.Property<int?>("PaymentCount")
                         .HasColumnType("int")
                         .HasColumnName("payment_count");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("status");
 
-                    b.Property<decimal?>("Total")
-                        .HasColumnType("numeric(18,0)")
-                        .HasColumnName("total");
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("transaction_id");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier")
@@ -431,6 +548,10 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("category_id");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -446,9 +567,13 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
-                    b.Property<bool?>("Status")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit")
                         .HasColumnName("status");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id");
 
@@ -483,6 +608,18 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
+                    b.Property<string>("ActionToken")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("action_token");
+
+                    b.Property<DateTime?>("ActionTokenExpiration")
+                        .HasColumnType("datetime")
+                        .HasColumnName("action_token_expiration");
+
+                    b.Property<string>("ActionTokenType")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("action_token_type");
+
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("address");
@@ -490,6 +627,10 @@ namespace PreorderPlatform.Entity.Migrations
                     b.Property<Guid?>("BusinessId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("business_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
 
                     b.Property<string>("District")
                         .HasColumnType("nvarchar(max)")
@@ -531,9 +672,14 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("role_id");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit")
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("status");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
 
                     b.Property<string>("Ward")
                         .HasColumnType("nvarchar(max)")
@@ -608,6 +754,17 @@ namespace PreorderPlatform.Entity.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK__CampaignD__campa__3A81B327");
+
+                    b.Navigation("Campaign");
+                });
+
+            modelBuilder.Entity("PreorderPlatform.Entity.Models.CampaignImage", b =>
+                {
+                    b.HasOne("PreorderPlatform.Entity.Models.Campaign", "Campaign")
+                        .WithMany("Images")
+                        .HasForeignKey("CampaignId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Campaign");
                 });
@@ -718,6 +875,8 @@ namespace PreorderPlatform.Entity.Migrations
             modelBuilder.Entity("PreorderPlatform.Entity.Models.Campaign", b =>
                 {
                     b.Navigation("CampaignDetails");
+
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("PreorderPlatform.Entity.Models.CampaignDetail", b =>

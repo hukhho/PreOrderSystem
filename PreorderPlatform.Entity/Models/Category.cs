@@ -7,6 +7,7 @@ namespace PreorderPlatform.Entity.Models
     {
         public Category()
         {
+            Id = Guid.NewGuid();
             Products = new HashSet<Product>();
         }
 

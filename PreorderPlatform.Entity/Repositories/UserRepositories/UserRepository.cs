@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PreorderPlatform.Entity.Models;
+using PreorderPlatform.Entity.Repositories.Enum.User;
 using PreorderPlatform.Entity.Repositories.UserRepositories;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace PreorderPlatform.Entity.Repositories.UserRepository
             {
                 return null;
             }
+
 
             return user;
         }
@@ -72,6 +74,11 @@ namespace PreorderPlatform.Entity.Repositories.UserRepository
         public async Task<User> GetUserByEmailAsync(string email)
         {
             return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+        }
+      
+        public async Task<User> GetUserByActionTokenAsync(string token, ActionType actionType)
+        {
+            return await _context.Users.SingleOrDefaultAsync(u => u.ActionToken == token && u.ActionTokenType == actionType);
         }
     }
 }
