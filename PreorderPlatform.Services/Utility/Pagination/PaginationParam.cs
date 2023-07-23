@@ -1,15 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+using Microsoft.AspNetCore.Mvc;
 
-namespace PreorderPlatform.Service.Utility.Pagination
+namespace PreOrderPlatform.Service.Utility.Pagination
 {
     public class PaginationParam<TKey> where TKey : System.Enum
     {

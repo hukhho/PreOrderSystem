@@ -1,27 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.Enum.User;
-using PreorderPlatform.Entity.Repositories.RoleRepositories;
-using PreorderPlatform.Entity.Repositories.UserRepositories;
-using PreorderPlatform.Entity.Repositories.UserRepository;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.Helpers;
-using PreorderPlatform.Service.Utility;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.User.Request;
-using PreorderPlatform.Service.ViewModels.User.Response;
+using PreOrderPlatform.Entity.Enum.User;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.RoleRepositories;
+using PreOrderPlatform.Entity.Repositories.UserRepositories;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Helpers;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Utility;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.User.Request;
+using PreOrderPlatform.Service.ViewModels.User.Response;
 
-namespace PreorderPlatform.Service.Services.UserServices
+namespace PreOrderPlatform.Service.Services.UserServices
 {
     internal class UserService : IUserService
     {
@@ -68,7 +59,7 @@ namespace PreorderPlatform.Service.Services.UserServices
         {
             try
             {
-                var user = await _userRepository.GetByIdAsync(id);
+                var user = await _userRepository.GetUserWithFullDetailsByIdAsync(id);
 
                 if (user == null)
                 {
@@ -122,7 +113,7 @@ namespace PreorderPlatform.Service.Services.UserServices
         {
             return Guid.NewGuid().ToString().Replace("-", "");
         }
-        public async Task<UserResponse> ConfirmEmail(string token, ActionType actionType)
+        public async Task<UserResponse> ConfirmEmail(string token, ActionType actionType, string? newHashPass)
         {
             var user = await _userRepository.GetUserByActionTokenAsync(token, actionType);
             if (user == null)
@@ -146,13 +137,16 @@ namespace PreorderPlatform.Service.Services.UserServices
                 user.ActionTokenType = null;
                 user.ActionTokenExpiration = null;
             }
-            else if (actionType== ActionType.PasswordReset)
+            else if (actionType == ActionType.PasswordReset)
             {
-                
+                user.Password = newHashPass;
             }
+
             user.ActionToken = null;
             user.ActionTokenType = null;
             user.ActionTokenExpiration = null;
+
+            await _userRepository.UpdateAsync(user);
             return _mapper.Map<UserResponse>(user);
         }
 

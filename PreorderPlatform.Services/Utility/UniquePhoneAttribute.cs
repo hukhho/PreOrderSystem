@@ -1,10 +1,8 @@
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.Services.UserServices;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Services.UserServices;
 
-namespace PreorderPlatform.Services.Utility
+namespace PreOrderPlatform.Service.Utility
 {
     public class UniquePhoneAttribute : ValidationAttribute
     {

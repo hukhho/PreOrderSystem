@@ -1,15 +1,4 @@
-﻿using PreorderPlatform.Entity.Repositories.Enum.Campaign;
-using PreorderPlatform.Entity.Repositories.Enum.Status;
-using PreorderPlatform.Entity.Repositories.Enum.Visibility;
-using PreorderPlatform.Service.ViewModels.Business.Response;
-using PreorderPlatform.Service.ViewModels.CampaignPrice.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PreorderPlatform.Service.ViewModels.Campaign.Response
+﻿namespace PreOrderPlatform.Service.ViewModels.Campaign.Response
 {
     public class CampaignResponse
     {

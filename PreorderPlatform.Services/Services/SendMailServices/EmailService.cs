@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Net;
 using System.Net.Mail;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PreorderPlatform.Service.Services.SendMailServices
+namespace PreOrderPlatform.Service.Services.SendMailServices
 {
     public class EmailService : IEmailService
     {
@@ -49,13 +44,13 @@ namespace PreorderPlatform.Service.Services.SendMailServices
             var smtpClient = new SmtpClient("mail.privateemail.com")
             {
                 Port = 587,  // You can also try with 465 if 587 doesn't work
-                Credentials = new NetworkCredential("hungllt@preorderplatform.store", "Hung@160420"),
+                Credentials = new NetworkCredential("hungllt@PreOrderPlatform.store", "Hung@160420"),
                 EnableSsl = true,
             };
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress("hungllt@preorderplatform.store"),
+                From = new MailAddress("hungllt@PreOrderPlatform.store"),
                 To = { new MailAddress(email) },
                 Subject = subject,
                 Body = message,

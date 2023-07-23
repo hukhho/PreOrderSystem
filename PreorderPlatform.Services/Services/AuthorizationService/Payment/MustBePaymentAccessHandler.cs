@@ -1,18 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using PreorderPlatform.Entity.Repositories.PaymentRepositories;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.Services.AuthorizationService.Order;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+using PreOrderPlatform.Entity.Repositories.PaymentRepositories;
+using PreOrderPlatform.Service.Services.Exceptions;
 
-namespace PreorderPlatform.Service.Services.AuthorizationService.Payment
+namespace PreOrderPlatform.Service.Services.AuthorizationService.Payment
 {
     public class MustBePaymentAccessHandler : AuthorizationHandler<MustBePaymentAccessRequirement>
     {

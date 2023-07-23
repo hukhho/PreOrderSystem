@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
-using System;
-using System.Collections.Immutable;
+using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories.BusinessRepositories
+namespace PreOrderPlatform.Entity.Repositories.BusinessRepositories
 {
     public class BusinessRepository : RepositoryBase<Business>, IBusinessRepository
     {
@@ -37,6 +35,15 @@ namespace PreorderPlatform.Entity.Repositories.BusinessRepositories
             var business = await _context.Businesses
                 .AsNoTracking()
                 .FirstOrDefaultAsync(b => b.Id == businessId && b.OwnerId == userId);
+
+            return business != null;
+        }
+
+        public async Task<bool> IsUserInBusiness(Guid userId, Guid businessId)
+        {
+            var business = await _context.Businesses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(b => b.Id == businessId && b.Users.Any(u => u.Id == userId));
 
             return business != null;
         }

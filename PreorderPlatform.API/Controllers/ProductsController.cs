@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PreorderPlatform.Service.Services.ProductServices;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
-using PreorderPlatform.Service.Services.Exceptions;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.ViewModels.Product.Request;
-using PreorderPlatform.Service.ViewModels.Product.Response;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Services.Enum;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using PreorderPlatform.Service.Utility.CustomAuthorizeAttribute;
-using System.Security.Claims;
-using PreorderPlatform.Service.Services.UserServices;
+using Microsoft.AspNetCore.Mvc;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Services.ProductServices;
+using PreOrderPlatform.Service.Services.UserServices;
+using PreOrderPlatform.Service.Utility.CustomAuthorizeAttribute;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.ApiResponse;
+using PreOrderPlatform.Service.ViewModels.Product.Request;
+using PreOrderPlatform.Service.ViewModels.Product.Response;
 
-namespace PreorderPlatform.API.Controllers
+namespace PreOrderPlatform.API.Controllers
 {
     [Route("api/products")]
     [ApiController]
@@ -76,7 +71,7 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPost]
-        [CustomAuthorize(Roles = "ADMIN,BUSSINESS_OWNER,BUSINESS_STAFF")]
+        [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER,BUSINESS_STAFF")]
         public async Task<IActionResult> CreateProduct(ProductCreateRequest model)
         {
             try

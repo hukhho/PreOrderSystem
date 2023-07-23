@@ -1,6 +1,6 @@
-﻿using PreorderPlatform.Entity.Models;
+﻿using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories.OrderItemRepositories
+namespace PreOrderPlatform.Entity.Repositories.OrderItemRepositories
 {
     public class OrderItemRepository : RepositoryBase<OrderItem>, IOrderItemRepository
     {

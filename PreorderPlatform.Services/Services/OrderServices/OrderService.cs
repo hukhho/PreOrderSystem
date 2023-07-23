@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using PreorderPlatform.Entity.Data;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.CampaignDetailRepositories;
-using PreorderPlatform.Entity.Repositories.OrderRepositories;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.Helpers;
-using PreorderPlatform.Service.Services.OrderServices;
-using PreorderPlatform.Service.Utility;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.Order;
-using PreorderPlatform.Service.ViewModels.Order.Request;
-using PreorderPlatform.Service.ViewModels.Order.Response;
+using PreOrderPlatform.Entity.Enum.Campaign;
+using PreOrderPlatform.Entity.Enum.Order;
+using PreOrderPlatform.Entity.Enum.Payment;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.CampaignDetailRepositories;
+using PreOrderPlatform.Entity.Repositories.OrderRepositories;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Helpers;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Utility;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.Order;
+using PreOrderPlatform.Service.ViewModels.Order.Request;
+using PreOrderPlatform.Service.ViewModels.Order.Response;
 
-namespace PreorderPlatform.Service.Services.OrderServices
+namespace PreOrderPlatform.Service.Services.OrderServices
 {
     internal class OrderService : IOrderService
     {
@@ -102,16 +99,16 @@ namespace PreorderPlatform.Service.Services.OrderServices
 
                 order.Payments.Single().PayedAt = DateTimeUtcPlus7.Now;
 
-                order.Payments.Single().Status =Entity.Repositories.Enum.Payment.PaymentStatus.Pending;
+                order.Payments.Single().Status =PaymentStatus.Pending;
 
                 // Iterate over each order item and update the corresponding CampaignDetail entity
                 int totalQuantity = 0;
                 decimal totalPrice = 0;
                 decimal requiredDepositAmount = 0;
-                order.Status = Entity.Repositories.Enum.Order.OrderStatus.Pending;
-                order.UserId = userId;
 
-                
+                order.Status = OrderStatus.Pending;
+                order.UserId = userId;
+             
                 // Get the list of CampaignDetailIds from the order items
                 var campaignDetailIds = order.OrderItems.Select(item => item.CampaignDetailId);
 
@@ -131,7 +128,11 @@ namespace PreorderPlatform.Service.Services.OrderServices
                 {
                     // Fetch the corresponding CampaignDetail entity
                     var campaignDetail = await _campaignDetailRepository.GetByIdAsync(item.CampaignDetailId);
-
+                    
+                    if (campaignDetail.PhaseStatus != PhaseStatus.Running)
+                    {
+                        throw new ServiceException("This phase is not open for ordering!");
+                    }
                     if (campaignDetail == null)
                     {
                         throw new NotFoundException($"Campaign detail ID {item.CampaignDetailId} not found.");
@@ -139,8 +140,9 @@ namespace PreorderPlatform.Service.Services.OrderServices
 
                     if (item.Quantity >= campaignDetail.AllowedQuantity - campaignDetail.TotalOrdered)
                     {
-                        throw new ServiceException("Quantity not enough!");
+                          throw new ServiceException($"The quantity of the item with ID {item.CampaignDetailId} exceeds the allowed quantity.");
                     }
+                   
 
                     // Increment the TotalOrdered field by the quantity of the current item
                     campaignDetail.TotalOrdered += item.Quantity;
@@ -161,16 +163,17 @@ namespace PreorderPlatform.Service.Services.OrderServices
                 decimal shippingRate = 30000;
 
                 order.ShippingPrice = shippingRate;
-                order.ShippingStatus = Entity.Repositories.Enum.Order.ShippingStatus.Pending;
+                order.ShippingStatus = ShippingStatus.Pending;
                 order.ShippingCode = $"GH-{Guid.NewGuid()}" ;
                 order.TotalPrice += totalPrice;
 
-                requiredDepositAmount = 0.5m * totalPrice;
+                requiredDepositAmount = (decimal) campaignDetailsToUpdate.SingleOrDefault().Campaign.DepositPercent/(decimal) 100  * totalPrice;
                 order.RequiredDepositAmount = requiredDepositAmount;
 
                 order.TotalPrice += shippingRate;
 
                 order.CreatedAt = DateTimeUtcPlus7.Now;
+                order.UpdatedAt = DateTimeUtcPlus7.Now;
 
                 await _orderRepository.CreateAsync(order);
 

@@ -1,18 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.UserRepository;
-using PreorderPlatform.Service.Services.AuthService;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
-namespace PreorderPlatform.Service.Services.AuthService
+namespace PreOrderPlatform.Service.Services.AuthService
 {
     public class JwtService : IJwtService
     {

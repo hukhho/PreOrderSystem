@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using System.Diagnostics;
-using System.Text;
 
-namespace PreorderPlatform.API.HealthChecks
+namespace PreOrderPlatform.API.HealthChecks
 {
     public class SystemResourcesHealthCheck : IHealthCheck
     {

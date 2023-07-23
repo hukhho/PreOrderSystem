@@ -1,25 +1,18 @@
 ﻿using AutoMapper;
-using PreorderPlatform.Service.ViewModels.Business.Request;
-using PreorderPlatform.Service.ViewModels.Business.Response;
-using PreorderPlatform.Service.ViewModels.category.Response;
-using PreorderPlatform.Service.ViewModels.Category;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PreOrderPlatform.Service.ViewModels.Category;
+using PreOrderPlatform.Service.ViewModels.Category.Response;
 
-namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
+namespace PreOrderPlatform.Service.ViewModels.AutoMapperProfile
 {
     public static class CategoryMapper
     {
         public static void ConfigCategoryMapper(this IMapperConfigurationExpression configuration)
         {
-            configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategoryCreateViewModel>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategoryUpdateViewModel>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategoryViewModel>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategoryResponse>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.Category, CategorySearchRequest>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Category, CategoryCreateViewModel>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Category, CategoryUpdateViewModel>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Category, CategoryViewModel>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Category, CategoryResponse>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Category, CategorySearchRequest>().ReverseMap();
 
         }
     }

@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.Order;
-using PreorderPlatform.Service.ViewModels.Order.Request;
-using PreorderPlatform.Service.ViewModels.Order.Response;
-using PreorderPlatform.Service.ViewModels.User;
+﻿using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.Order;
+using PreOrderPlatform.Service.ViewModels.Order.Request;
+using PreOrderPlatform.Service.ViewModels.Order.Response;
 
-namespace PreorderPlatform.Service.Services.OrderServices
+namespace PreOrderPlatform.Service.Services.OrderServices
 {
     public interface IOrderService
     {

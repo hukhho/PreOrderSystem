@@ -14,7 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\PreorderPlatform.Entity\PreorderPlatform.Entity.csproj" />
+		<ProjectReference Include="..\PreOrderPlatform.Entity\PreOrderPlatform.Entity.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

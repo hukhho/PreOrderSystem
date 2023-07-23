@@ -1,15 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using PreorderPlatform.Entity.Repositories.BusinessRepositories;
-using PreorderPlatform.Entity.Repositories.OrderRepositories;
-using PreorderPlatform.Service.Exceptions;
-using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
+using PreOrderPlatform.Entity.Repositories.OrderRepositories;
+using PreOrderPlatform.Service.Services.Exceptions;
 
-namespace PreorderPlatform.Service.Services.AuthorizationService.Order
+namespace PreOrderPlatform.Service.Services.AuthorizationService.Order
 {
     public class MustBeOrderAccessHandler : AuthorizationHandler<MustBeOrderAccessRequirement>
     {

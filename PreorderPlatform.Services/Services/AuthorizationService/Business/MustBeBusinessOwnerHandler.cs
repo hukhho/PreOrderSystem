@@ -1,15 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using PreorderPlatform.Entity.Repositories.BusinessRepositories;
-using PreorderPlatform.Service.Exceptions;
-using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
+using PreOrderPlatform.Entity.Repositories.BusinessRepositories;
+using PreOrderPlatform.Service.Services.Exceptions;
 
-namespace PreorderPlatform.Service.Services.AuthorizationService.Business
+namespace PreOrderPlatform.Service.Services.AuthorizationService.Business
 {
     public class MustBeBusinessOwnerHandler : AuthorizationHandler<MustBusinessOwnerRequirement>
     {

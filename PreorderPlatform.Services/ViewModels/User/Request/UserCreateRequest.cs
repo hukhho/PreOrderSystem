@@ -1,10 +1,7 @@
-﻿using PreorderPlatform.Service.Utility;
-using PreorderPlatform.Services.Utility;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using PreOrderPlatform.Service.Utility;
 
-namespace PreorderPlatform.Service.ViewModels.User.Request
+namespace PreOrderPlatform.Service.ViewModels.User.Request
 {
     public class UserCreateRequest
     {

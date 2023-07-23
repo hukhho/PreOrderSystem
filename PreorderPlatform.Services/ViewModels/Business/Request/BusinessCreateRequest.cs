@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using PreorderPlatform.Services.Utility;
-using Swashbuckle.AspNetCore.Annotations;
 
-namespace PreorderPlatform.Service.ViewModels.Business.Request
+namespace PreOrderPlatform.Service.ViewModels.Business.Request
 {
     public class BusinessCreateRequest
     {

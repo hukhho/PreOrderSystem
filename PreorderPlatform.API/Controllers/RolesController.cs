@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PreorderPlatform.Service.Services.RoleServices;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.ViewModels.Role;
-using PreorderPlatform.Entity.Models;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Services.RoleServices;
+using PreOrderPlatform.Service.ViewModels.ApiResponse;
+using PreOrderPlatform.Service.ViewModels.Role;
 
-namespace PreorderPlatform.API.Controllers
+namespace PreOrderPlatform.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]

@@ -1,21 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.Enum.User;
-using PreorderPlatform.Entity.Repositories.UserRepositories;
-using PreorderPlatform.Entity.Repositories.UserRepository;
-using PreorderPlatform.Service.Services.AuthService;
-using PreorderPlatform.Service.ViewModels.User.Request;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Authentication;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Authentication;
+using Microsoft.Extensions.Configuration;
+using PreOrderPlatform.Entity.Enum.User;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.UserRepositories;
+using PreOrderPlatform.Service.ViewModels.User.Request;
 
-namespace PreorderPlatform.Service.Services.AuthService
+namespace PreOrderPlatform.Service.Services.AuthService
 {
     internal class AuthService : IAuthService
     {

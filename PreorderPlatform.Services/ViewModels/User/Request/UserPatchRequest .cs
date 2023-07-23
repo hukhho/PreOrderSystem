@@ -1,11 +1,6 @@
-﻿using PreorderPlatform.Entity.Repositories.Enum.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Entity.Enum.User;
 
-namespace PreorderPlatform.Service.ViewModels.User.Request
+namespace PreOrderPlatform.Service.ViewModels.User.Request
 {
     public class UserPatchRequest
     {

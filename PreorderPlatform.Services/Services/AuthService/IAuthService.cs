@@ -1,12 +1,7 @@
-﻿using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Service.ViewModels.User.Request;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Service.ViewModels.User.Request;
 
-namespace PreorderPlatform.Service.Services.AuthService
+namespace PreOrderPlatform.Service.Services.AuthService
 {
     public interface IAuthService
     {

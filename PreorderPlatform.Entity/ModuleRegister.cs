@@ -1,22 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PreorderPlatform.Entity.Data;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.BusinessPaymentCredentialRepositories;
-using PreorderPlatform.Entity.Repositories.BusinessRepositories;
-using PreorderPlatform.Entity.Repositories.CampaignDetailRepositories;
-using PreorderPlatform.Entity.Repositories.CampaignRepositories;
-using PreorderPlatform.Entity.Repositories.CategoryRepositories;
-using PreorderPlatform.Entity.Repositories.OrderItemRepositories;
-using PreorderPlatform.Entity.Repositories.OrderRepositories;
-using PreorderPlatform.Entity.Repositories.PaymentRepositories;
-using PreorderPlatform.Entity.Repositories.ProductRepositories;
-using PreorderPlatform.Entity.Repositories.RoleRepositories;
-using PreorderPlatform.Entity.Repositories.UserRepositories;
-using PreorderPlatform.Entity.Repositories.UserRepository;
+using PreOrderPlatform.Entity.Data;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.BusinessPaymentCredentialRepositories;
+using PreOrderPlatform.Entity.Repositories.BusinessRepositories;
+using PreOrderPlatform.Entity.Repositories.CampaignDetailRepositories;
+using PreOrderPlatform.Entity.Repositories.CampaignRepositories;
+using PreOrderPlatform.Entity.Repositories.CategoryRepositories;
+using PreOrderPlatform.Entity.Repositories.OrderItemRepositories;
+using PreOrderPlatform.Entity.Repositories.OrderRepositories;
+using PreOrderPlatform.Entity.Repositories.PaymentRepositories;
+using PreOrderPlatform.Entity.Repositories.ProductRepositories;
+using PreOrderPlatform.Entity.Repositories.RoleRepositories;
+using PreOrderPlatform.Entity.Repositories.UserRepositories;
 
-namespace PreorderPlatform.Entity
+namespace PreOrderPlatform.Entity
 {
     public static class ModuleRegister
     {

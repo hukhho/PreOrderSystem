@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PreOrderPlatform.Entity.Enum.Campaign;
 
-namespace PreorderPlatform.Entity.Models
+namespace PreOrderPlatform.Entity.Models
 {
     public partial class CampaignDetail
     {
@@ -12,6 +11,7 @@ namespace PreorderPlatform.Entity.Models
         public Guid Id { get; set; }
         public int Phase { get; set; }
         public int AllowedQuantity { get; set; }
+        public PhaseStatus PhaseStatus { get; set; }  // new field
         public int TotalOrdered { get; set; }
         public Guid CampaignId { get; set; }
         public decimal Price { get; set; }

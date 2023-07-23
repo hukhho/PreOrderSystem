@@ -1,12 +1,11 @@
-﻿namespace PreorderPlatform.API.Filters
-{
-    using Microsoft.OpenApi.Models;
-    using Swashbuckle.AspNetCore.SwaggerGen;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text.Json;
+﻿using System.ComponentModel;
+using System.Reflection;
+using System.Text.Json;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
+namespace PreOrderPlatform.API.Filters
+{
     public class DescriptionOperationFilter : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)

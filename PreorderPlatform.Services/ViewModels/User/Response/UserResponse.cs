@@ -1,12 +1,7 @@
-﻿using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.Enum.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Entity.Enum.User;
+using PreOrderPlatform.Service.ViewModels.Business.Response;
 
-namespace PreorderPlatform.Service.ViewModels.User.Response
+namespace PreOrderPlatform.Service.ViewModels.User.Response
 {
     public class UserResponse
     {
@@ -25,6 +20,8 @@ namespace PreorderPlatform.Service.ViewModels.User.Response
 
         public Guid? BusinessId { get; set; }
         public string? BusinessName { get; set; }
+
+        public BusinessResponse? Business { get; set; }
 
         public UserStatus? Status { get; set; }
     }

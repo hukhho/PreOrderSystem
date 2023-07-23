@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace PreorderPlatform.Service.Utility
+namespace PreOrderPlatform.Service.Utility
 {
     public static class SearchHelper
     {

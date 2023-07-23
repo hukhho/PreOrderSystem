@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PreorderPlatform.Service.ViewModels.Order.Response
+﻿namespace PreOrderPlatform.Service.ViewModels.Order.Response
 {
     public class OrderResponse
     {

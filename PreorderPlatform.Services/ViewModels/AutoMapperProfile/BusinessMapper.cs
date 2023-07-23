@@ -1,24 +1,18 @@
 ﻿using AutoMapper;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Service.ViewModels.Business.Request;
-using PreorderPlatform.Service.ViewModels.Business.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PreOrderPlatform.Service.ViewModels.Business.Request;
+using PreOrderPlatform.Service.ViewModels.Business.Response;
 
-namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
+namespace PreOrderPlatform.Service.ViewModels.AutoMapperProfile
 {
     public static class BusinessMapper
     {
         public static void ConfigBusinessMapper(this IMapperConfigurationExpression configuration)
         {
-            configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessCreateRequest>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessUpdateRequest>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessResponse>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessByIdResponse>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.Business, BusinessPatchRequest>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Business, BusinessCreateRequest>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Business, BusinessUpdateRequest>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Business, BusinessResponse>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Business, BusinessByIdResponse>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Business, BusinessPatchRequest>().ReverseMap();
           
             configuration.CreateMap<BusinessPatchRequest, BusinessUpdateRequest>();
 

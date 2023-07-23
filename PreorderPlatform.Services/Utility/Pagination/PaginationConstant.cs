@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PreorderPlatform.Service.Utility.Pagination
+﻿namespace PreOrderPlatform.Service.Utility.Pagination
 {
     public class PaginationConstant
     {

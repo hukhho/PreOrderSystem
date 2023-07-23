@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.ViewModels.ApiResponse;
 
-namespace PreorderPlatform.Service.Middleware
+namespace PreOrderPlatform.Service.Middleware
 {
     public class ExceptionMiddleware
     {

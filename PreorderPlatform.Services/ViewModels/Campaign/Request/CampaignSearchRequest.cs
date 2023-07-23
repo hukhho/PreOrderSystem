@@ -1,15 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PreorderPlatform.Entity.Repositories.Enum.Campaign;
-using PreorderPlatform.Entity.Repositories.Enum.Status;
+using Microsoft.AspNetCore.Mvc;
+using PreOrderPlatform.Entity.Enum.Campaign;
 
-namespace PreorderPlatform.Service.ViewModels.Campaign.Request
+namespace PreOrderPlatform.Service.ViewModels.Campaign.Request
 {
     public class CampaignSearchRequest
     {

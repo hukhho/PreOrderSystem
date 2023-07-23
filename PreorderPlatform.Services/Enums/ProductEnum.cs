@@ -1,4 +1,4 @@
-namespace PreorderPlatform.Services.Enum
+namespace PreOrderPlatform.Service.Enums
 {
     public static class ProductEnum
     {
@@ -6,13 +6,13 @@ namespace PreorderPlatform.Services.Enum
         // Cấu hình các giá trị cho thuộc tính sort
         public enum ProductSort
         {
-          Id,
-          Name,
-          Description,
-          Price,
-          Status,
-          CategoryId,
-          BusinessId
+            Id,
+            Name,
+            Description,
+            Price,
+            Status,
+            CategoryId,
+            BusinessId
         }
     }
 }

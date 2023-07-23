@@ -1,26 +1,35 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.Services.CampaignServices;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
-using PreorderPlatform.Service.ViewModels.Campaign.Request;
-using PreorderPlatform.Service.ViewModels.Campaign.Response;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.BusinessServices;
+using PreOrderPlatform.Service.Services.CampaignServices;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Services.UserServices;
+using PreOrderPlatform.Service.Utility.CustomAuthorizeAttribute;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.ApiResponse;
+using PreOrderPlatform.Service.ViewModels.Campaign.Request;
+using PreOrderPlatform.Service.ViewModels.Campaign.Response;
+using PreOrderPlatform.Service.ViewModels.CampaignPrice.Request;
 
-namespace PreorderPlatform.API.Controllers
+namespace PreOrderPlatform.API.Controllers
 {
     [Route("api/campaigns")]
     [ApiController]
     public class CampaignsController : ControllerBase
     {
         private readonly ICampaignService _campaignService;
+        private readonly IUserService _userService;
+        private readonly IBusinessService _businessService;
         private readonly IMapper _mapper;
 
-        public CampaignsController(ICampaignService campaignService, IMapper mapper)
+        public CampaignsController(ICampaignService campaignService, IBusinessService businessService, IMapper mapper, IUserService userService)
         {
             _campaignService = campaignService;
+            _businessService = businessService;
+            _userService = userService;
             _mapper = mapper;
         }
 
@@ -50,12 +59,12 @@ namespace PreorderPlatform.API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCampaignById(Guid id)
+        [HttpGet("{campaignId}")]
+        public async Task<IActionResult> GetCampaignById(Guid campaignId)
         {
             try
             {
-                var campaign = await _campaignService.GetCampaignByIdAsync(id);
+                var campaign = await _campaignService.GetCampaignByIdAsync(campaignId);
                 return Ok(new ApiResponse<CampaignDetailResponse>(campaign, "Campaign fetched successfully.", true, null));
             }
             catch (NotFoundException ex)
@@ -70,16 +79,22 @@ namespace PreorderPlatform.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //Check if user is owner of the campaign or staff of business have access to the campaign
+        [CustomAuthorize(Roles = "ADMIN,BUSINESS_OWNER,BUSINESS_STAFF")]
         public async Task<IActionResult> CreateCampaign(CampaignCreateRequest model)
         {
             try
             {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var user = await _userService.GetUserByIdAsync(Guid.Parse(userId));
+
+                model.OwnerId = user.Id;
+                model.BusinessId = (Guid) user.BusinessId;
+
                 var campaign = await _campaignService.CreateCampaignAsync(model);
 
                 return CreatedAtAction(nameof(GetCampaignById),
-                                       new { id = campaign.Id },
-                                       new ApiResponse<CampaignResponse>(campaign, "Campaign created successfully.", true, null));
+                                       new { campaignId = campaign.Id },
+                                       new ApiResponse<CampaignDetailResponse>(campaign, "Campaign created successfully.", true, null));
             }
             catch (Exception ex)
             {
@@ -88,12 +103,32 @@ namespace PreorderPlatform.API.Controllers
             }
         }
 
-        [HttpPut]
+
+        // Controller
+        [HttpPut("{campaignId}/status")]
         [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //Check if user is owner of the campaign or staff of business have access to the campaign
-        public async Task<IActionResult> UpdateCampaign(CampaignUpdateRequest model)
+        public async Task<IActionResult> ChangeCampaignStatusAsync(Guid campaignId, [FromBody] ChangeCampaignStatusRequest model)
+        {          
+            await _campaignService.ChangeCampaignStatusAsync(campaignId, model.Status);
+            return Ok(new ApiResponse<object>(null, "Campaign status updated successfully.", true, null));          
+        }
+
+        // PUT api/campaigns/{campaignId}/details
+        [HttpPut("{campaignId}/details")]
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] // Check if user is owner of the campaign or staff of business have access to the campaign
+        public async Task<IActionResult> UpdateCampaignDetails(Guid campaignId, [FromBody] List<CampaignPriceUpdateRequest> model)
+        {         
+            await _campaignService.UpdateCampaignDetailsAsync(campaignId, model);
+            return Ok(new ApiResponse<object>(null, "Campaign details updated successfully.", true, null)); 
+        }
+
+        [HttpPut("{campaignId}")]
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //Check if user is owner of the campaign or staff of business have access to the campaign
+        public async Task<IActionResult> UpdateCampaign(Guid campaignId, [FromBody] CampaignUpdateRequest model)
         {
             try
             {
+                model.Id = campaignId;
                 await _campaignService.UpdateCampaignAsync(model);
                 return Ok(new ApiResponse<object>(null, "Campaign updated successfully.", true, null));
             }
@@ -106,15 +141,27 @@ namespace PreorderPlatform.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new ApiResponse<object>(null, $"Error updating campaign: {ex.Message}", false, null));
             }
+        }     
+
+        // DELETE api/campaigns/{campaignId}/details/{phase}
+        [HttpDelete("{campaignId}/details/{phase}")]
+        [Authorize(Policy = "MustBeCampaignOwnerOrStaff")]
+        public async Task<IActionResult> DeleteCampaignDetail(Guid campaignId, int phase)
+        {
+            Console.WriteLine($"Delete campaign detail campaignId {campaignId} phase {phase}");
+            await _campaignService.DeleteCampaignDetailAsync(campaignId, phase);
+            return Ok(new ApiResponse<object>(null, "Campaign detail deleted successfully.", true, null));
         }
 
-        [HttpDelete("{id}")]
+
+        [HttpDelete("{campaignId}")]
         [Authorize(Policy = "MustBeCampaignOwnerOrStaff")] //Check if user is owner of the campaign or staff of business have access to the campaign
-        public async Task<IActionResult> DeleteCampaign(Guid id)
+        public async Task<IActionResult> DeleteCampaign(Guid campaignId)
         {
             try
             {
-                await _campaignService.DeleteCampaignAsync(id);
+                //Campaign must be in draft status to be deleted
+                await _campaignService.DeleteCampaignAsync(campaignId);
                 return Ok(new ApiResponse<object>(null, "Campaign deleted successfully.", true, null));
             }
             catch (NotFoundException ex)

@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PreorderPlatform.Service.Services.PaymentServices;
-using PreorderPlatform.Service.ViewModels.Payment;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-using PreorderPlatform.Service.Utility.CustomAuthorizeAttribute;
+using Microsoft.AspNetCore.Mvc;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Services.PaymentServices;
+using PreOrderPlatform.Service.Utility.CustomAuthorizeAttribute;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.ApiResponse;
+using PreOrderPlatform.Service.ViewModels.Payment;
 
-namespace PreorderPlatform.API.Controllers
+namespace PreOrderPlatform.API.Controllers
 {
     [Route("api/payments")]
     [ApiController]

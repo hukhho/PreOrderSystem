@@ -1,11 +1,6 @@
-﻿using PreorderPlatform.Entity.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories.CampaignDetailRepositories
+namespace PreOrderPlatform.Entity.Repositories.CampaignDetailRepositories
 {
     public interface ICampaignDetailRepository : IRepositoryBase<CampaignDetail>
     {

@@ -25,7 +25,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\PreorderPlatform.Services\PreorderPlatform.Service.csproj" />
+		<ProjectReference Include="..\PreOrderPlatform.Services\PreOrderPlatform.Service.csproj" />
+		<ProjectReference Include="..\ScheduledTaskService\ScheduledTaskService.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<InternalsVisibleTo Include="TestProject" />

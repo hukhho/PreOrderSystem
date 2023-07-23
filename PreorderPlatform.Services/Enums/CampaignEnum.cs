@@ -1,4 +1,4 @@
-﻿namespace PreorderPlatform.Service.Enum
+﻿namespace PreOrderPlatform.Service.Enums
 {
     public static class CampaignEnum
     {
@@ -10,10 +10,14 @@
             Name,
             StartAt,
             ExpectedShippingDate,
-            CreateAt,
-            ModifiedAt,
+            CreatedAt,
+            Updated,
             OwnerId,
-            BusinessId
+            BusinessId,
+            Type,
+            Location,
+            Status,
+            DepositPercent
         }
     }
 }

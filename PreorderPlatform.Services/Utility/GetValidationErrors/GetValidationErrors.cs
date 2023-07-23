@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+namespace PreOrderPlatform.Service.Utility.GetValidationErrors;
 
 public static class GetValidationError
 {

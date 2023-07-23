@@ -1,14 +1,9 @@
-﻿using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.BusinessPaymentCredential;
-using PreorderPlatform.Services.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.BusinessPaymentCredential;
 
-namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
+namespace PreOrderPlatform.Service.Services.BusinessPaymentCredentialServices
 {
     public interface IBusinessPaymentCredentialService
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories.BusinessPaymentCredentialRepositories
+namespace PreOrderPlatform.Entity.Repositories.BusinessPaymentCredentialRepositories
 {
     public class BusinessPaymentCredentialRepository : RepositoryBase<BusinessPaymentCredential>, IBusinessPaymentCredentialRepository
     {

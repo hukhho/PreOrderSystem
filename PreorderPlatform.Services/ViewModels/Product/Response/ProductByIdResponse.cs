@@ -1,13 +1,8 @@
-﻿using PreorderPlatform.Service.ViewModels.Business.Response;
-using PreorderPlatform.Service.ViewModels.Campaign.Response;
-using PreorderPlatform.Service.ViewModels.category.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Service.ViewModels.Business.Response;
+using PreOrderPlatform.Service.ViewModels.Campaign.Response;
+using PreOrderPlatform.Service.ViewModels.Category.Response;
 
-namespace PreorderPlatform.Service.ViewModels.Product.Response
+namespace PreOrderPlatform.Service.ViewModels.Product.Response
 {
     public class ProductByIdResponse
     {

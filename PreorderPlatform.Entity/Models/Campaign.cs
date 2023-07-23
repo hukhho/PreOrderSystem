@@ -1,10 +1,7 @@
-﻿using PreorderPlatform.Entity.Repositories.Enum.Campaign;
-using PreorderPlatform.Entity.Repositories.Enum.Status;
-using PreorderPlatform.Entity.Repositories.Enum.Visibility;
-using System;
-using System.Collections.Generic;
+﻿using PreOrderPlatform.Entity.Enum.Campaign;
+using PreOrderPlatform.Entity.Enum.Visibility;
 
-namespace PreorderPlatform.Entity.Models
+namespace PreOrderPlatform.Entity.Models
 {
     public partial class Campaign
     {

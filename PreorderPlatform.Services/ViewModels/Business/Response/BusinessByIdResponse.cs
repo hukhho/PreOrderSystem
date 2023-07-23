@@ -1,14 +1,9 @@
-﻿using PreorderPlatform.Service.ViewModels.BusinessPaymentCredential.Response;
-using PreorderPlatform.Service.ViewModels.Campaign.Response;
-using PreorderPlatform.Service.ViewModels.Product.Response;
-using PreorderPlatform.Service.ViewModels.User.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Service.ViewModels.BusinessPaymentCredential.Response;
+using PreOrderPlatform.Service.ViewModels.Campaign.Response;
+using PreOrderPlatform.Service.ViewModels.Product.Response;
+using PreOrderPlatform.Service.ViewModels.User.Response;
 
-namespace PreorderPlatform.Service.ViewModels.Business.Response
+namespace PreOrderPlatform.Service.ViewModels.Business.Response
 {
     public class BusinessByIdResponse
     {

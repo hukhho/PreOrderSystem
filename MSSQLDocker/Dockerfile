@@ -10,8 +10,8 @@ WORKDIR /var/opt/mssql
 COPY ./init.sql .
 COPY ./entrypoint.sh .
 
-# RUN (/opt/mssql/bin/sqlservr --accept-eula & ) | grep -q "Service Broker manager has started" \
-#     && /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "YourStrong!Passw0rd" -d master -i init.sql
+#RUN (/opt/mssql/bin/sqlservr --accept-eula & ) | grep -q "Service Broker manager has started" \
+#     && /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "123" -d master -i init.sql
 
 EXPOSE 1433
 

@@ -1,14 +1,9 @@
-﻿using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.Product.Request;
-using PreorderPlatform.Service.ViewModels.Product.Response;
-using PreorderPlatform.Services.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.Product.Request;
+using PreOrderPlatform.Service.ViewModels.Product.Response;
 
-namespace PreorderPlatform.Service.Services.ProductServices
+namespace PreOrderPlatform.Service.Services.ProductServices
 {
     public interface IProductService
     {

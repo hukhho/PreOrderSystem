@@ -1,12 +1,7 @@
-﻿using PreorderPlatform.Service.Utility.Pagination;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
+using PreOrderPlatform.Service.Utility.Pagination;
 
-namespace PreorderPlatform.Service.Utility
+namespace PreOrderPlatform.Service.Utility
 {
     public static class SortHelper
     {

@@ -1,14 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.Enum.User;
-using PreorderPlatform.Entity.Repositories.UserRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PreOrderPlatform.Entity.Enum.User;
+using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories.UserRepository
+namespace PreOrderPlatform.Entity.Repositories.UserRepositories
 {
     public class UserRepository : RepositoryBase<User>, IUserRepository
     {
@@ -53,7 +47,16 @@ namespace PreorderPlatform.Entity.Repositories.UserRepository
         {
             return await GetWithIncludeAsync(u => u.Id == id, u => u.Include(c => c.Role), u => u.Include(c => c.Business));
         }
+        public async Task<User> GetUserWithFullDetailsByIdAsync(Guid id)
+        {
+            return await GetWithIncludeAsync(u => u.Id == id,
+                u => u.Include(c => c.Role),
+                u => u.Include(c => c.Business),
+                u => u.Include(c => c.Payments),
+                u => u.Include(c => c.Orders)
 
+                );
+        }
         public async Task<IEnumerable<User>> GetAllUsersWithRoleAndBusinessAsync()
         {
             return await GetAllWithIncludeAsync(u => true, u => u.Role, u => u.Business);
@@ -75,7 +78,7 @@ namespace PreorderPlatform.Entity.Repositories.UserRepository
         {
             return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
         }
-      
+
         public async Task<User> GetUserByActionTokenAsync(string token, ActionType actionType)
         {
             return await _context.Users.SingleOrDefaultAsync(u => u.ActionToken == token && u.ActionTokenType == actionType);

@@ -1,11 +1,6 @@
-﻿using PreorderPlatform.Entity.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories.RoleRepositories
+namespace PreOrderPlatform.Entity.Repositories.RoleRepositories
 {
     public interface IRoleRepository : IRepositoryBase<Role>
     {

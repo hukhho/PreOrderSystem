@@ -1,4 +1,4 @@
-namespace PreorderPlatform.Service.Enum
+namespace PreOrderPlatform.Service.Enums
 {
     public static class CategoryEnum
     {

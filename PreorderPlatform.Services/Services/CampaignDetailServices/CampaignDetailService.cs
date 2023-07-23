@@ -1,21 +1,15 @@
 ﻿using AutoMapper;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.CampaignDetailRepositories;
-using PreorderPlatform.Service.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PreorderPlatform.Service.ViewModels.CampaignPrice.Request;
-using PreorderPlatform.Service.ViewModels.CampaignPrice.Response;
-using PreorderPlatform.Service.ViewModels.Campaign.Response;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Utility;
 using Microsoft.EntityFrameworkCore;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.CampaignDetailRepositories;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Utility;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.CampaignPrice.Request;
+using PreOrderPlatform.Service.ViewModels.CampaignPrice.Response;
 
-namespace PreorderPlatform.Service.Services.CampaignDetailServices
+namespace PreOrderPlatform.Service.Services.CampaignDetailServices
 {
     public class CampaignDetailService : ICampaignDetailService
     {

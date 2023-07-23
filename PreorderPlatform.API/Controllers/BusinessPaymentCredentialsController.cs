@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.ViewModels.BusinessPaymentCredential;
-using PreorderPlatform.Service.Services.BusinessPaymentCredentialServices;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Services.Enum;
-using PreorderPlatform.Service.Utility.CustomAuthorizeAttribute;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.BusinessPaymentCredentialServices;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.ApiResponse;
+using PreOrderPlatform.Service.ViewModels.BusinessPaymentCredential;
 
-namespace PreorderPlatform.API.Controllers
+namespace PreOrderPlatform.API.Controllers
 {
     [Route("api/business/{businessId}/business-payment-credentials")]
     [ApiController]

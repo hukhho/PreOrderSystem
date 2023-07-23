@@ -1,17 +1,9 @@
-﻿using PreorderPlatform.Entity.Repositories.Enum.Campaign;
-using PreorderPlatform.Entity.Repositories.Enum.Status;
-using PreorderPlatform.Entity.Repositories.Enum.Visibility;
-using PreorderPlatform.Service.ViewModels.Business.Response;
-using PreorderPlatform.Service.ViewModels.CampaignPrice.Response;
-using PreorderPlatform.Service.ViewModels.Product.Response;
-using PreorderPlatform.Service.ViewModels.User.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Service.ViewModels.Business.Response;
+using PreOrderPlatform.Service.ViewModels.Campaign.CampaignImages;
+using PreOrderPlatform.Service.ViewModels.CampaignPrice.Response;
+using PreOrderPlatform.Service.ViewModels.Product.Response;
 
-namespace PreorderPlatform.Service.ViewModels.Campaign.Response
+namespace PreOrderPlatform.Service.ViewModels.Campaign.Response
 {
     public class CampaignDetailResponse
     {
@@ -25,17 +17,26 @@ namespace PreorderPlatform.Service.ViewModels.Campaign.Response
         public DateTime? ExpectedShippingDate { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public CampaignType Type { get; set; }
-        public CampaignLocation Location { get; set; }
-        public CampaignStatus Status { get; set; }
-        public Visibility Visibility { get; set; }
+        public string Type { get; set; }
+        public string Location { get; set; }
+        public string Status { get; set; }
+        public string Visibility { get; set; }
         public bool IsDeleted { get; set; }
         public Guid OwnerId { get; set; }
         public Guid BusinessId { get; set; }
 
-        public virtual ProductResponse? Product { get; set; }
-        public virtual BusinessResponse? Business { get; set; }
-        public virtual UserResponse? Owner { get; set; }
-        public virtual ICollection<CampaignPriceResponse>? CampaignDetails { get; set; }
+        public List<CampaignPriceResponse> CampaignDetail { get; set; }
+        public List<CampaignImageView> CampaignImages { get; set; }
+
+
+        public ProductResponse Product { get; set; }
+        public BusinessResponse Business { get; set; }
+
+         
+        //public virtual ProductResponse? Product { get; set; }
+        //public virtual BusinessResponse? Business { get; set; }
+        //public virtual UserResponse? Owner { get; set; }
+        //public virtual ICollection<CampaignImage> Images { get; set; }
+        //public virtual ICollection<CampaignDetail> CampaignDetails { get; set; }
     }
 }

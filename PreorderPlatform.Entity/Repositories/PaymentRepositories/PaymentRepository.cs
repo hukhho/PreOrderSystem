@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories.PaymentRepositories
+namespace PreOrderPlatform.Entity.Repositories.PaymentRepositories
 {
     public class PaymentRepository : RepositoryBase<Payment>, IPaymentRepository
     {

@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PreorderPlatform.Entity.Models;
-using System;
-using System.Security.Cryptography;
+using PreOrderPlatform.Entity.Enum.Campaign;
+using PreOrderPlatform.Entity.Enum.Order;
+using PreOrderPlatform.Entity.Enum.Payment;
+using PreOrderPlatform.Entity.Enum.User;
+using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Data
+namespace PreOrderPlatform.Entity.Data
 {
     public class DbInitializer : IDbInitializer
     {
@@ -115,7 +117,7 @@ namespace PreorderPlatform.Entity.Data
                                 Province = $"Province {i}",
                                 CreatedAt = now,
                                 UpdatedAt = now,
-                                Status = Repositories.Enum.User.UserStatus.Active,
+                                Status = UserStatus.Active,
                                 RoleId = adminRole.Id
                             };
 
@@ -145,7 +147,7 @@ namespace PreorderPlatform.Entity.Data
                                 Province = $"Province {i}",
                                 CreatedAt = now,
                                 UpdatedAt = now,
-                                Status = Repositories.Enum.User.UserStatus.Active,
+                                Status = UserStatus.Active,
                                 RoleId = customerRole.Id
                             };
 
@@ -211,7 +213,7 @@ namespace PreorderPlatform.Entity.Data
                                 Province = $"Province {i}",
                                 CreatedAt = now,
                                 UpdatedAt = now,
-                                Status = Repositories.Enum.User.UserStatus.Active,
+                                Status = UserStatus.Active,
                                 RoleId = businessOwnerRoleId,
                                 BusinessId = business.Id
                             };
@@ -238,7 +240,7 @@ namespace PreorderPlatform.Entity.Data
                                 Province = $"Province {i}",
                                 CreatedAt = now,
                                 UpdatedAt = now,
-                                Status = Repositories.Enum.User.UserStatus.Active,
+                                Status = UserStatus.Active,
                                 RoleId = businessStaffRoleId,
                                 BusinessId = business.Id
                             };
@@ -628,9 +630,9 @@ namespace PreorderPlatform.Entity.Data
                                             BusinessId = business.Id,
                                             OwnerId = ownerId,
                                             ProductId = business.Products.First().Id,
-                                            Location = Repositories.Enum.Campaign.CampaignLocation.HoChiMinh,
+                                            Location = CampaignLocation.HoChiMinh,
                                             IsDeleted = false,
-                                            Type = Repositories.Enum.Campaign.CampaignType.BetaTesting,
+                                            Type = CampaignType.BetaTesting,
                                             StartAt = startDate,
                                             EndAt = endDate, // Ends at a random date between 7 to 14 days from now
                                             DepositPercent = 50,
@@ -655,7 +657,7 @@ namespace PreorderPlatform.Entity.Data
                                                     Order = 2
                                                 },
                                             },
-                                            Status = Repositories.Enum.Status.CampaignStatus.Active
+                                            Status = CampaignStatus.Running
                                         }
                                     );
                                     _logger.LogInformation(
@@ -697,6 +699,7 @@ namespace PreorderPlatform.Entity.Data
                                         AllowedQuantity = randomAllowed + i * 50,
                                         Price = previousPrice, // Set the new price
                                         CampaignId = campaign.Id,
+                                        PhaseStatus = PhaseStatus.NotStarted,
                                     }
                                 );
                             }
@@ -733,7 +736,7 @@ namespace PreorderPlatform.Entity.Data
                                 TotalPrice = 0,
                                 IsDeposited = false,
                                 RequiredDepositAmount = 0,
-                                Status = Repositories.Enum.Order.OrderStatus.Pending,
+                                Status = OrderStatus.Pending,
                                 RevicerName = user.FirstName + " " + user.LastName,
                                 RevicerPhone = user.Phone,
                                 ShippingAddress = user.Address,
@@ -748,7 +751,7 @@ namespace PreorderPlatform.Entity.Data
                                 UpdatedBy = null,                            
                                 ShippingCode = "GH" + random.Next(10000, 99999).ToString(),
                                 ShippingPrice = 30000,
-                                ShippingStatus = Repositories.Enum.Order.ShippingStatus.Pending,
+                                ShippingStatus = ShippingStatus.Pending,
                                 UserId = user.Id,
                                 OrderItems = new List<OrderItem>(),
                                 Payments = new List<Payment>(),
@@ -801,13 +804,13 @@ namespace PreorderPlatform.Entity.Data
                             var payment = new Payment
                             {
                                 Id = Guid.NewGuid(),
-                                Method = Repositories.Enum.Payment.PaymentMethod.Momo,
+                                Method = PaymentMethod.Momo,
                                 PaymentAmount = order.TotalPrice * 0.5m, // Assume we pay 50% upfront
                                 PaymentCount = 1,
                                 PayedAt = now,
                                 CreatedAt = now,
                                 UpdatedAt = now,
-                                Status = Repositories.Enum.Payment.PaymentStatus.Completed,
+                                Status = PaymentStatus.Completed,
                                 UserId = user.Id,
                                 OrderId = order.Id
                             };

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.Enum.User;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.User.Request;
-using PreorderPlatform.Service.ViewModels.User.Response;
+﻿using PreOrderPlatform.Entity.Enum.User;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.User.Request;
+using PreOrderPlatform.Service.ViewModels.User.Response;
 
-namespace PreorderPlatform.Service.Services.UserServices
+namespace PreOrderPlatform.Service.Services.UserServices
 {
     public interface IUserService
     {
@@ -21,6 +16,7 @@ namespace PreorderPlatform.Service.Services.UserServices
         Task<List<UserResponse>> GetAllUsersWithRoleAndBusinessAsync();
 
         Task<UserResponse> GetUserByIdAsync(Guid id);
+
 
         Task<List<UserResponse>> GetUsersAsync();
 
@@ -45,7 +41,7 @@ namespace PreorderPlatform.Service.Services.UserServices
         Task<User> RegisterUser(UserCreateRequest model);
         Task<User> ForgotPassword(UserForgotPasswordRequest model);
         Task<bool> IsTokenValid(string token, ActionType actionType);
-        Task<UserResponse> ConfirmEmail(string token, ActionType actionType);
+        Task<UserResponse> ConfirmEmail(string token, ActionType actionType, string? newHashPass);
         Task<UserResponse> ResendActiveMail(UserForgotPasswordRequest model);
     }
 }

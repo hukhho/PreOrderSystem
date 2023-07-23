@@ -1,17 +1,11 @@
-﻿using Newtonsoft.Json;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.Enum.Campaign;
-using PreorderPlatform.Entity.Repositories.Enum.Status;
-using PreorderPlatform.Entity.Repositories.Enum.Visibility;
-using PreorderPlatform.Service.ViewModels.CampaignPrice.Request;
-using PreorderPlatform.Service.ViewModels.OrderItem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using PreOrderPlatform.Entity.Enum.Campaign;
+using PreOrderPlatform.Entity.Enum.Visibility;
+using PreOrderPlatform.Service.ViewModels.Campaign.CampaignImages;
+using PreOrderPlatform.Service.ViewModels.CampaignPrice.Request;
 
-namespace PreorderPlatform.Service.ViewModels.Campaign.Request
+namespace PreOrderPlatform.Service.ViewModels.Campaign.Request
 {
     public class CampaignCreateRequest
     {
@@ -25,17 +19,18 @@ namespace PreorderPlatform.Service.ViewModels.Campaign.Request
         public CampaignLocation Location { get; set; }
         public Visibility Visibility { get; set; }
 
-        [JsonRequired]
+        [Required]
         public Guid ProductId { get; set; }
 
         [JsonIgnore]
-        public Guid OwnerId { get; set; }
+        public Guid? OwnerId { get; set; }
+
         [JsonIgnore]
-        public Guid BusinessId { get; set; }
+        public Guid? BusinessId { get; set; }
 
-        public List<CampaignImage>? Images { get; set; }
+        public List<CampaignImageCreate>? Images { get; set; }
 
-        public List<CampaignPriceCreateRequest>? CampaignPriceCreates { get; set; }
+        public List<CampaignPriceCreateRequest>? CampaignDetails { get; set; }
 
     }
 }

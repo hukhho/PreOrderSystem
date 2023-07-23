@@ -1,6 +1,6 @@
-﻿using PreorderPlatform.Entity.Models;
+﻿using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories.CategoryRepositories
+namespace PreOrderPlatform.Entity.Repositories.CategoryRepositories
 {
     public class CategoryRepository : RepositoryBase<Category>, ICategoryRepository
     {

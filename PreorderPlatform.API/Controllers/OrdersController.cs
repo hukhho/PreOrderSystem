@@ -1,20 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PreorderPlatform.Service.Services.OrderServices;
-using PreorderPlatform.Service.ViewModels.Order;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.ViewModels.Order.Request;
-using PreorderPlatform.Service.ViewModels.Order.Response;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Services.OrderServices;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.ApiResponse;
+using PreOrderPlatform.Service.ViewModels.Order;
+using PreOrderPlatform.Service.ViewModels.Order.Request;
+using PreOrderPlatform.Service.ViewModels.Order.Response;
 
-namespace PreorderPlatform.API.Controllers
+namespace PreOrderPlatform.API.Controllers
 {
     [Route("api/orders")]
     [ApiController]

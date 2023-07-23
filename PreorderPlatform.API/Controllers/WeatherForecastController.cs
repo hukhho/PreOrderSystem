@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 
-namespace PreorderPlatform.API.Controllers
+namespace PreOrderPlatform.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

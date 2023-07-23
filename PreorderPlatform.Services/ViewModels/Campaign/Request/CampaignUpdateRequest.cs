@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace PreorderPlatform.Service.ViewModels.Campaign.Request
+namespace PreOrderPlatform.Service.ViewModels.Campaign.Request
 {
     public class CampaignUpdateRequest
     {
-        [Required]
+        [JsonIgnore]
         public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
@@ -23,7 +19,6 @@ namespace PreorderPlatform.Service.ViewModels.Campaign.Request
         public int DepositPercent { get; set; }
         [Required]
         public DateTime ExpectedShippingDate { get; set; }
-        [Required]
-        public bool Status { get; set; }
+       
     }
 }

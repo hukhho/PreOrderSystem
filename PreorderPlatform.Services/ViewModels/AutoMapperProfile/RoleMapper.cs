@@ -1,21 +1,14 @@
 ﻿using AutoMapper;
-using PreorderPlatform.Service.ViewModels.Business.Request;
-using PreorderPlatform.Service.ViewModels.Business.Response;
-using PreorderPlatform.Service.ViewModels.Role;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PreOrderPlatform.Service.ViewModels.Role;
 
-namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
+namespace PreOrderPlatform.Service.ViewModels.AutoMapperProfile
 {
     public static class RoleMapper
     {
         public static void ConfigRoleMapper(this IMapperConfigurationExpression configuration)
         {
-            configuration.CreateMap<PreorderPlatform.Entity.Models.Role, RoleCreateViewModel>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.Role, RoleDetailViewModel>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Role, RoleCreateViewModel>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Role, RoleDetailViewModel>().ReverseMap();
         }
     }
 }

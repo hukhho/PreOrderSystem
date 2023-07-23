@@ -1,13 +1,8 @@
-﻿using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.Category;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.Category;
 
-namespace PreorderPlatform.Service.Services.CategoryServices
+namespace PreOrderPlatform.Service.Services.CategoryServices
 {
     public interface ICategoryService
     {

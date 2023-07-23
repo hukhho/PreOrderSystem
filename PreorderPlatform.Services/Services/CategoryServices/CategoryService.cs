@@ -1,20 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.CategoryRepositories;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.Services.CategoryServices;
-using PreorderPlatform.Service.Utility;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.Category;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.CategoryRepositories;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Utility;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.Category;
 
-namespace PreorderPlatform.Service.Services.CategoryServices
+namespace PreOrderPlatform.Service.Services.CategoryServices
 {
     internal class CategoryService : ICategoryService
     {

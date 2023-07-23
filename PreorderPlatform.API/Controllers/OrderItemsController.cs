@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PreorderPlatform.Service.Services.OrderItemServices;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
-using PreorderPlatform.Service.ViewModels.OrderItem;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.Enum;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using PreorderPlatform.Service.Services.OrderServices;
+using Microsoft.AspNetCore.Mvc;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Services.OrderItemServices;
+using PreOrderPlatform.Service.Services.OrderServices;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.ApiResponse;
+using PreOrderPlatform.Service.ViewModels.OrderItem;
 
-namespace PreorderPlatform.API.Controllers
+namespace PreOrderPlatform.API.Controllers
 {
     [Route("api/orders/{orderId}/orderitems")]
     [ApiController]

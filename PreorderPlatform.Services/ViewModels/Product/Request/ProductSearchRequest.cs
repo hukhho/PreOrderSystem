@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PreorderPlatform.Service.ViewModels.Product.Request
+﻿namespace PreOrderPlatform.Service.ViewModels.Product.Request
 {
     public class ProductSearchRequest
     {

@@ -1,4 +1,4 @@
-namespace PreorderPlatform.API
+namespace PreOrderPlatform.API
 {
     public class WeatherForecast
     {

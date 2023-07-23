@@ -1,8 +1,6 @@
-﻿using PreorderPlatform.Entity.Repositories.Enum.Payment;
-using System;
-using System.Collections.Generic;
+﻿using PreOrderPlatform.Entity.Enum.Payment;
 
-namespace PreorderPlatform.Entity.Models
+namespace PreOrderPlatform.Entity.Models
 {
     public partial class Payment
     {

@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PreorderPlatform.Service.Services.BusinessServices;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.ViewModels.Business.Request;
-using PreorderPlatform.Service.ViewModels.Business.Response;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Services.Enum;
-using PreorderPlatform.Services.ViewModels.Business.Request;
-using System.Security.Claims;
-using PreorderPlatform.Service.Utility.CustomAuthorizeAttribute;
-using Microsoft.AspNetCore.JsonPatch;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.BusinessServices;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Utility.CustomAuthorizeAttribute;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.ApiResponse;
+using PreOrderPlatform.Service.ViewModels.Business.Request;
+using PreOrderPlatform.Service.ViewModels.Business.Response;
 
-namespace PreorderPlatform.API.Controllers
+namespace PreOrderPlatform.API.Controllers
 {
     [Route("api/business")]
     [ApiController]

@@ -1,19 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using PreorderPlatform.Entity.Repositories.BusinessRepositories;
-using PreorderPlatform.Entity.Repositories.CampaignRepositories;
-using PreorderPlatform.Service.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+using PreOrderPlatform.Entity.Repositories.CampaignRepositories;
+using PreOrderPlatform.Service.Services.Exceptions;
 
-namespace PreorderPlatform.Service.Services.AuthorizationService.Campaign
+namespace PreOrderPlatform.Service.Services.AuthorizationService.Campaign
 {
     public class MustBeCampaignOwnerHandler : AuthorizationHandler<MustCampaignOwnerRequirement>
     {
@@ -41,10 +34,12 @@ namespace PreorderPlatform.Service.Services.AuthorizationService.Campaign
 
             var httpContext = _httpContextAccessor.HttpContext;
             var routeData = httpContext.GetRouteData();
-            if (routeData.Values["id"] is not string idString || !Guid.TryParse(idString, out var campaignId))
+            if (routeData.Values["campaignId"] is not string idString || !Guid.TryParse(idString, out var campaignId))
             {
-                throw new NotFoundException("Business ID not found or not a valid Guid.");
+                Console.WriteLine($"campaignId ID not found or not a valid Guid. {routeData.Values["campaignId"]}");
+                throw new NotFoundException("campaignId ID not found or not a valid Guid.");
             }
+            Console.WriteLine($"campaignId ID {routeData.Values["campaignId"]}");
 
             using (var scope = _serviceProvider.CreateScope())
             {

@@ -1,8 +1,9 @@
-﻿namespace PreorderPlatform.API.Ultils
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Options;
+
+namespace PreOrderPlatform.API.Ultils
 {
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Formatters;
-    using Microsoft.Extensions.Options;
     public static class MyJPIF
     {
         public static NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter()

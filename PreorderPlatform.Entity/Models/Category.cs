@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PreorderPlatform.Entity.Models
+﻿namespace PreOrderPlatform.Entity.Models
 {
     public partial class Category
     {

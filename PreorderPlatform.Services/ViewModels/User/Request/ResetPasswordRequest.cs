@@ -1,12 +1,6 @@
-﻿using PreorderPlatform.Services.Utility;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace PreorderPlatform.Service.ViewModels.User.Request
+namespace PreOrderPlatform.Service.ViewModels.User.Request
 {
     public class ResetPasswordRequest
     {

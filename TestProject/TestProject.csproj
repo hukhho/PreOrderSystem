@@ -26,9 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PreorderPlatform.API\PreorderPlatform.API.csproj" />
-    <ProjectReference Include="..\PreorderPlatform.Entity\PreorderPlatform.Entity.csproj" />
-    <ProjectReference Include="..\PreorderPlatform.Services\PreorderPlatform.Service.csproj" />
+    <ProjectReference Include="..\PreOrderPlatform.API\PreOrderPlatform.API.csproj" />
+    <ProjectReference Include="..\PreOrderPlatform.Entity\PreOrderPlatform.Entity.csproj" />
+    <ProjectReference Include="..\PreOrderPlatform.Services\PreOrderPlatform.Service.csproj" />
   </ItemGroup>
 
 </Project>

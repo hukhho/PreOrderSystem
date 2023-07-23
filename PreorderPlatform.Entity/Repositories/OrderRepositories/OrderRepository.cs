@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories.OrderRepositories
+namespace PreOrderPlatform.Entity.Repositories.OrderRepositories
 {
     public class OrderRepository : RepositoryBase<Order>, IOrderRepository
     {

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace PreorderPlatform.Entity.Models
+namespace PreOrderPlatform.Entity.Models
 {
     public partial class PreOrderSystemContext : DbContext
     {
@@ -39,10 +36,10 @@ namespace PreorderPlatform.Entity.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Set global DeleteBehavior to NoAction
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-            {
-                relationship.DeleteBehavior = DeleteBehavior.NoAction;
-            }
+            //foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            //{
+            //    relationship.DeleteBehavior = DeleteBehavior.NoAction;
+            //}
 
             modelBuilder.Entity<Business>(entity =>
             {
@@ -249,6 +246,12 @@ namespace PreorderPlatform.Entity.Models
                     .HasColumnName("price");
 
                 entity.Property(e => e.TotalOrdered).HasColumnName("total_ordered");
+
+                //        public PhaseStatus PhaseStatus { get; set; }  // new field
+
+                entity.Property(e => e.PhaseStatus)
+                    .IsRequired()
+                    .HasConversion<string>();
 
                 // Add the IsDeleted property in your database and set it to false by default
                 entity.Property(e => e.IsDeleted)

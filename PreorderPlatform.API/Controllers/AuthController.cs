@@ -1,17 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Service.Services.AuthService;
-using PreorderPlatform.Service.Services.UserServices;
-using System.Drawing.Text;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using PreorderPlatform.Service.Utility.CustomAuthorizeAttribute;
-using PreorderPlatform.Service.ViewModels.User.Request;
+﻿using Microsoft.AspNetCore.Mvc;
+using PreOrderPlatform.Service.Services.AuthService;
+using PreOrderPlatform.Service.Services.UserServices;
+using PreOrderPlatform.Service.Utility.CustomAuthorizeAttribute;
+using PreOrderPlatform.Service.ViewModels.ApiResponse;
+using PreOrderPlatform.Service.ViewModels.User.Request;
 
-namespace PreorderPlatform.API.Controllers
+namespace PreOrderPlatform.API.Controllers
 {
     //TEST
 
@@ -45,7 +39,13 @@ namespace PreorderPlatform.API.Controllers
             return Ok("This endpoint is accessible only to users with the Admin role.");
         }
 
-      
+        [HttpGet("test-change-post-man")]
+        [CustomAuthorize(Roles = "ADMIN")]
+        public IActionResult TestChange()
+        {
+            return Ok("This endpoint is accessible only to users with the Admin role.");
+        }
+
 
         [HttpGet("bussiness-owner-only")]
         [CustomAuthorize(Roles = "BUSSINESS_OWNER")]

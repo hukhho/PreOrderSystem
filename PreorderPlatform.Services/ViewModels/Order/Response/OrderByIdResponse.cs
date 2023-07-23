@@ -1,14 +1,8 @@
-﻿using PreorderPlatform.Entity.Repositories.Enum.Order;
-using PreorderPlatform.Service.ViewModels.OrderItem.Response;
-using PreorderPlatform.Service.ViewModels.Payment.Response;
-using PreorderPlatform.Service.ViewModels.User.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Entity.Enum.Order;
+using PreOrderPlatform.Service.ViewModels.OrderItem.Response;
+using PreOrderPlatform.Service.ViewModels.Payment.Response;
 
-namespace PreorderPlatform.Service.ViewModels.Order.Response
+namespace PreOrderPlatform.Service.ViewModels.Order.Response
 {
     public class OrderByIdResponse
     {

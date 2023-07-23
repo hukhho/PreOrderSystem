@@ -1,15 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories
+namespace PreOrderPlatform.Entity.Repositories
 {
     public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
@@ -38,15 +32,15 @@ namespace PreorderPlatform.Entity.Repositories
 
             return await query.ToListAsync();
         }
-        public async Task<IEnumerable<T>> GetAllWithIncludeLoadRelatedEntitiesAsync(Expression<Func<T, bool>> predicate)
-        {
-            IQueryable<T> query = _dbSet;
+        //public async Task<IEnumerable<T>> GetAllWithIncludeLoadRelatedEntitiesAsync(Expression<Func<T, bool>> predicate)
+        //{
+        //    IQueryable<T> query = _dbSet;
 
-            // Use the LoadRelatedEntities method to load all related entities
-            query = query.LoadRelatedEntities(_context);
+        //    // Use the LoadRelatedEntities method to load all related entities
+        //    query = query.LoadRelatedEntities(_context);
 
-            return await query.Where(predicate).ToListAsync();
-        }
+        //    return await query.Where(predicate).ToListAsync();
+        //}
 
         public async Task<T> GetByIdAsync(Guid id)
         {

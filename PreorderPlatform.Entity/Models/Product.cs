@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PreorderPlatform.Entity.Models
+﻿namespace PreOrderPlatform.Entity.Models
 {
     public partial class Product
     {
@@ -11,6 +8,7 @@ namespace PreorderPlatform.Entity.Models
             DateTime now = DateTimeOffset.UtcNow.ToOffset(TimeSpan.FromHours(7)).DateTime;
             CreatedAt = now;
             UpdatedAt = now;
+            Status = true;
             Campaigns = new HashSet<Campaign>();
         }
 

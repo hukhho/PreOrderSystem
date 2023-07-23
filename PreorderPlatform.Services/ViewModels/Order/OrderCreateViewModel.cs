@@ -1,13 +1,8 @@
-﻿using PreorderPlatform.Service.ViewModels.OrderItem;
-using PreorderPlatform.Service.ViewModels.Payment;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using PreOrderPlatform.Service.ViewModels.OrderItem;
+using PreOrderPlatform.Service.ViewModels.Payment;
 
-namespace PreorderPlatform.Service.ViewModels.Order
+namespace PreOrderPlatform.Service.ViewModels.Order
 {
     public class OrderCreateViewModel
     {

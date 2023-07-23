@@ -2,7 +2,7 @@
 //using System.Xml.XPath;
 //using System;
 
-//namespace PreorderPlatform.API.Filters
+//namespace PreOrderPlatform.API.Filters
 //{
 //    public class SwaggerAddEnumDescriptions : IDocumentFilter
 //    {

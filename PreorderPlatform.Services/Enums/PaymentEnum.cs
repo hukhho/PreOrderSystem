@@ -1,11 +1,11 @@
-namespace PreorderPlatform.Service.Enum
+namespace PreOrderPlatform.Service.Enums
 {
     public static class PaymentEnum
     {
         //Cấu hình các thuộc tính để sort
         public enum PaymentSort
         {
-            Id, 
+            Id,
             Method,
             Total,
             PaymentCount,

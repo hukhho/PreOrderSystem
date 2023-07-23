@@ -1,15 +1,9 @@
-﻿using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.Campaign.Response;
-using PreorderPlatform.Service.ViewModels.CampaignPrice.Request;
-using PreorderPlatform.Service.ViewModels.CampaignPrice.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.CampaignPrice.Request;
+using PreOrderPlatform.Service.ViewModels.CampaignPrice.Response;
 
-namespace PreorderPlatform.Service.Services.CampaignDetailServices
+namespace PreOrderPlatform.Service.Services.CampaignDetailServices
 {
     public interface ICampaignDetailService
     {

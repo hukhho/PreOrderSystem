@@ -2,31 +2,29 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PreorderPlatform.Entity;
-using PreorderPlatform.Entity.Repositories;
-using PreorderPlatform.Service.Services;
-using PreorderPlatform.Service.Services.AuthorizationService.Business;
-using PreorderPlatform.Service.Services.AuthorizationService.BusinessPaymentCredential;
-using PreorderPlatform.Service.Services.AuthorizationService.Campaign;
-using PreorderPlatform.Service.Services.AuthorizationService.Order;
-using PreorderPlatform.Service.Services.AuthorizationService.Payment;
-using PreorderPlatform.Service.Services.AuthorizationService.Product;
-using PreorderPlatform.Service.Services.AuthService;
-using PreorderPlatform.Service.Services.BusinessPaymentCredentialServices;
-using PreorderPlatform.Service.Services.BusinessServices;
-using PreorderPlatform.Service.Services.CampaignDetailServices;
-using PreorderPlatform.Service.Services.CampaignServices;
-using PreorderPlatform.Service.Services.CategoryServices;
-using PreorderPlatform.Service.Services.OrderItemServices;
-using PreorderPlatform.Service.Services.OrderServices;
-using PreorderPlatform.Service.Services.PaymentServices;
-using PreorderPlatform.Service.Services.ProductServices;
-using PreorderPlatform.Service.Services.RoleServices;
-using PreorderPlatform.Service.Services.SendMailServices;
-using PreorderPlatform.Service.Services.UserServices;
-using PreorderPlatform.Service.ViewModels.AutoMapperProfile;
+using PreOrderPlatform.Entity;
+using PreOrderPlatform.Service.Services.AuthorizationService.Business;
+using PreOrderPlatform.Service.Services.AuthorizationService.BusinessPaymentCredential;
+using PreOrderPlatform.Service.Services.AuthorizationService.Campaign;
+using PreOrderPlatform.Service.Services.AuthorizationService.Order;
+using PreOrderPlatform.Service.Services.AuthorizationService.Payment;
+using PreOrderPlatform.Service.Services.AuthorizationService.Product;
+using PreOrderPlatform.Service.Services.AuthService;
+using PreOrderPlatform.Service.Services.BusinessPaymentCredentialServices;
+using PreOrderPlatform.Service.Services.BusinessServices;
+using PreOrderPlatform.Service.Services.CampaignDetailServices;
+using PreOrderPlatform.Service.Services.CampaignServices;
+using PreOrderPlatform.Service.Services.CategoryServices;
+using PreOrderPlatform.Service.Services.OrderItemServices;
+using PreOrderPlatform.Service.Services.OrderServices;
+using PreOrderPlatform.Service.Services.PaymentServices;
+using PreOrderPlatform.Service.Services.ProductServices;
+using PreOrderPlatform.Service.Services.RoleServices;
+using PreOrderPlatform.Service.Services.SendMailServices;
+using PreOrderPlatform.Service.Services.UserServices;
+using PreOrderPlatform.Service.ViewModels.AutoMapperProfile;
 
-namespace PreorderPlatform.Service
+namespace PreOrderPlatform.Service
 {
     public static class ModuleRegister
     {

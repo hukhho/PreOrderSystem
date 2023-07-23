@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PreorderPlatform.Entity.Models
+﻿namespace PreOrderPlatform.Entity.Models
 {
     public partial class CampaignImage
     {

@@ -1,25 +1,18 @@
 ﻿using AutoMapper;
-using PreorderPlatform.Service.ViewModels.Business.Request;
-using PreorderPlatform.Service.ViewModels.Business.Response;
-using PreorderPlatform.Service.ViewModels.BusinessPaymentCredential;
-using PreorderPlatform.Service.ViewModels.BusinessPaymentCredential.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PreOrderPlatform.Service.ViewModels.BusinessPaymentCredential;
+using PreOrderPlatform.Service.ViewModels.BusinessPaymentCredential.Response;
 
-namespace PreorderPlatform.Service.ViewModels.AutoMapperProfile
+namespace PreOrderPlatform.Service.ViewModels.AutoMapperProfile
 {
     public static class BusinessPaymentCredentialMapper
     {
         public static void ConfigBusinessPaymentCredentialMapper(this IMapperConfigurationExpression configuration)
         {
-            configuration.CreateMap<PreorderPlatform.Entity.Models.BusinessPaymentCredential, BusinessPaymentCredentialCreateViewModel>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.BusinessPaymentCredential, BusinessPaymentCredentialUpdateViewModel>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.BusinessPaymentCredential, BusinessPaymentCredentialViewModel>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.BusinessPaymentCredential, BusinessPaymentCredentialResponse>().ReverseMap();
-            configuration.CreateMap<PreorderPlatform.Entity.Models.BusinessPaymentCredential, BusinessPaymentCredentialSearchRequest>().ReverseMap();
+            configuration.CreateMap<Entity.Models.BusinessPaymentCredential, BusinessPaymentCredentialCreateViewModel>().ReverseMap();
+            configuration.CreateMap<Entity.Models.BusinessPaymentCredential, BusinessPaymentCredentialUpdateViewModel>().ReverseMap();
+            configuration.CreateMap<Entity.Models.BusinessPaymentCredential, BusinessPaymentCredentialViewModel>().ReverseMap();
+            configuration.CreateMap<Entity.Models.BusinessPaymentCredential, BusinessPaymentCredentialResponse>().ReverseMap();
+            configuration.CreateMap<Entity.Models.BusinessPaymentCredential, BusinessPaymentCredentialSearchRequest>().ReverseMap();
 
         }
     }

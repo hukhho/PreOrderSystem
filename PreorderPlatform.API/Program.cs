@@ -1,35 +1,20 @@
-using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
-using AutoMapper;
-using PreorderPlatform.Service.ViewModels.User;
-using PreorderPlatform.Entity.Repositories.UserRepository;
-using PreorderPlatform.Service.ViewModels.AutoMapperProfile;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using PreorderPlatform.Service.Services.AuthService;
-using PreorderPlatform.Service.Services.UserServices;
-using PreorderPlatform.Entity.Repositories.UserRepositories;
-using PreorderPlatform.Entity;
-using PreorderPlatform.Service;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using Microsoft.AspNetCore.Mvc;
-using PreorderPlatform.API.Filters;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using PreorderPlatform.API.Ultils;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Middleware;
-using PreorderPlatform.Entity.Data;
-using PreorderPlatform.API.HealthChecks;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using System.Text.Json.Serialization;
+using PreOrderPlatform.API.Filters;
+using PreOrderPlatform.API.Ultils;
+using PreOrderPlatform.Entity;
+using PreOrderPlatform.Entity.Data;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Service;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Middleware;
+using ScheduledTaskService;
 
 static Task WriteResponse(HttpContext httpContext, HealthReport result)
 {
@@ -98,6 +83,7 @@ builder.Services.AddSwaggerGen(c =>
     // c.IncludeXmlComments(xmlPath);
 });
 
+builder.Services.AddHostedService<CampaignStatusUpdater>();
 
 //builder.Services.AddAutoMapper(typeof(ApplicationAutoMapperProfile));
 
@@ -165,7 +151,7 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        var logger = services.GetRequiredService<ILogger<Program>>();
+        var logger = services.GetRequiredService<ILogger<PreOrderPlatform.API.Program>>();
         logger.LogError(ex, "An error occurred while migrating the database.");
     }
 }
@@ -209,4 +195,7 @@ app.Run();
 
 
 
-public partial class Program { }
+namespace PreOrderPlatform.API
+{
+    public partial class Program { }
+}

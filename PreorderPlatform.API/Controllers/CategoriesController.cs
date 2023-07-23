@@ -1,17 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PreorderPlatform.Service.Services.CategoryServices;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
-using PreorderPlatform.Service.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using PreorderPlatform.Service.ViewModels.Category;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Utility.CustomAuthorizeAttribute;
+﻿using Microsoft.AspNetCore.Mvc;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.CategoryServices;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Utility.CustomAuthorizeAttribute;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.ApiResponse;
+using PreOrderPlatform.Service.ViewModels.Category;
 
-namespace PreorderPlatform.API.Controllers
+namespace PreOrderPlatform.API.Controllers
 {
     [Route("api/categories")]
     [ApiController]

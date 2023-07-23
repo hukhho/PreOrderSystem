@@ -1,17 +1,14 @@
 ﻿using AutoMapper;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.OrderItemRepositories;
-using PreorderPlatform.Service.ViewModels.OrderItem;
-using PreorderPlatform.Service.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using PreorderPlatform.Service.Utility;
 using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.Enum;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.OrderItemRepositories;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Utility;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.OrderItem;
 
-namespace PreorderPlatform.Service.Services.OrderItemServices
+namespace PreOrderPlatform.Service.Services.OrderItemServices
 {
     public class OrderItemService : IOrderItemService
     {

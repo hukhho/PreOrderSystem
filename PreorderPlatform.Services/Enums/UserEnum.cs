@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PreorderPlatform.Service.Enum
+﻿namespace PreOrderPlatform.Service.Enums
 {
     public static class UserEnum
     {
         public enum UserSort
         {
-           Id, 
-           FirstName,
-           LastName,
-           Phone,
-           Email,
-           Password,
-           Address,
-           Ward,
-           District,
-           Province,
-           Status,
-           RoleId,
-           BusinessId
+            Id,
+            FirstName,
+            LastName,
+            Phone,
+            Email,
+            Password,
+            Address,
+            Ward,
+            District,
+            Province,
+            Status,
+            RoleId,
+            BusinessId
         }
 
         public enum UserActive

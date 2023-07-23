@@ -1,4 +1,4 @@
-namespace PreorderPlatform.Services.Enum
+namespace PreOrderPlatform.Service.Enums
 {
     public static class BusinessEnum
     {
@@ -11,6 +11,6 @@ namespace PreorderPlatform.Services.Enum
             Email,
             OwnerId,
             Status
-        }   
+        }
     }
 }

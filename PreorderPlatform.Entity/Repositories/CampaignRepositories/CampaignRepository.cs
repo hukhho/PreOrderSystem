@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories.CampaignRepositories
+namespace PreOrderPlatform.Entity.Repositories.CampaignRepositories
 {
     public class CampaignRepository : RepositoryBase<Campaign>, ICampaignRepository
     {

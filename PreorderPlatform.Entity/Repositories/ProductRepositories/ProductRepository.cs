@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories.ProductRepositories
+namespace PreOrderPlatform.Entity.Repositories.ProductRepositories
 {
     public class ProductRepository : RepositoryBase<Product>, IProductRepository
     {

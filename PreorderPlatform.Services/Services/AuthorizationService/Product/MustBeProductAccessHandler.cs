@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using PreorderPlatform.Entity.Repositories.ProductRepositories;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Exceptions;
-using System.Security.Claims;
+using PreOrderPlatform.Entity.Repositories.ProductRepositories;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.Exceptions;
 
-namespace PreorderPlatform.Service.Services.AuthorizationService.Product
+namespace PreOrderPlatform.Service.Services.AuthorizationService.Product
 {
     public class MustBeProductAccessHandler :
         AuthorizationHandler<MustBeProductAccessRequirement>

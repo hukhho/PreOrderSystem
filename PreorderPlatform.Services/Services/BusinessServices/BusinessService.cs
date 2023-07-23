@@ -1,22 +1,16 @@
 ﻿using AutoMapper;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.BusinessRepositories;
-using PreorderPlatform.Service.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PreorderPlatform.Service.ViewModels.Business.Request;
-using PreorderPlatform.Service.ViewModels.Business.Response;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Services.Enum;
-using PreorderPlatform.Services.ViewModels.Business.Request;
-using PreorderPlatform.Service.Utility;
 using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Repositories.UserRepositories;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.BusinessRepositories;
+using PreOrderPlatform.Entity.Repositories.UserRepositories;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Utility;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.Business.Request;
+using PreOrderPlatform.Service.ViewModels.Business.Response;
 
-namespace PreorderPlatform.Service.Services.BusinessServices
+namespace PreOrderPlatform.Service.Services.BusinessServices
 {
     public class BusinessService : IBusinessService
     {
@@ -30,7 +24,6 @@ namespace PreorderPlatform.Service.Services.BusinessServices
             _userRepository = userRepository;
             _mapper = mapper;
         }
-
 
         public async Task<List<BusinessResponse>> GetBusinessesAsync()
         {
@@ -181,7 +174,16 @@ namespace PreorderPlatform.Service.Services.BusinessServices
                 throw new ServiceException("An error occurred while fetching businesses.", ex);
             }
         }
+        //        Task<bool> IsUserInBusiness(Guid userId, Guid businessId);
 
+
+        public async Task<bool> CheckUserInBusiness(Guid userId, Guid businessId)
+        {
+            return await _businessRepository.IsUserInBusiness(userId, businessId);
+        }
+
+
+        
 
     }
 }

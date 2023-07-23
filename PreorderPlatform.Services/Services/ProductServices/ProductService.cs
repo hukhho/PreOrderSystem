@@ -1,20 +1,15 @@
 ﻿using AutoMapper;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.ProductRepositories;
-using PreorderPlatform.Service.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PreorderPlatform.Service.ViewModels.Product.Request;
-using PreorderPlatform.Service.ViewModels.Product.Response;
-using PreorderPlatform.Service.Utility;
 using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Services.Enum;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.ProductRepositories;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Utility;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.Product.Request;
+using PreOrderPlatform.Service.ViewModels.Product.Response;
 
-namespace PreorderPlatform.Service.Services.ProductServices
+namespace PreOrderPlatform.Service.Services.ProductServices
 {
     internal class ProductService : IProductService
     {

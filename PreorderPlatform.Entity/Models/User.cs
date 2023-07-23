@@ -1,10 +1,8 @@
-﻿using PreorderPlatform.Entity.Repositories.Enum.User;
-using System;
-    using System.Collections.Generic;
+﻿using PreOrderPlatform.Entity.Enum.User;
 
-    namespace PreorderPlatform.Entity.Models
-    {
-        public partial class User
+namespace PreOrderPlatform.Entity.Models
+{
+    public partial class User
         {
             public User()
             {

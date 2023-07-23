@@ -1,4 +1,4 @@
-namespace PreorderPlatform.Services.Enum
+namespace PreOrderPlatform.Service.Enums
 {
     public static class BusinessPaymentCredentialEnum
     {
@@ -15,8 +15,8 @@ namespace PreorderPlatform.Services.Enum
             MomoSecretToken,
             IsMomoActive,
             IsMain,
-            CreateAt,
+            CreatedAt,
             Status
-        }   
+        }
     }
 }

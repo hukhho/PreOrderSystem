@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.BusinessPaymentCredentialRepositories;
-using PreorderPlatform.Entity.Repositories.BusinessRepositories;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.Utility;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.ApiResponse;
-using PreorderPlatform.Service.ViewModels.BusinessPaymentCredential;
-using PreorderPlatform.Services.Enum;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.BusinessPaymentCredentialRepositories;
+using PreOrderPlatform.Entity.Repositories.BusinessRepositories;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Utility;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.BusinessPaymentCredential;
 
-namespace PreorderPlatform.Service.Services.BusinessPaymentCredentialServices
+namespace PreOrderPlatform.Service.Services.BusinessPaymentCredentialServices
 {
     public class BusinessPaymentCredentialService : IBusinessPaymentCredentialService
     {

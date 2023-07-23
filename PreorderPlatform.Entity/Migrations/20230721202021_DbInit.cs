@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace PreorderPlatform.Entity.Migrations
+namespace PreOrderPlatform.Entity.Migrations
 {
     public partial class DbInit : Migration
     {
@@ -82,7 +82,8 @@ namespace PreorderPlatform.Entity.Migrations
                         name: "FK__BusinessP__busin__2D27B809",
                         column: x => x.business_id,
                         principalTable: "Business",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,12 +107,14 @@ namespace PreorderPlatform.Entity.Migrations
                         name: "FK__Product__busines__32E0915F",
                         column: x => x.business_id,
                         principalTable: "Business",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK__Product__categor__31EC6D26",
                         column: x => x.category_id,
                         principalTable: "Category",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -149,7 +152,8 @@ namespace PreorderPlatform.Entity.Migrations
                         name: "FK__User__role_id__267ABA7A",
                         column: x => x.role_id,
                         principalTable: "Role",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -230,7 +234,8 @@ namespace PreorderPlatform.Entity.Migrations
                         name: "FK__Order__user_id__3D5E1FD2",
                         column: x => x.user_id,
                         principalTable: "User",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -240,6 +245,7 @@ namespace PreorderPlatform.Entity.Migrations
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     phase = table.Column<int>(type: "int", nullable: false),
                     allowed_quantity = table.Column<int>(type: "int", nullable: false),
+                    PhaseStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     total_ordered = table.Column<int>(type: "int", nullable: false),
                     campaign_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     price = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
@@ -252,7 +258,8 @@ namespace PreorderPlatform.Entity.Migrations
                         name: "FK__CampaignD__campa__3A81B327",
                         column: x => x.campaign_id,
                         principalTable: "Campaign",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -330,7 +337,8 @@ namespace PreorderPlatform.Entity.Migrations
                         name: "FK__OrderItem__order__403A8C7D",
                         column: x => x.order_id,
                         principalTable: "Order",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

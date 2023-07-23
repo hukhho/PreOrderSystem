@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.Payment;
+﻿using Newtonsoft.Json.Linq;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.Payment;
 
-namespace PreorderPlatform.Service.Services.PaymentServices
+namespace PreOrderPlatform.Service.Services.PaymentServices
 {
     public interface IPaymentService
     {

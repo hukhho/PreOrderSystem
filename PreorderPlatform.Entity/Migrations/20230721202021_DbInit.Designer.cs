@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PreorderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Models;
 
 #nullable disable
 
-namespace PreorderPlatform.Entity.Migrations
+namespace PreOrderPlatform.Entity.Migrations
 {
     [DbContext(typeof(PreOrderSystemContext))]
-    [Migration("20230720180810_DbInit")]
+    [Migration("20230721202021_DbInit")]
     partial class DbInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace PreorderPlatform.Entity.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Business", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Business", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,7 +83,7 @@ namespace PreorderPlatform.Entity.Migrations
                     b.ToTable("Business", (string)null);
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.BusinessPaymentCredential", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.BusinessPaymentCredential", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -153,7 +153,7 @@ namespace PreorderPlatform.Entity.Migrations
                     b.ToTable("BusinessPaymentCredential", (string)null);
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Campaign", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Campaign", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -239,7 +239,7 @@ namespace PreorderPlatform.Entity.Migrations
                     b.ToTable("Campaign", (string)null);
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.CampaignDetail", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.CampaignDetail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -264,6 +264,10 @@ namespace PreorderPlatform.Entity.Migrations
                         .HasColumnType("int")
                         .HasColumnName("phase");
 
+                    b.Property<string>("PhaseStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric(18,0)")
                         .HasColumnName("price");
@@ -279,7 +283,7 @@ namespace PreorderPlatform.Entity.Migrations
                     b.ToTable("CampaignDetail", (string)null);
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.CampaignImage", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.CampaignImage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -313,7 +317,7 @@ namespace PreorderPlatform.Entity.Migrations
                     b.ToTable("CampaignImage");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Category", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -337,7 +341,7 @@ namespace PreorderPlatform.Entity.Migrations
                     b.ToTable("Category", (string)null);
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Order", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -446,7 +450,7 @@ namespace PreorderPlatform.Entity.Migrations
                     b.ToTable("Order", (string)null);
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.OrderItem", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -478,7 +482,7 @@ namespace PreorderPlatform.Entity.Migrations
                     b.ToTable("OrderItem", (string)null);
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Payment", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Payment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -535,7 +539,7 @@ namespace PreorderPlatform.Entity.Migrations
                     b.ToTable("Payment", (string)null);
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Product", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -586,7 +590,7 @@ namespace PreorderPlatform.Entity.Migrations
                     b.ToTable("Product", (string)null);
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Role", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -603,7 +607,7 @@ namespace PreorderPlatform.Entity.Migrations
                     b.ToTable("Role", (string)null);
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.User", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -696,9 +700,9 @@ namespace PreorderPlatform.Entity.Migrations
                     b.ToTable("User", (string)null);
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Business", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Business", b =>
                 {
-                    b.HasOne("PreorderPlatform.Entity.Models.User", "Owner")
+                    b.HasOne("PreOrderPlatform.Entity.Models.User", "Owner")
                         .WithMany("Businesses")
                         .HasForeignKey("OwnerId")
                         .HasConstraintName("FK__Business__owner___29572725");
@@ -706,35 +710,35 @@ namespace PreorderPlatform.Entity.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.BusinessPaymentCredential", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.BusinessPaymentCredential", b =>
                 {
-                    b.HasOne("PreorderPlatform.Entity.Models.Business", "Business")
+                    b.HasOne("PreOrderPlatform.Entity.Models.Business", "Business")
                         .WithMany("BusinessPaymentCredentials")
                         .HasForeignKey("BusinessId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK__BusinessP__busin__2D27B809");
 
                     b.Navigation("Business");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Campaign", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Campaign", b =>
                 {
-                    b.HasOne("PreorderPlatform.Entity.Models.Business", "Business")
+                    b.HasOne("PreOrderPlatform.Entity.Models.Business", "Business")
                         .WithMany("Campaigns")
                         .HasForeignKey("BusinessId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK__Campaign__busine__37A5467C");
 
-                    b.HasOne("PreorderPlatform.Entity.Models.User", "Owner")
+                    b.HasOne("PreOrderPlatform.Entity.Models.User", "Owner")
                         .WithMany("Campaigns")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK__Campaign__owner___36B12243");
 
-                    b.HasOne("PreorderPlatform.Entity.Models.Product", "Product")
+                    b.HasOne("PreOrderPlatform.Entity.Models.Product", "Product")
                         .WithMany("Campaigns")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -748,21 +752,21 @@ namespace PreorderPlatform.Entity.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.CampaignDetail", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.CampaignDetail", b =>
                 {
-                    b.HasOne("PreorderPlatform.Entity.Models.Campaign", "Campaign")
+                    b.HasOne("PreOrderPlatform.Entity.Models.Campaign", "Campaign")
                         .WithMany("CampaignDetails")
                         .HasForeignKey("CampaignId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK__CampaignD__campa__3A81B327");
 
                     b.Navigation("Campaign");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.CampaignImage", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.CampaignImage", b =>
                 {
-                    b.HasOne("PreorderPlatform.Entity.Models.Campaign", "Campaign")
+                    b.HasOne("PreOrderPlatform.Entity.Models.Campaign", "Campaign")
                         .WithMany("Images")
                         .HasForeignKey("CampaignId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -771,31 +775,31 @@ namespace PreorderPlatform.Entity.Migrations
                     b.Navigation("Campaign");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Order", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Order", b =>
                 {
-                    b.HasOne("PreorderPlatform.Entity.Models.User", "User")
+                    b.HasOne("PreOrderPlatform.Entity.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK__Order__user_id__3D5E1FD2");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.OrderItem", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.OrderItem", b =>
                 {
-                    b.HasOne("PreorderPlatform.Entity.Models.CampaignDetail", "CampaignDetail")
+                    b.HasOne("PreOrderPlatform.Entity.Models.CampaignDetail", "CampaignDetail")
                         .WithMany("OrderItems")
                         .HasForeignKey("CampaignDetailId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("FK__OrderItem__campa__412EB0B6");
 
-                    b.HasOne("PreorderPlatform.Entity.Models.Order", "Order")
+                    b.HasOne("PreOrderPlatform.Entity.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK__OrderItem__order__403A8C7D");
 
@@ -804,18 +808,16 @@ namespace PreorderPlatform.Entity.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Payment", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Payment", b =>
                 {
-                    b.HasOne("PreorderPlatform.Entity.Models.Order", "Order")
+                    b.HasOne("PreOrderPlatform.Entity.Models.Order", "Order")
                         .WithMany("Payments")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .HasConstraintName("FK__Payment__order_i__44FF419A");
 
-                    b.HasOne("PreorderPlatform.Entity.Models.User", "User")
+                    b.HasOne("PreOrderPlatform.Entity.Models.User", "User")
                         .WithMany("Payments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .HasConstraintName("FK__Payment__user_id__440B1D61");
 
                     b.Navigation("Order");
@@ -823,19 +825,19 @@ namespace PreorderPlatform.Entity.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Product", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Product", b =>
                 {
-                    b.HasOne("PreorderPlatform.Entity.Models.Business", "Business")
+                    b.HasOne("PreOrderPlatform.Entity.Models.Business", "Business")
                         .WithMany("Products")
                         .HasForeignKey("BusinessId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK__Product__busines__32E0915F");
 
-                    b.HasOne("PreorderPlatform.Entity.Models.Category", "Category")
+                    b.HasOne("PreOrderPlatform.Entity.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK__Product__categor__31EC6D26");
 
@@ -844,17 +846,17 @@ namespace PreorderPlatform.Entity.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.User", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.User", b =>
                 {
-                    b.HasOne("PreorderPlatform.Entity.Models.Business", "Business")
+                    b.HasOne("PreOrderPlatform.Entity.Models.Business", "Business")
                         .WithMany("Users")
                         .HasForeignKey("BusinessId")
                         .HasConstraintName("FK__User__business_i__2A4B4B5E");
 
-                    b.HasOne("PreorderPlatform.Entity.Models.Role", "Role")
+                    b.HasOne("PreOrderPlatform.Entity.Models.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK__User__role_id__267ABA7A");
 
@@ -863,7 +865,7 @@ namespace PreorderPlatform.Entity.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Business", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Business", b =>
                 {
                     b.Navigation("BusinessPaymentCredentials");
 
@@ -874,41 +876,41 @@ namespace PreorderPlatform.Entity.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Campaign", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Campaign", b =>
                 {
                     b.Navigation("CampaignDetails");
 
                     b.Navigation("Images");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.CampaignDetail", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.CampaignDetail", b =>
                 {
                     b.Navigation("OrderItems");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Category", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Category", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Order", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
 
                     b.Navigation("Payments");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Product", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Product", b =>
                 {
                     b.Navigation("Campaigns");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.Role", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.Role", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("PreorderPlatform.Entity.Models.User", b =>
+            modelBuilder.Entity("PreOrderPlatform.Entity.Models.User", b =>
                 {
                     b.Navigation("Businesses");
 

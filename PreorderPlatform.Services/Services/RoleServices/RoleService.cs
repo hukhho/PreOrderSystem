@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.RoleRepositories;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.Services.RoleServices;
-using PreorderPlatform.Service.ViewModels.Role;
-using PreorderPlatform.Service.ViewModels.User;
+﻿using AutoMapper;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.RoleRepositories;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.ViewModels.Role;
 
-namespace PreorderPlatform.Service.Services.RoleServices
+namespace PreOrderPlatform.Service.Services.RoleServices
 {
     internal class RoleService : IRoleService
     {

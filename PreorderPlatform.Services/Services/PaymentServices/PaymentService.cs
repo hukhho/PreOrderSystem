@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using MoMo;
 using Newtonsoft.Json.Linq;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.PaymentRepositories;
-using PreorderPlatform.Service.Enum;
-using PreorderPlatform.Service.Exceptions;
-using PreorderPlatform.Service.Utility;
-using PreorderPlatform.Service.Utility.Pagination;
-using PreorderPlatform.Service.ViewModels.Payment;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.PaymentRepositories;
+using PreOrderPlatform.Service.Enums;
+using PreOrderPlatform.Service.Services.Exceptions;
+using PreOrderPlatform.Service.Utility;
+using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.Payment;
 
-namespace PreorderPlatform.Service.Services.PaymentServices
+namespace PreOrderPlatform.Service.Services.PaymentServices
 {
     public class PaymentService : IPaymentService
     {

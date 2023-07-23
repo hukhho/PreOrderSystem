@@ -1,11 +1,6 @@
-﻿using PreorderPlatform.Entity.Repositories.Enum.Order;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Entity.Enum.Order;
 
-namespace PreorderPlatform.Service.ViewModels.Order
+namespace PreOrderPlatform.Service.ViewModels.Order
 {
     public class OrderViewModel
     {

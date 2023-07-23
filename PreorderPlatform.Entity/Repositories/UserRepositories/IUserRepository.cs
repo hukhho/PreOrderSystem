@@ -1,12 +1,7 @@
-﻿using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Entity.Repositories.Enum.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PreOrderPlatform.Entity.Enum.User;
+using PreOrderPlatform.Entity.Models;
 
-namespace PreorderPlatform.Entity.Repositories.UserRepositories
+namespace PreOrderPlatform.Entity.Repositories.UserRepositories
 {
     public interface IUserRepository : IRepositoryBase<User>
     {
@@ -17,5 +12,6 @@ namespace PreorderPlatform.Entity.Repositories.UserRepositories
         Task<User> ValidateUserCredentials(string email, string password);
         Task<User> GetUserByEmailAsync(string email);
         Task<User> GetUserByActionTokenAsync(string token, ActionType actionType);
+        Task<User> GetUserWithFullDetailsByIdAsync(Guid id);
     }
 }

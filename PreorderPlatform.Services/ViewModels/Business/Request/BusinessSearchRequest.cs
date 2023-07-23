@@ -1,4 +1,4 @@
-namespace PreorderPlatform.Services.ViewModels.Business.Request
+namespace PreOrderPlatform.Service.ViewModels.Business.Request
 {
     public class BusinessSearchRequest
     {

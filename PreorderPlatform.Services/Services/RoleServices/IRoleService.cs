@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using PreorderPlatform.Entity.Models;
-using PreorderPlatform.Service.ViewModels.Role;
+﻿using PreOrderPlatform.Service.ViewModels.Role;
 
-namespace PreorderPlatform.Service.Services.RoleServices
+namespace PreOrderPlatform.Service.Services.RoleServices
 {
     public interface IRoleService
     {
