@@ -12,9 +12,13 @@ services:
       - SA_PASSWORD=YourStrong!Passw0rd
     volumes:
       - db_data:/var/opt/mssql
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -U sa -P YourStrong!Passw0rd -Q "SELECT 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5  
     networks:
       - app-network
-    restart: always
 
   web:
     build: 
@@ -24,12 +28,12 @@ services:
       - 5019:80
     environment:
       - ConnectionString=Server=db;Database=PreOrderSystem;User ID=SA;Password=YourStrong!Passw0rd
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Development  
     networks:
       - app-network
     depends_on:
-      - db
-    restart: always
+        db:
+          condition: service_healthy
 
 volumes:
   db_data:

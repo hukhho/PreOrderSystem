@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="12.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\PreOrderPlatform.Entity\PreOrderPlatform.Entity.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Enums\c\" />
+		<Folder Include="libs\" />
+		<Folder Include="Services\AuthorizationService\User\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Momo">
+			<HintPath>libs\Momo.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+</Project>

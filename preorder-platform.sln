@@ -5,13 +5,15 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinorTest", "MinorTest\MinorTest.csproj", "{F345D166-69B0-4DD8-905D-7E16BC98E87D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PreorderPlatform.Service", "PreorderPlatform.Services\PreorderPlatform.Service.csproj", "{8B05B63A-B1E8-4FB5-920B-EE35AD3F4A15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PreOrderPlatform.Service", "PreOrderPlatform.Services\PreOrderPlatform.Service.csproj", "{8B05B63A-B1E8-4FB5-920B-EE35AD3F4A15}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PreorderPlatform.Entity", "PreorderPlatform.Entity\PreorderPlatform.Entity.csproj", "{9FD49CD8-8CD5-43CC-8D49-F968C7B14CB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PreOrderPlatform.Entity", "PreOrderPlatform.Entity\PreOrderPlatform.Entity.csproj", "{9FD49CD8-8CD5-43CC-8D49-F968C7B14CB0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PreorderPlatform.API", "PreorderPlatform.API\PreorderPlatform.API.csproj", "{33F29C40-1B1B-49F4-B21F-63FFE279CEC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PreOrderPlatform.API", "PreOrderPlatform.API\PreOrderPlatform.API.csproj", "{33F29C40-1B1B-49F4-B21F-63FFE279CEC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{15638DB9-62BF-4469-93F9-E7F2F9D750BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject", "TestProject\TestProject.csproj", "{15638DB9-62BF-4469-93F9-E7F2F9D750BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduledTaskService", "ScheduledTaskService\ScheduledTaskService.csproj", "{731BF500-2FDC-4A80-A895-8E8AB62B1AA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{15638DB9-62BF-4469-93F9-E7F2F9D750BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15638DB9-62BF-4469-93F9-E7F2F9D750BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15638DB9-62BF-4469-93F9-E7F2F9D750BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{731BF500-2FDC-4A80-A895-8E8AB62B1AA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{731BF500-2FDC-4A80-A895-8E8AB62B1AA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{731BF500-2FDC-4A80-A895-8E8AB62B1AA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{731BF500-2FDC-4A80-A895-8E8AB62B1AA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

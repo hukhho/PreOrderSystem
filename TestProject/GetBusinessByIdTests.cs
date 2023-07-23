@@ -1,6 +1,6 @@
 ﻿//using Microsoft.AspNetCore.Mvc.Testing;
 //using Microsoft.Extensions.Configuration;
-//using PreorderPlatform.Service.Services.AuthService;
+//using PreOrderPlatform.Service.Services.AuthService;
 //using System.Net;
 //using System.Net.Http.Headers;
 
