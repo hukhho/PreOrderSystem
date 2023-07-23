@@ -26,6 +26,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - 5019:80
+    environment:
+      - ConnectionString=Server=db;Database=PreOrderSystem;User ID=SA;Password=YourStrong!Passw0rd
+      - ASPNETCORE_ENVIRONMENT=Development  
     networks:
       - app-network
     depends_on:
