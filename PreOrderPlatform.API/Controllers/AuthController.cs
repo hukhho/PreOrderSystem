@@ -25,47 +25,47 @@ namespace PreOrderPlatform.API.Controllers
             _jwtService = jwtService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
-        {
-            var users = await _userService.GetUsersAsync();
-            return Ok(users);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> GetAllUsers()
+        //{
+        //    var users = await _userService.GetUsersAsync();
+        //    return Ok(users);
+        //}
 
-        [HttpGet("admin-only")]
-        [CustomAuthorize(Roles = "ADMIN")]
-        public IActionResult AdminOnly()
-        {
-            return Ok("This endpoint is accessible only to users with the Admin role.");
-        }
+        //[HttpGet("admin-only")]
+        //[CustomAuthorize(Roles = "ADMIN")]
+        //public IActionResult AdminOnly()
+        //{
+        //    return Ok("This endpoint is accessible only to users with the Admin role.");
+        //}
 
-        [HttpGet("test-change-post-man")]
-        [CustomAuthorize(Roles = "ADMIN")]
-        public IActionResult TestChange()
-        {
-            return Ok("This endpoint is accessible only to users with the Admin role.");
-        }
+        //[HttpGet("test-change-post-man")]
+        //[CustomAuthorize(Roles = "ADMIN")]
+        //public IActionResult TestChange()
+        //{
+        //    return Ok("This endpoint is accessible only to users with the Admin role.");
+        //}
 
 
-        [HttpGet("bussiness-owner-only")]
-        [CustomAuthorize(Roles = "BUSSINESS_OWNER")]
-        public IActionResult UserOnly()
-        {
-            return Ok("This endpoint is accessible only to users with the User role.");
-        }
+        //[HttpGet("bussiness-owner-only")]
+        //[CustomAuthorize(Roles = "BUSSINESS_OWNER")]
+        //public IActionResult UserOnly()
+        //{
+        //    return Ok("This endpoint is accessible only to users with the User role.");
+        //}
 
-        [HttpGet("bussiness-staff-only")]
-        [CustomAuthorize(Roles = "BUSSINESS_STAFF")]
-        public IActionResult TestOnly()
-        {
-            return Ok("This endpoint is accessible only to users with the Test and Admin role.");
-        }
+        //[HttpGet("bussiness-staff-only")]
+        //[CustomAuthorize(Roles = "BUSSINESS_STAFF")]
+        //public IActionResult TestOnly()
+        //{
+        //    return Ok("This endpoint is accessible only to users with the Test and Admin role.");
+        //}
 
-        [HttpGet("test-nha-only")]
-        public IActionResult TestOnlyOk()
-        {
-            return Ok("Test Nha Only");
-        }
+        //[HttpGet("test-nha-only")]
+        //public IActionResult TestOnlyOk()
+        //{
+        //    return Ok("Test Nha Only");
+        //}
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest model)
