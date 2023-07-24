@@ -14,6 +14,5 @@
         public bool? IsMomoActive { get; set; }
         public bool? IsMain { get; set; }
         public DateTime? CreateAt { get; set; }
-        public bool? Status { get; set; }
     }
 }

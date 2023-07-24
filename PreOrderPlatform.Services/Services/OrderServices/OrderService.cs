@@ -4,6 +4,7 @@ using PreOrderPlatform.Entity.Enum.Campaign;
 using PreOrderPlatform.Entity.Enum.Order;
 using PreOrderPlatform.Entity.Enum.Payment;
 using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Entity.Repositories.BusinessPaymentCredentialRepositories;
 using PreOrderPlatform.Entity.Repositories.CampaignDetailRepositories;
 using PreOrderPlatform.Entity.Repositories.OrderRepositories;
 using PreOrderPlatform.Service.Enums;
@@ -11,6 +12,7 @@ using PreOrderPlatform.Service.Helpers;
 using PreOrderPlatform.Service.Services.Exceptions;
 using PreOrderPlatform.Service.Utility;
 using PreOrderPlatform.Service.Utility.Pagination;
+using PreOrderPlatform.Service.ViewModels.BusinessPaymentCredential;
 using PreOrderPlatform.Service.ViewModels.Order;
 using PreOrderPlatform.Service.ViewModels.Order.Request;
 using PreOrderPlatform.Service.ViewModels.Order.Response;
@@ -20,17 +22,19 @@ namespace PreOrderPlatform.Service.Services.OrderServices
     internal class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IBusinessPaymentCredentialRepository _businessPaymentCredentialRepository;
         private readonly ICampaignDetailRepository _campaignDetailRepository;
         private readonly IMapper _mapper;
         private readonly PreOrderSystemContext _context;
 
 
-        public OrderService(PreOrderSystemContext context, IOrderRepository orderRepository, ICampaignDetailRepository campaignDetailRepositor, IMapper mapper)
+        public OrderService(PreOrderSystemContext context, IOrderRepository orderRepository, ICampaignDetailRepository campaignDetailRepositor, IMapper mapper, IBusinessPaymentCredentialRepository businessPaymentCredentialRepository)
         {
             this._context = context;
             _orderRepository = orderRepository;
             _mapper = mapper;
             _campaignDetailRepository = campaignDetailRepositor;
+            _businessPaymentCredentialRepository = businessPaymentCredentialRepository;
         }
 
         public async Task<List<OrderViewModel>> GetOrdersAsync()
@@ -73,7 +77,7 @@ namespace PreOrderPlatform.Service.Services.OrderServices
             }
         }
 
-        public async Task<OrderViewModel> CreateOrderAsync(Guid userId, OrderCreateViewModel model)
+        public async Task<OrderOnCreatedResponse> CreateOrderAsync(Guid userId, OrderCreateViewModel model)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
@@ -87,6 +91,7 @@ namespace PreOrderPlatform.Service.Services.OrderServices
                         "Only one payment can be added when creating an order."
                     );
                 }
+
                 // Check if the order has one item
                 if (order.OrderItems.Count < 1)
                 {
@@ -96,10 +101,6 @@ namespace PreOrderPlatform.Service.Services.OrderServices
                 }
 
                 order.IsDeposited = false;
-
-                order.Payments.Single().PayedAt = DateTimeUtcPlus7.Now;
-
-                order.Payments.Single().Status =PaymentStatus.Pending;
 
                 // Iterate over each order item and update the corresponding CampaignDetail entity
                 int totalQuantity = 0;
@@ -121,8 +122,10 @@ namespace PreOrderPlatform.Service.Services.OrderServices
                     // Handle the case when not all campaign details belong to the business
                     throw new ServiceException("One or more campaign details do not belong to the business.");
                 }
-
+                
                 List<CampaignDetail> campaignDetailsToUpdate = new List<CampaignDetail>();
+
+                var businessId = Guid.Empty;
 
                 foreach (var item in order.OrderItems)
                 {
@@ -142,7 +145,8 @@ namespace PreOrderPlatform.Service.Services.OrderServices
                     {
                           throw new ServiceException($"The quantity of the item with ID {item.CampaignDetailId} exceeds the allowed quantity.");
                     }
-                   
+
+                    businessId = campaignDetail.Campaign.BusinessId;
 
                     // Increment the TotalOrdered field by the quantity of the current item
                     campaignDetail.TotalOrdered += item.Quantity;
@@ -157,6 +161,16 @@ namespace PreOrderPlatform.Service.Services.OrderServices
                     campaignDetailsToUpdate.Add(campaignDetail);
                 }
 
+                order.Payments.Single().PayedAt = DateTimeUtcPlus7.Now;
+
+                order.Payments.Single().Status = PaymentStatus.Pending;
+
+
+
+                BusinessPaymentCredential businessPaymentCredential = await _businessPaymentCredentialRepository.GetMainBusinessPaymentCredentialByBusinessIdAsync(businessId);
+                
+                
+                
                 // Now, update all entities at once
                 await _campaignDetailRepository.UpdateMultiAsync(campaignDetailsToUpdate);
 
@@ -175,12 +189,14 @@ namespace PreOrderPlatform.Service.Services.OrderServices
                 order.CreatedAt = DateTimeUtcPlus7.Now;
                 order.UpdatedAt = DateTimeUtcPlus7.Now;
 
-                await _orderRepository.CreateAsync(order);
 
+                await _orderRepository.CreateAsync(order);
+                
 
                 await transaction.CommitAsync();
-
-                return _mapper.Map<OrderViewModel>(order);
+                OrderOnCreatedResponse orderOnCreatedResponse = _mapper.Map<OrderOnCreatedResponse>(order);
+                orderOnCreatedResponse.businessPaymentCredential = _mapper.Map<BusinessPaymentCredentialViewModel>(businessPaymentCredential);
+                return orderOnCreatedResponse;
             }
             catch (NotFoundException ex)
             {
@@ -247,6 +263,13 @@ namespace PreOrderPlatform.Service.Services.OrderServices
                 query = query.GetWithSearch(filterModel);
                 query = query.FilterOrderByDate(o => o.CreatedAt, startDate, endDate);
 
+
+                var businessId = filterModel.BusinessId;
+
+                if (businessId != null)
+                {
+                    query = query.Where(o => o.OrderItems.SingleOrDefault().CampaignDetail.Campaign.BusinessId == businessId);
+                }
                 // Calculate the total number of items before applying pagination
                 int totalItems = await query.CountAsync();
 

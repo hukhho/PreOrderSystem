@@ -44,6 +44,27 @@ namespace PreOrderPlatform.Entity.Repositories.BusinessPaymentCredentialReposito
             }
         }
 
+
+        public async Task<BusinessPaymentCredential> GetMainBusinessPaymentCredentialByBusinessIdAsync(Guid businessId)
+        {
+            Console.WriteLine($"Starting GetMainBusinessPaymentCredentialByBusinessIdAsync with BusinessId: {businessId}");
+
+            var businessPaymentCredential = await GetWithIncludeAsync(
+                                       b => b.IsMain == true && b.BusinessId == businessId,
+                                       b => b.Include(o => o.Business)
+                                                     );
+
+            if (businessPaymentCredential != null)
+            {
+                Console.WriteLine($"Successfully retrieved BusinessPaymentCredential with ID: {businessPaymentCredential.Id}");
+            }
+            else
+            {
+                Console.WriteLine($"No BusinessPaymentCredential found for BusinessId: {businessId}");
+            }
+
+            return businessPaymentCredential;
+        }
         // Add any additional methods specific to BusinessPaymentCredentialRepository here...
     }
 }

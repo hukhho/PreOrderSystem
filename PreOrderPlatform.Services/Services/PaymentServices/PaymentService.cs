@@ -26,7 +26,95 @@ namespace PreOrderPlatform.Service.Services.PaymentServices
             _paymentRepository = paymentRepository;
             _mapper = mapper;
         }
+        public async Task<JObject> CreateMomoPayment(MomoPaymentCreateViewModel model)
+        {
+            try
+            {
+                //request params need to request to MoMo system
+                string endpoint =
+                    "https://test-payment.momo.vn/v2/gateway/api/create";
+                string partnerCode = model.partnerCode;
+                string accessKey = model.accessKey;
+                string serectkey = model.serectkey;
+                string orderInfo = model.orderInfo;
+                string redirectUrl = model.redirectUrl;
+                string ipnUrl = model.inputUrl;
+                string requestType = "captureWallet";
 
+                string amount = model.amount;
+                string orderId = model.orderId;
+                string requestId = Guid.NewGuid().ToString();
+                string extraData = "";
+
+                //Before sign HMAC SHA256 signature
+                string rawHash =
+                    "accessKey=" +
+                    accessKey +
+                    "&amount=" +
+                    amount +
+                    "&extraData=" +
+                    extraData +
+                    "&ipnUrl=" +
+                    ipnUrl +
+                    "&orderId=" +
+                    orderId +
+                    "&orderInfo=" +
+                    orderInfo +
+                    "&partnerCode=" +
+                    partnerCode +
+                    "&redirectUrl=" +
+                    redirectUrl +
+                    "&requestId=" +
+                    requestId +
+                    "&requestType=" +
+                    requestType;
+
+                //log.Debug("rawHash = " + rawHash);
+                MoMoSecurity crypto = new MoMoSecurity();
+
+                //sign signature SHA256
+                string signature = crypto.signSHA256(rawHash, serectkey);
+
+                //log.Debug("Signature = " + signature);
+                //build body json request
+                JObject message =
+                    new JObject {
+                        { "partnerCode", partnerCode },
+                        { "partnerName", "Test" },
+                        { "storeId", "MomoTestStore" },
+                        { "requestId", requestId },
+                        { "amount", amount },
+                        { "orderId", orderId },
+                        { "orderInfo", orderInfo },
+                        { "redirectUrl", redirectUrl },
+                        { "ipnUrl", ipnUrl },
+                        { "lang", "en" },
+                        { "extraData", extraData },
+                        { "requestType", requestType },
+                        { "signature", signature }
+                    };
+
+                //log.Debug("Json request to MoMo: " + message.ToString());
+                string responseFromMomo =
+                    PaymentRequest
+                        .sendPaymentRequest(endpoint, message.ToString());
+
+                JObject jmessage = JObject.Parse(responseFromMomo);
+
+                //log.Debug("Return from MoMo: " + jmessage.ToString());
+                //DialogResult result = MessageBox.Show(responseFromMomo, "Open in browser", MessageBoxButtons.OKCancel);
+                jmessage.GetValue("payUrl").ToString();
+
+                Console.WriteLine($"Momo {jmessage}");
+
+                return jmessage;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException("An error occurred while fetching payments.",
+                    ex);
+            }
+        }
         public async Task<JObject> TestMomo()
         {
             try
@@ -37,7 +125,7 @@ namespace PreOrderPlatform.Service.Services.PaymentServices
                 string partnerCode = "MOMO5RGX20191128";
                 string accessKey = "M8brj9K6E22vXoDB";
                 string serectkey = "nqQiVSgDMy809JoPF6OzP5OdBUB550Y4";
-                string orderInfo = "cac";
+                string orderInfo = "hihi";
                 string redirectUrl = "localhost://7070";
                 string ipnUrl = "localhost://7070";
                 string requestType = "captureWallet";
@@ -202,6 +290,7 @@ namespace PreOrderPlatform.Service.Services.PaymentServices
         {
             try
             {
+                
                 var payment = _mapper.Map<Payment>(model);
                 await _paymentRepository.CreateAsync(payment);
                 return _mapper.Map<PaymentViewModel>(payment);

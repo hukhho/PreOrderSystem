@@ -14,5 +14,9 @@ namespace PreOrderPlatform.Service.Services.BusinessPaymentCredentialServices
         Task UpdateBusinessPaymentCredentialAsync(Guid id, BusinessPaymentCredentialUpdateViewModel model);
         Task<(IList<BusinessPaymentCredentialViewModel> businessPaymentCredentials, int totalItems)> GetAsync(PaginationParam<BusinessPaymentCredentialEnum.BusinessPaymentCredentialSort> paginationModel, BusinessPaymentCredentialSearchRequest filterModel);
         Task<Business> GetBusinessByOwnerIdAsync(Guid userId);
+
+        Task<bool> SetMainBusinessPaymentCredentialAsync(
+            Guid id
+        );
     }
 }

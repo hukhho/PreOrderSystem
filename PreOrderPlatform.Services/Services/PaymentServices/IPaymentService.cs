@@ -28,5 +28,6 @@ namespace PreOrderPlatform.Service.Services.PaymentServices
         Task<JObject> TestMomo();
 
         Task<string> TestVNPay();
+        Task<JObject> CreateMomoPayment(MomoPaymentCreateViewModel model);
     }
 }

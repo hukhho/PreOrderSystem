@@ -1,10 +1,14 @@
-﻿using PreOrderPlatform.Entity.Enum.Order;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using PreOrderPlatform.Entity.Enum.Order;
+using PreOrderPlatform.Entity.Models;
+using PreOrderPlatform.Service.ViewModels.BusinessPaymentCredential;
 using PreOrderPlatform.Service.ViewModels.OrderItem.Response;
 using PreOrderPlatform.Service.ViewModels.Payment.Response;
 
 namespace PreOrderPlatform.Service.ViewModels.Order.Response
 {
-    public class OrderByIdResponse
+    public class OrderOnCreatedResponse
     {
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -35,5 +39,8 @@ namespace PreOrderPlatform.Service.ViewModels.Order.Response
         //public virtual UserResponse? User { get; set; }
         public virtual ICollection<OrderItemResponse> OrderItems { get; set; }
         public virtual ICollection<PaymentResponse> Payments { get; set; }
+        [JsonIgnore]
+        public BusinessPaymentCredentialViewModel businessPaymentCredential { get; set; }
+        public JObject paymentUrl { get; set;}
     }
 }

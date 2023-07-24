@@ -1,14 +1,18 @@
 ﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PreOrderPlatform.Service.Enums;
 using PreOrderPlatform.Service.Services.Exceptions;
 using PreOrderPlatform.Service.Services.OrderServices;
+using PreOrderPlatform.Service.Services.PaymentServices;
+using PreOrderPlatform.Service.Services.UserServices;
 using PreOrderPlatform.Service.Utility.Pagination;
 using PreOrderPlatform.Service.ViewModels.ApiResponse;
 using PreOrderPlatform.Service.ViewModels.Order;
 using PreOrderPlatform.Service.ViewModels.Order.Request;
 using PreOrderPlatform.Service.ViewModels.Order.Response;
+using PreOrderPlatform.Service.ViewModels.Payment;
 
 namespace PreOrderPlatform.API.Controllers
 {
@@ -17,10 +21,16 @@ namespace PreOrderPlatform.API.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly IMapper _mapper;
+        private readonly IUserService _userService;
+        private readonly IPaymentService _paymentService;
 
-        public OrdersController(IOrderService orderService)
+        public OrdersController(IOrderService orderService, IUserService userService, IMapper mapper, IPaymentService paymentService)
         {
             _orderService = orderService;
+            _userService = userService;
+            _mapper = mapper;
+            _paymentService = paymentService;
         }
 
         //[HttpGet]
@@ -44,6 +54,25 @@ namespace PreOrderPlatform.API.Controllers
         {
             try
             {
+                var roleName = User.FindFirst(ClaimTypes.Role)?.Value;
+                if (roleName == null)
+                    throw new NotFoundException("User role not found.");
+
+                if (roleName.Equals(UserRole.CUSTOMER.ToString()))
+                {
+                    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                    searchModel.UserId = Guid.Parse(userId);
+                }
+
+                if (roleName.Equals(UserRole.BUSINESS_OWNER.ToString()) || roleName.Equals(UserRole.BUSINESS_STAFF.ToString()))
+                {
+                    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                    var user = await _userService.GetUserByIdAsync(Guid.Parse(userId));
+                    if (user.BusinessId == null)
+                        throw new NotFoundException("Business owner or staff not in any business.");
+                    searchModel.BusinessId = user.BusinessId;
+                }
+
                 var start = DateTime.Now;
                 var (orders, totalItems) = await _orderService.GetAsync(paginationModel, searchModel);
                 Console.Write(DateTime.Now.Subtract(start).Milliseconds);
@@ -100,11 +129,27 @@ namespace PreOrderPlatform.API.Controllers
                     new ApiResponse<object>(null, "Invalid user ID format.", false, null)
                 );
             }
-
           
-            var order = await _orderService.CreateOrderAsync(userIdGuid, model);
+            OrderOnCreatedResponse order = await _orderService.CreateOrderAsync(userIdGuid, model);
+            var businessPayment = order.businessPaymentCredential;
+            MomoPaymentCreateViewModel momoPaymentCreateViewModel = new MomoPaymentCreateViewModel();
+            momoPaymentCreateViewModel.amount = order.RequiredDepositAmount.ToString();
+            momoPaymentCreateViewModel.orderId = order.Id.ToString();  
+            momoPaymentCreateViewModel.orderInfo = order.RevicerPhone.ToString();
+            momoPaymentCreateViewModel.redirectUrl = "https://localhost:5019/api/orders/momo-payment-callback";
+            momoPaymentCreateViewModel.inputUrl = "https://localhost:5019/";
+            momoPaymentCreateViewModel.requestId = Guid.NewGuid().ToString();
+            momoPaymentCreateViewModel.requestType = "captureMoMoWallet";
+            momoPaymentCreateViewModel.accessKey = businessPayment.MomoAccessToken;
+            momoPaymentCreateViewModel.partnerCode = businessPayment.MomoPartnerCode;
+            momoPaymentCreateViewModel.serectkey = businessPayment.MomoSecretToken;
 
-            return StatusCode(StatusCodes.Status201Created, new ApiResponse<object>(order, "Order created successfully.", false, null));
+
+            var payment = await _paymentService.CreateMomoPayment(momoPaymentCreateViewModel);
+
+            order.paymentUrl = payment;
+
+            return StatusCode(StatusCodes.Status201Created, new ApiResponse<OrderOnCreatedResponse>(order, "Order created successfully.", false, null));
 
                 //return CreatedAtAction(nameof(GetOrderById),
                 //                       new { id = order.Id },
@@ -113,6 +158,7 @@ namespace PreOrderPlatform.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "MustBeOrderAccess")]
         public async Task<IActionResult> UpdateOrder(OrderUpdateViewModel model)
         {
             try
@@ -131,23 +177,23 @@ namespace PreOrderPlatform.API.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(Guid id)
-        {
-            try
-            {
-                await _orderService.DeleteOrderAsync(id);
-                return Ok(new ApiResponse<object>(null, "Order deleted successfully.", true, null));
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(new ApiResponse<string>(null, ex.Message, false, null));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ApiResponse<object>(null, $"Error deleting order: {ex.Message}", false, null));
-            }
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteOrder(Guid id)
+        //{
+        //    try
+        //    {
+        //        await _orderService.DeleteOrderAsync(id);
+        //        return Ok(new ApiResponse<object>(null, "Order deleted successfully.", true, null));
+        //    }
+        //    catch (NotFoundException ex)
+        //    {
+        //        return NotFound(new ApiResponse<string>(null, ex.Message, false, null));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError,
+        //            new ApiResponse<object>(null, $"Error deleting order: {ex.Message}", false, null));
+        //    }
+        //}
     }
 }

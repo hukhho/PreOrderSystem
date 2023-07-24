@@ -13,6 +13,8 @@ namespace PreOrderPlatform.Service.ViewModels.AutoMapperProfile
             configuration.CreateMap<Entity.Models.Payment, PaymentViewModel>().ReverseMap();
             configuration.CreateMap<Entity.Models.Payment, PaymentResponse>().ReverseMap();
             configuration.CreateMap<Entity.Models.Payment, PaymentSearchRequest>().ReverseMap();
+            configuration.CreateMap<Entity.Models.Payment, MomoPaymentCreateViewModel>().ReverseMap();
+
 
         }
     }

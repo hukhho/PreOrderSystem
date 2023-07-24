@@ -135,6 +135,40 @@ namespace PreOrderPlatform.Service.Services.BusinessPaymentCredentialServices
             }
         }
 
+        public async Task<bool> SetMainBusinessPaymentCredentialAsync(
+            Guid id
+        )
+        {
+            try
+            {
+                var businessPaymentCredential =
+                    await _businessPaymentCredentialRepository.GetByIdAsync(id);
+
+                var businessId = businessPaymentCredential.BusinessId;
+
+                var businessPaymentCredentials =
+                    await _businessPaymentCredentialRepository.GetAllAsync();
+                foreach (var paymentCredential in businessPaymentCredentials)
+                {
+                    paymentCredential.IsMain = false;
+                    if (paymentCredential.Id == id)
+                    {
+                        paymentCredential.IsMain = true;
+                    }
+                }
+
+                await _businessPaymentCredentialRepository.UpdateMultiAsync(businessPaymentCredentials);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException(
+                    $"An error occurred while updating business payment credential with ID {id}.",
+                    ex
+                );
+            }
+        }
+
         public async Task DeleteBusinessPaymentCredentialAsync(Guid id)
         {
             try

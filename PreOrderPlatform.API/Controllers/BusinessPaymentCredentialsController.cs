@@ -31,8 +31,7 @@ namespace PreOrderPlatform.API.Controllers
         [Authorize(Policy = "MustBeBusinessOwner")]
         public async Task<IActionResult> GetAllBusinessPaymentCredentials(
             [FromRoute] Guid businessId,
-            [FromQuery]
-                PaginationParam<BusinessPaymentCredentialEnum.BusinessPaymentCredentialSort> paginationModel,
+            [FromQuery] PaginationParam<BusinessPaymentCredentialEnum.BusinessPaymentCredentialSort> paginationModel,
             [FromQuery] BusinessPaymentCredentialSearchRequest searchModel
         )
         {
@@ -48,6 +47,7 @@ namespace PreOrderPlatform.API.Controllers
                     )
                 );
             }
+
             var roleName = User.FindFirst(ClaimTypes.Role)?.Value;
 
             if (roleName == null)
@@ -63,7 +63,7 @@ namespace PreOrderPlatform.API.Controllers
             }
 
             searchModel.BusinessId = businessId;
-            
+
 
             try
             {
@@ -116,6 +116,7 @@ namespace PreOrderPlatform.API.Controllers
                     )
                 );
             }
+
             try
             {
                 var businessPaymentCredentials =
@@ -185,9 +186,8 @@ namespace PreOrderPlatform.API.Controllers
                     );
 
 
-                return StatusCode(StatusCodes.Status201Created, new ApiResponse<object>(businessPaymentCredentials, "Create business successly!", false, null));
-
-
+                return StatusCode(StatusCodes.Status201Created,
+                    new ApiResponse<object>(businessPaymentCredentials, "Create business successly!", false, null));
             }
             catch (Exception ex)
             {
@@ -242,12 +242,81 @@ namespace PreOrderPlatform.API.Controllers
             }
         }
 
+        [HttpPut("set-main/{id}")]
+        [Authorize(Policy = "MustBeBusinessPaymentCredentialOwner")]
+        public async Task<IActionResult> SetMainBusinessPaymentCredentials(
+            Guid id
+        )
+        {
+            try
+            {
+                Console.WriteLine($"SetMainBusinessPaymentCredentials id: {id} ");
+                await _businessPaymentCredentialService.SetMainBusinessPaymentCredentialAsync(id);
+
+                return Ok(
+                    new ApiResponse<object>(
+                        null,
+                        "Business payment credentials set main successfully.",
+                        true,
+                        null
+                    )
+                );
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new ApiResponse<object>(null, ex.Message, false, null));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new ApiResponse<object>(
+                        null,
+                        $"Error updating business payment credentials: {ex.Message}",
+                        false,
+                        null
+                    )
+                );
+            }
+        }
+
+
+
         [HttpDelete("{id}")]
         [Authorize(Policy = "MustBeBusinessPaymentCredentialOwner")]
         public async Task<IActionResult> DeleteBusinessPaymentCredentials(Guid id)
         {
             try
             {
+                var businessPaymentCredentials =
+                    await _businessPaymentCredentialService.GetBusinessPaymentCredentialByIdAsync(
+                        id
+                    );
+                if (businessPaymentCredentials.IsMain == null)
+                {
+                    return BadRequest(
+                        new ApiResponse<object>(
+                            null,
+                            "Business payment credentials have error occur.",
+                            false,
+                            null
+                        )
+                    );
+                }
+
+                if ((bool) businessPaymentCredentials.IsMain)
+                {
+                    return BadRequest(
+                        new ApiResponse<object>(
+                            null,
+                            "Can't delete main business payment credentials.",
+                            false,
+                            null
+                        )
+                    );
+                }
+
+
                 await _businessPaymentCredentialService.DeleteBusinessPaymentCredentialAsync(id);
                 return Ok(
                     new ApiResponse<object>(
